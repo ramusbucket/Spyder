@@ -32,6 +32,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,12 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NetworkAPI.cs" />
-    <Compile Include="ProcessAPI.cs" />
+    <Compile Include="DisplayApi.cs" />
+    <Compile Include="KeyboardApi.cs" />
+    <Compile Include="NetworkApi.cs" />
+    <Compile Include="ProcessApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\Win32ApiProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.Common\EMS.Infrastructure.Common.csproj">
+      <Project>{808B86C4-4C69-492D-BBEA-30E0D937E539}</Project>
+      <Name>EMS.Infrastructure.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EMS.Core.Interfaces\EMS.Core.Interfaces.csproj">
       <Project>{33F3E706-46DE-4F09-A12C-09A5E0F4A397}</Project>
       <Name>EMS.Core.Interfaces</Name>

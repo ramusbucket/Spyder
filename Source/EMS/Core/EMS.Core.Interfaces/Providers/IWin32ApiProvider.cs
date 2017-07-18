@@ -7,5 +7,7 @@ namespace EMS.Core.Interfaces.Providers
         IntPtr GetForegroundWindowManaged();
 
         int GetWindowThreadProcessIdManaged(IntPtr hWnd, out uint lpdwProcessId);
+
+        int GetKeyState(int index);
     }
 }

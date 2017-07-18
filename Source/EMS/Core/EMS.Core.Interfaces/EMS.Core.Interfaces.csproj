@@ -40,14 +40,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IKeyboardAPI.cs" />
-    <Compile Include="ICameraAPI.cs" />
-    <Compile Include="IMicrophoneAPI.cs" />
-    <Compile Include="INetworkAPI.cs" />
-    <Compile Include="IProcessAPI.cs" />
-    <Compile Include="IDisplayAPI.cs" />
+    <Compile Include="IKeyboardApi.cs" />
+    <Compile Include="ICameraApi.cs" />
+    <Compile Include="IMicrophoneApi.cs" />
+    <Compile Include="INetworkApi.cs" />
+    <Compile Include="IProcessApi.cs" />
+    <Compile Include="IDisplayApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\IWin32ApiProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.Common\EMS.Infrastructure.Common.csproj">
+      <Project>{808B86C4-4C69-492D-BBEA-30E0D937E539}</Project>
+      <Name>EMS.Infrastructure.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

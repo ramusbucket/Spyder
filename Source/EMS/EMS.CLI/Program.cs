@@ -11,6 +11,7 @@ using EMS.Core;
 using EMS.Core.Interfaces;
 using EMS.Core.Interfaces.Providers;
 using EMS.Core.Providers;
+using EMS.Infrastructure.Common.Configurations;
 using EMS.Infrastructure.DependencyInjection;
 using EMS.Infrastructure.DependencyInjection.Interfaces;
 using Fiddler;
@@ -27,30 +28,40 @@ namespace EMS.CLI
             //StartNetworkSniffer();
 
             // PROCESS API
-            IWin32ApiProvider win32Provider = new Win32ApiProvider();
-            IProcessAPI processApi = new ProcessAPI(win32Provider);
-            var disabledProcesses = new HashSet<string>()
-            {
-                "Skype"
-            };
+            //IWin32ApiProvider win32Provider = new Win32ApiProvider();
+            //IProcessAPI processApi = new ProcessAPI(win32Provider, new ProcessAPIConfig());
+            //var disabledProcesses = new HashSet<string>()
+            //{
+            //    "Skype"
+            //};
 
-            processApi.OnForegroundProcessChanged += (sender, process) =>
-             {
-                 Console.WriteLine($"{process.MachineName} - {process.ProcessName}");
-             };
+            //processApi.OnForegroundProcessChanged += (sender, process) =>
+            // {
+            //     Console.WriteLine($"{process.MachineName} - {process.ProcessName}");
+            // };
 
-            processApi.OnActiveProcessesChanged += (sender, processes) =>
-            {
-                foreach (var process in processes)
-                {
-                    if (disabledProcesses.Contains(process.ProcessName))
-                    {
-                        Console.WriteLine(process.ProcessName);
-                        process.Kill();
-                        Console.WriteLine(process.HasExited);
-                    }
-                }
-            };
+            //processApi.OnActiveProcessesChanged += (sender, processes) =>
+            //{
+            //    foreach (var process in processes)
+            //    {
+            //        if (disabledProcesses.Contains(process.ProcessName))
+            //        {
+            //            Console.WriteLine(process.ProcessName);
+            //            process.Kill();
+            //            Console.WriteLine(process.HasExited);
+            //        }
+            //    }
+            //};
+
+            // KeyboardAPI
+            //IWin32ApiProvider win32Provider = new Win32ApiProvider();
+            //IKeyboardAPI keyboardApi = new KeyboardApi(win32Provider, new KeyboardApiConfig { SleepIntervalInMilliseconds = 20 });
+            //keyboardApi.OnKeyPressed += (sender, key) =>
+            //{
+            //    Console.WriteLine($"{DateTime.Now.ToShortTimeString()} => {key}");
+            //};
+
+            //keyboardApi.StartListeningToKeyboard();
 
             Console.ReadLine();
             // mark fbcdn, facebook, fb, 
@@ -62,7 +73,7 @@ namespace EMS.CLI
 
         private static void StartNetworkSniffer()
         {
-            INetworkAPI networkApi = new NetworkAPI();
+            INetworkApi networkApi = new NetworkApi();
 
             networkApi.OnPacketSniffed += NetworkApi_OnPacketSniffedHandler;
             networkApi.StartSniffingAllAddresses();
@@ -132,7 +143,7 @@ namespace EMS.CLI
                 {
                     var dnsName = Dns.GetHostByAddress(destinationAddress);
                     Console.WriteLine($"DNS NAME: {dnsName.HostName} -> {destinationAddress}");
-                    Console.WriteLine(dnsName.Aliases.Aggregate(string.Empty,(accumulate, x)=> accumulate + $"{x} "));
+                    Console.WriteLine(dnsName.Aliases.Aggregate(string.Empty, (accumulate, x) => accumulate + $"{x} "));
                 }
                 catch (Exception)
                 {
@@ -152,10 +163,10 @@ namespace EMS.CLI
 
             // begin listening to the socket
             socket.BeginReceive(
-                buffer: buffer, 
-                offset: 0, 
+                buffer: buffer,
+                offset: 0,
                 size: buffer.Length,
-                socketFlags: SocketFlags.None, 
+                socketFlags: SocketFlags.None,
                 callback: new AsyncCallback(OnReceive),
                 state: null);
         }

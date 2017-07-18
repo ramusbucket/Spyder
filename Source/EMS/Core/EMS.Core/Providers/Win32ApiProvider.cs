@@ -18,6 +18,11 @@ namespace EMS.Core.Providers
             return GetWindowThreadProcessId(hWnd, out lpdwProcessId);
         }
 
+        public int GetKeyState(int index)
+        {
+            return GetAsyncKeyState(index);
+        }
+
         /// <summary>
         /// Gets the currently active window 
         /// with which the user is currently working.
@@ -34,5 +39,8 @@ namespace EMS.Core.Providers
         /// <returns></returns>
         [DllImport(User32)]
         private static extern int GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        [DllImport(User32)]
+        private static extern int GetAsyncKeyState(Int32 i);
     }
 }

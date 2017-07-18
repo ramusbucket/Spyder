@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace EMS.Core.Interfaces
 {
-    public interface IProcessAPI
+    public interface IProcessApi
     {
         event EventHandler<Process> OnForegroundProcessChanged;
         event EventHandler<Process[]> OnActiveProcessesChanged;

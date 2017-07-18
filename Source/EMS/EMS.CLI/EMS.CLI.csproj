@@ -97,6 +97,10 @@
       <Project>{501EE9DC-0B5B-47B0-AA82-14D5989A9D9D}</Project>
       <Name>EMS.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\EMS.Infrastructure.Common\EMS.Infrastructure.Common.csproj">
+      <Project>{808B86C4-4C69-492D-BBEA-30E0D937E539}</Project>
+      <Name>EMS.Infrastructure.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\EMS.Infrastructure.DependencyInjection.Interfaces\EMS.Infrastructure.DependencyInjection.Interfaces.csproj">
       <Project>{F17499B4-8079-414C-943D-62B08F2FCD01}</Project>
       <Name>EMS.Infrastructure.DependencyInjection.Interfaces</Name>

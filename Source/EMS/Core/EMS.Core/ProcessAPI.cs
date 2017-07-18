@@ -7,7 +7,7 @@ using EMS.Infrastructure.Common.Configurations;
 
 namespace EMS.Core
 {
-    public class ProcessAPI : IProcessAPI
+    public class ProcessApi : IProcessApi
     {
         private Process lastForegroundProcess;
         private Process[] lastActiveProcesses;
@@ -19,7 +19,7 @@ namespace EMS.Core
         public event EventHandler<Process> OnForegroundProcessChanged;
         public event EventHandler<Process[]> OnActiveProcessesChanged;
 
-        public ProcessAPI(IWin32ApiProvider win32ApiProvider, ProcessAPIConfig config)
+        public ProcessApi(IWin32ApiProvider win32ApiProvider, ProcessAPIConfig config)
         {
             this.win32ApiProvider = win32ApiProvider;
             this.config = config;

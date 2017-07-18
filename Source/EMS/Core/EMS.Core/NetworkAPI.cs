@@ -6,7 +6,7 @@ using EMS.Core.Interfaces;
 
 namespace EMS.Core
 {
-    public class NetworkAPI : INetworkAPI
+    public class NetworkApi : INetworkApi
     {
         public event EventHandler<byte[]> OnPacketSniffed;
 

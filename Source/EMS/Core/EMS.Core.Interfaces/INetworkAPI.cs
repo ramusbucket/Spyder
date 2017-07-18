@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace EMS.Core.Interfaces
 {
-    public interface INetworkAPI
+    public interface INetworkApi
     {
         event EventHandler<byte[]> OnPacketSniffed;
 
