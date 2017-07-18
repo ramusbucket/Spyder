@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using EMS.Core.Interfaces;
 using EMS.Core.Interfaces.Providers;
+using EMS.Infrastructure.Common.Configurations;
 
 namespace EMS.Core
 {
@@ -15,29 +14,17 @@ namespace EMS.Core
         private Timer getForegroundWindowTimer;
         private Timer getProcessStartedTimer;
         private IWin32ApiProvider win32ApiProvider;
+        private ProcessAPIConfig config;
 
-        public event EventHandler<Process> ForegroundProcessChanged;
-        public event EventHandler<Process[]> ActiveProcessesChanged;
+        public event EventHandler<Process> OnForegroundProcessChanged;
+        public event EventHandler<Process[]> OnActiveProcessesChanged;
 
-        public ProcessAPI(IWin32ApiProvider win32ApiProvider)
+        public ProcessAPI(IWin32ApiProvider win32ApiProvider, ProcessAPIConfig config)
         {
             this.win32ApiProvider = win32ApiProvider;
-
-            this.lastForegroundProcess = GetForegroundProcess();
-            this.lastActiveProcesses = GetActiveProcesses();
-
-            this.getForegroundWindowTimer = CreateForegroundProcessTimer();
-            this.getProcessStartedTimer = CreateGetProcessesListTimer();
+            this.config = config;
         }
 
-        /// <summary>
-        /// Returns the current foreground process
-        /// (the window on focus).
-        /// </summary>
-        /// <returns>
-        /// The current foreground process or (in rare cases) null, 
-        /// if the window is losing activation.
-        /// </returns>
         public Process GetForegroundProcess()
         {
             var foregroundWindowHandle = this.win32ApiProvider.GetForegroundWindowManaged();
@@ -56,13 +43,6 @@ namespace EMS.Core
             return Process.GetProcessById((int)processId);
         }
 
-        /// <summary>
-        /// Returns the name of the process owning the foreground window.
-        /// </summary>
-        /// <returns>
-        /// The name of the currently active process or empty string 
-        /// if there is no active window at this exact moment.
-        /// </returns>
         public string GetForegroundProcessName()
         {
             var process = GetForegroundProcess();
@@ -79,6 +59,18 @@ namespace EMS.Core
             return Process.GetProcesses();
         }
 
+        public void StartTimerForForegroundProcessChanged()
+        {
+            this.lastForegroundProcess = GetForegroundProcess();
+            this.getForegroundWindowTimer = CreateForegroundProcessTimer();
+        }
+
+        public void StartTimerForActiveProcessesChanged()
+        {
+            this.lastActiveProcesses = GetActiveProcesses();
+            this.getProcessStartedTimer = CreateGetProcessesListTimer();
+        }
+
         private Timer CreateForegroundProcessTimer()
         {
             return new Timer(
@@ -90,13 +82,13 @@ namespace EMS.Core
                         this.lastForegroundProcess != null &&
                         this.lastForegroundProcess.Id != currentForegroundProcess.Id)
                     {
-                        this.ForegroundProcessChanged(this, currentForegroundProcess);
+                        this.OnForegroundProcessChanged(this, currentForegroundProcess);
                         this.lastForegroundProcess = currentForegroundProcess;
                     }
                 },
                 state: null,
-                dueTime: 100,
-                period: 100);
+                dueTime: this.config.ForegroundProcessChangedTimerConfig != null ? this.config.ForegroundProcessChangedTimerConfig.DueTime : 100,
+                period: this.config.ForegroundProcessChangedTimerConfig != null ? this.config.ForegroundProcessChangedTimerConfig.Period : 100);
         }
 
         private Timer CreateGetProcessesListTimer()
@@ -110,13 +102,13 @@ namespace EMS.Core
                         this.lastActiveProcesses != null &&
                         this.lastActiveProcesses.Length != currentActiveProcesses.Length)
                     {
-                        this.ActiveProcessesChanged(this, currentActiveProcesses);
+                        this.OnActiveProcessesChanged(this, currentActiveProcesses);
                         this.lastActiveProcesses = currentActiveProcesses;
                     }
                 },
                 state: null,
-                dueTime: 100,
-                period: 100);
+                dueTime: this.config.ActiveProcessesChangedTimerConfig != null ? this.config.ActiveProcessesChangedTimerConfig.DueTime : 100,
+                period: this.config.ActiveProcessesChangedTimerConfig != null ? this.config.ActiveProcessesChangedTimerConfig.Period : 100);
         }
     }
 }

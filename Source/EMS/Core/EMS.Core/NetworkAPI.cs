@@ -8,7 +8,7 @@ namespace EMS.Core
 {
     public class NetworkAPI : INetworkAPI
     {
-        public event EventHandler<byte[]> PacketSniffed;
+        public event EventHandler<byte[]> OnPacketSniffed;
 
         public void StartSniffingSingleAddress(IPAddress address, AddressFamily addressFamily = AddressFamily.InterNetwork)
         {
@@ -85,7 +85,7 @@ namespace EMS.Core
 
             onReceive = (asyncResult) =>
             {
-                PacketSniffed.Invoke(this, buffer);
+                OnPacketSniffed.Invoke(this, buffer);
 
                 buffer = CreateBuffer();
                 socket.BeginReceive(

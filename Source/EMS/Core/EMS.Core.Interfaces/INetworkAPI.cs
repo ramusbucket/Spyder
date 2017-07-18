@@ -6,7 +6,7 @@ namespace EMS.Core.Interfaces
 {
     public interface INetworkAPI
     {
-        event EventHandler<byte[]> PacketSniffed;
+        event EventHandler<byte[]> OnPacketSniffed;
 
         void StartSniffingSingleAddress(IPAddress address, AddressFamily addressFamily = AddressFamily.InterNetwork);
 

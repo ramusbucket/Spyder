@@ -18,9 +18,6 @@ using Microsoft.Practices.Unity;
 
 namespace EMS.CLI
 {
-    partial class FidlerCapture
-    {
-    }
     class Program
     {
         static void Main(string[] args)
@@ -37,12 +34,12 @@ namespace EMS.CLI
                 "Skype"
             };
 
-            processApi.ForegroundProcessChanged += (sender, process) =>
+            processApi.OnForegroundProcessChanged += (sender, process) =>
              {
                  Console.WriteLine($"{process.MachineName} - {process.ProcessName}");
              };
 
-            processApi.ActiveProcessesChanged += (sender, processes) =>
+            processApi.OnActiveProcessesChanged += (sender, processes) =>
             {
                 foreach (var process in processes)
                 {
@@ -67,7 +64,7 @@ namespace EMS.CLI
         {
             INetworkAPI networkApi = new NetworkAPI();
 
-            networkApi.PacketSniffed += NetworkApi_OnPacketSniffedHandler;
+            networkApi.OnPacketSniffed += NetworkApi_OnPacketSniffedHandler;
             networkApi.StartSniffingAllAddresses();
 
             Console.Read();
