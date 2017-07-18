@@ -1,0 +1,14 @@
+Front-end servers:
+http://www.pentalogic.net/sharepoint-knowledge-base/glossary/web-front-end-server-wfe
+
+Front-end servers:
+http://highscalability.com/blog/2016/1/4/server-side-architecture-front-end-servers-and-client-side-r.html
+
+.NET 4.0 Lazy Initialization
+http://geekswithblogs.net/BlackRabbitCoder/archive/2010/05/19/c-system.lazylttgt-and-the-singleton-design-pattern.aspx
+
+
+
+
+
+

@@ -1,0 +1,88 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.CLI", "EMS.CLI\EMS.CLI.csproj", "{A055A6E0-24A2-4989-A16F-57383E1BCCFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{36B6E86C-DC31-4B8F-A6D5-DD208200F101}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{EF480747-1667-4356-A5B5-62DEA7BEB113}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Core.Interfaces", "Core\EMS.Core.Interfaces\EMS.Core.Interfaces.csproj", "{33F3E706-46DE-4F09-A12C-09A5E0F4A397}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Core", "Core\EMS.Core\EMS.Core.csproj", "{501EE9DC-0B5B-47B0-AA82-14D5989A9D9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Core.Extensions", "Core\EMS.Core.Extensions\EMS.Core.Extensions.csproj", "{89B13924-F97C-42BE-B9BC-BB6C7321DD1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{DB1CF46D-2B67-4316-8F30-83D4E2A46323}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Web.Server.Collector", "Web\EMS.Web.Server.Collector\EMS.Web.Server.Collector.csproj", "{31A185E9-1312-456A-900E-5365B82F0F16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Infrastructure.DependencyInjection", "Infrastructure\EMS.Infrastructure.DependencyInjection\EMS.Infrastructure.DependencyInjection.csproj", "{E9C5306B-BDAB-4C01-99EB-80B74633143B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Infrastructure.DependencyInjection.Interfaces", "Infrastructure\EMS.Infrastructure.DependencyInjection.Interfaces\EMS.Infrastructure.DependencyInjection.Interfaces.csproj", "{F17499B4-8079-414C-943D-62B08F2FCD01}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{F5A4FC24-5E9C-4DE9-9DAA-CB756CE89101}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Infrastructure.DependencyInjection.UnitTests", "UnitTests\EMS.Infrastructure.DependencyInjection.UnitTests\EMS.Infrastructure.DependencyInjection.UnitTests.csproj", "{1E30C031-3518-40BD-8969-9BB617E73C3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Infrastructure.Common", "Infrastructure\EMS.Infrastructure.Common\EMS.Infrastructure.Common.csproj", "{808B86C4-4C69-492D-BBEA-30E0D937E539}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A055A6E0-24A2-4989-A16F-57383E1BCCFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A055A6E0-24A2-4989-A16F-57383E1BCCFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A055A6E0-24A2-4989-A16F-57383E1BCCFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A055A6E0-24A2-4989-A16F-57383E1BCCFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33F3E706-46DE-4F09-A12C-09A5E0F4A397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F3E706-46DE-4F09-A12C-09A5E0F4A397}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F3E706-46DE-4F09-A12C-09A5E0F4A397}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F3E706-46DE-4F09-A12C-09A5E0F4A397}.Release|Any CPU.Build.0 = Release|Any CPU
+		{501EE9DC-0B5B-47B0-AA82-14D5989A9D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{501EE9DC-0B5B-47B0-AA82-14D5989A9D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{501EE9DC-0B5B-47B0-AA82-14D5989A9D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{501EE9DC-0B5B-47B0-AA82-14D5989A9D9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89B13924-F97C-42BE-B9BC-BB6C7321DD1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89B13924-F97C-42BE-B9BC-BB6C7321DD1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89B13924-F97C-42BE-B9BC-BB6C7321DD1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89B13924-F97C-42BE-B9BC-BB6C7321DD1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A185E9-1312-456A-900E-5365B82F0F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A185E9-1312-456A-900E-5365B82F0F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A185E9-1312-456A-900E-5365B82F0F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A185E9-1312-456A-900E-5365B82F0F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9C5306B-BDAB-4C01-99EB-80B74633143B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9C5306B-BDAB-4C01-99EB-80B74633143B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9C5306B-BDAB-4C01-99EB-80B74633143B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9C5306B-BDAB-4C01-99EB-80B74633143B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F17499B4-8079-414C-943D-62B08F2FCD01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F17499B4-8079-414C-943D-62B08F2FCD01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F17499B4-8079-414C-943D-62B08F2FCD01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F17499B4-8079-414C-943D-62B08F2FCD01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E30C031-3518-40BD-8969-9BB617E73C3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E30C031-3518-40BD-8969-9BB617E73C3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E30C031-3518-40BD-8969-9BB617E73C3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E30C031-3518-40BD-8969-9BB617E73C3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{808B86C4-4C69-492D-BBEA-30E0D937E539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{808B86C4-4C69-492D-BBEA-30E0D937E539}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{808B86C4-4C69-492D-BBEA-30E0D937E539}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{808B86C4-4C69-492D-BBEA-30E0D937E539}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{33F3E706-46DE-4F09-A12C-09A5E0F4A397} = {EF480747-1667-4356-A5B5-62DEA7BEB113}
+		{501EE9DC-0B5B-47B0-AA82-14D5989A9D9D} = {EF480747-1667-4356-A5B5-62DEA7BEB113}
+		{89B13924-F97C-42BE-B9BC-BB6C7321DD1F} = {EF480747-1667-4356-A5B5-62DEA7BEB113}
+		{31A185E9-1312-456A-900E-5365B82F0F16} = {DB1CF46D-2B67-4316-8F30-83D4E2A46323}
+		{E9C5306B-BDAB-4C01-99EB-80B74633143B} = {36B6E86C-DC31-4B8F-A6D5-DD208200F101}
+		{F17499B4-8079-414C-943D-62B08F2FCD01} = {36B6E86C-DC31-4B8F-A6D5-DD208200F101}
+		{1E30C031-3518-40BD-8969-9BB617E73C3F} = {F5A4FC24-5E9C-4DE9-9DAA-CB756CE89101}
+		{808B86C4-4C69-492D-BBEA-30E0D937E539} = {36B6E86C-DC31-4B8F-A6D5-DD208200F101}
+	EndGlobalSection
+EndGlobal
