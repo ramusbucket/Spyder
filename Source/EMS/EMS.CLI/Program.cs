@@ -12,15 +12,22 @@ using EMS.Core.Interfaces;
 using EMS.Core.Interfaces.Providers;
 using EMS.Core.Providers;
 using EMS.Infrastructure.Common.Configurations;
+using EMS.Infrastructure.Common.Utils;
 using EMS.Infrastructure.DependencyInjection;
 using EMS.Infrastructure.DependencyInjection.Interfaces;
 using Fiddler;
 using Microsoft.Practices.Unity;
+using AForge.Video;
+using AForge;
+using AForge.Video.DirectShow;
+using System.Drawing;
+using System.Threading.Tasks;
 
 namespace EMS.CLI
 {
     class Program
     {
+        static Bitmap image;
         static void Main(string[] args)
         {
             // NETWORK SNIFFER
@@ -63,12 +70,42 @@ namespace EMS.CLI
 
             //keyboardApi.StartListeningToKeyboard();
 
-            Console.ReadLine();
+            // DisplayAPI
+            //IDisplayApi dapi = new DisplayApi(new DisplayApiConfig { DisplayWatcherSleepIntervalInMilliseconds = 1000 });
+
+            //var counter = 0;
+            //dapi.OnDisplaySnapshotTaken += (sender, payload) =>
+            // {
+            //     var image = payload.ToImage();
+            //     image.Save($"{counter++}.jpg");
+            // };
+            //dapi.StartWatchingDisplay();
+
+            //Console.ReadLine();
             // mark fbcdn, facebook, fb, 
             // CURRENTLY FOCUSED WINDOW
             //var activeForegroundWindowChangeEventHandle = Win32ApiWrapper.HookActiveForegroundWindowChangedEvent();
 
             //Win32ApiWrapper.UnhookActiveForegroundWindowChangedEvent(activeForegroundWindowChangeEventHandle);
+
+            // CAMERA API
+            var counter = 0;
+            ICameraApi camApi = new CameraApi();
+            camApi.OnWebcamSnapshotTaken += (sender, payload) =>
+              {
+                  payload.ToImage().Save($"Cam{counter++}.jpg");
+                  Console.WriteLine($"Taken image {counter}");
+              };
+            camApi.StartCamera();
+
+            Task.Delay(10000).Wait();
+
+            camApi.StopCamera();
+        }
+
+        private static void Cam_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        {
+            image = (Bitmap)eventArgs.Frame.Clone();
         }
 
         private static void StartNetworkSniffer()

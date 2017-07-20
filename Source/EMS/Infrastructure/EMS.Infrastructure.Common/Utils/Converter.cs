@@ -6,7 +6,7 @@ namespace EMS.Infrastructure.Common.Utils
 {
     public static class Converter
     {
-        public static byte[] ImageToByteArray(Image image)
+        public static byte[] ToByteArray(this Image image)
         {
             var stream = new MemoryStream();
             var format = ImageFormat.Jpeg;
@@ -15,7 +15,7 @@ namespace EMS.Infrastructure.Common.Utils
             return stream.ToArray();
         }
 
-        public static Image ImageFromByteArray(byte[] imageAsByteArray)
+        public static Image ToImage(this byte[] imageAsByteArray)
         {
             var stream = new MemoryStream(imageAsByteArray);
             var image = Image.FromStream(stream);
