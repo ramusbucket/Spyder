@@ -22,12 +22,18 @@ using AForge;
 using AForge.Video.DirectShow;
 using System.Drawing;
 using System.Threading.Tasks;
+using System.IO;
+using NAudio.Wave;
+using System.Speech.Recognition;
+using System.Threading;
 
 namespace EMS.CLI
 {
     class Program
     {
         static Bitmap image;
+        static WaveFileWriter waveWriter;
+
         static void Main(string[] args)
         {
             // NETWORK SNIFFER
@@ -89,18 +95,121 @@ namespace EMS.CLI
             //Win32ApiWrapper.UnhookActiveForegroundWindowChangedEvent(activeForegroundWindowChangeEventHandle);
 
             // CAMERA API
-            var counter = 0;
-            ICameraApi camApi = new CameraApi();
-            camApi.OnWebcamSnapshotTaken += (sender, payload) =>
+            //var counter = 0;
+            //ICameraApi camApi = new CameraApi(new CameraApiConfig
+            //{
+            //    SnapshotConfig = new TimerConfig
+            //    {
+            //        DueTime = 1000,
+            //        Period = 500
+            //    }
+            //});
+            //camApi.OnWebcamSnapshotTaken += (sender, payload) =>
+            //  {
+            //      payload.ToImage().Save($"Cam{counter++}.jpg");
+            //      Console.WriteLine($"Taken image {counter}");
+            //  };
+            //camApi.StartCamera();
+
+            //Task.Delay(10000).Wait();
+
+            //camApi.StopCamera();
+
+            // MicrophoneAPi
+            //List<WaveInCapabilities> sources = new List<WaveInCapabilities>();
+
+            //for (int i = 0; i < WaveIn.DeviceCount; i++)
+            //{
+            //    sources.Add(WaveIn.GetCapabilities(i));
+            //}
+
+            //foreach(var source in sources)
+            //{
+            //    var sourceStream = new WaveInEvent();
+            //    sourceStream.DeviceNumber = 0;
+            //    sourceStream.WaveFormat = new WaveFormat(44100, source.Channels);
+
+            //    sourceStream.DataAvailable += (sender, e) =>
+            //    {
+            //        if (waveWriter == null)
+            //        {
+            //            return;
+            //        }
+
+            //        waveWriter.Write(e.Buffer, 0, e.BytesRecorded);
+            //        waveWriter.Flush();
+            //    };
+
+            //    waveWriter = new WaveFileWriter(new FileStream("Recording.wav",FileMode.CreateNew), sourceStream.WaveFormat);
+
+            //    sourceStream.StartRecording();
+            //    Console.WriteLine("Start");
+
+            //    Console.ReadLine();
+
+            //    if (sourceStream != null)
+            //    {
+            //        sourceStream.StopRecording();
+            //        Console.WriteLine("Stop");
+            //        sourceStream.Dispose();
+            //        sourceStream = null;
+            //    }
+            //    if (waveWriter != null)
+            //    {
+            //        waveWriter.Dispose();
+            //        waveWriter = null;
+            //    }
+            //}
+            //SpeechRecognitionEngine sre = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));
+            //Choices choiceList = new Choices();
+            //choiceList.Add(new string[] { "nanan" });
+
+            //GrammarBuilder builder = new GrammarBuilder();
+            //builder.Append(choiceList);
+            //Grammar grammar = new Grammar(new GrammarBuilder(builder, 0, 10));
+
+            //sre.SpeechRecognized += (sender, srArgs) =>
+            //{
+            //    Console.WriteLine("Speech recognized");
+            //};
+
+            //sre.SpeechDetected += (sender, sdArgs) =>
+            //{
+            //    Console.WriteLine("Speech detected");
+            //};
+
+            //sre.RecognizeCompleted += (sender, rcArgs) =>
+            //{
+            //    Console.WriteLine("Recognize completed");
+            //};
+
+            //sre.InitialSilenceTimeout = TimeSpan.FromSeconds(0);
+            //sre.BabbleTimeout = TimeSpan.FromSeconds(0);
+            //sre.EndSilenceTimeout = TimeSpan.FromSeconds(0);
+            //sre.EndSilenceTimeoutAmbiguous = TimeSpan.FromSeconds(0);
+            //sre.SetInputToDefaultAudioDevice();
+            //sre.LoadGrammar(grammar);
+
+            //while (true)
+            //{
+            //    sre.Recognize();
+            //}
+
+            var keyboardApi = new KeyboardApi(new Win32ApiProvider(), new KeyboardApiConfig
+            {
+                SleepIntervalInMilliseconds = 10
+            });
+
+            var random = new Random();
+            keyboardApi.OnKeyPressed += (sender, e) =>
+
               {
-                  payload.ToImage().Save($"Cam{counter++}.jpg");
-                  Console.WriteLine($"Taken image {counter}");
+                  var sleepPeriod = random.Next(500, 1000);
+                  Thread.Sleep(sleepPeriod);
+                  Console.WriteLine($"Event handle for {e} with sleep period: {sleepPeriod}");
               };
-            camApi.StartCamera();
 
-            Task.Delay(10000).Wait();
-
-            camApi.StopCamera();
+            keyboardApi.StartListeningToKeyboard();
         }
 
         private static void Cam_NewFrame(object sender, NewFrameEventArgs eventArgs)

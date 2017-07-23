@@ -54,6 +54,13 @@
       <Project>{808B86C4-4C69-492D-BBEA-30E0D937E539}</Project>
       <Name>EMS.Infrastructure.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EMS.Core.Models\EMS.Core.Models.csproj">
+      <Project>{7288268B-DE4A-4BB2-A7DB-0EFAB2834371}</Project>
+      <Name>EMS.Core.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

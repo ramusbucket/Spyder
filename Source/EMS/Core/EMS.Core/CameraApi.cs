@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EMS.Core.Interfaces;
-using AForge.Video.DirectShow;
-using AForge.Video;
-using System.Threading;
 using System.Drawing;
+using System.Linq;
+using System.Threading;
+using AForge.Video.DirectShow;
+using EMS.Core.Interfaces;
+using EMS.Core.Models;
+using EMS.Infrastructure.Common.Configurations;
 using EMS.Infrastructure.Common.Utils;
 
 namespace EMS.Core
@@ -16,64 +16,113 @@ namespace EMS.Core
     {
         public event EventHandler<byte[]> OnWebcamSnapshotTaken;
 
-        private Timer webcamSnapshotTimer;
-        private FilterInfoCollection availableWebcams;
-        private VideoCaptureDevice camera;
+        private const int DefaultSnapshotPeriod = 2000;
+        private const int DefaultSnapshotDueTime = 1000;
+
         private bool shouldSaveSnapshot;
+        private CameraApiConfig config;
+        private Timer webcamSnapshotTimer;
+        private ConcurrentDictionary<string, VideoCaptureDevice> cameras;
 
-        public CameraApi()
+        public CameraApi(CameraApiConfig config)
         {
-            availableWebcams = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            this.config = config;
+            this.cameras = new ConcurrentDictionary<string, VideoCaptureDevice>();
         }
 
-        public bool IsWebcamAvailable()
+        public IList<WebcamDetails> GetAvailableWebcams()
         {
-            return availableWebcams.Count > 0;
+            var availableWebcams = new List<WebcamDetails>();
+            var webcamsFilterInfo = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+
+            foreach (FilterInfo info in webcamsFilterInfo)
+            {
+                availableWebcams.Add(
+                    new WebcamDetails
+                    {
+                        Id = info.MonikerString,
+                        Name = info.Name
+                    });
+            }
+
+            return availableWebcams;
         }
 
-        public void StartCamera(uint index = 0)
+        public void StartCamera(string cameraId)
         {
-            if (availableWebcams == null || availableWebcams.Count < 1)
+            var availableWebcams = this.GetAvailableWebcams();
+
+            if (availableWebcams == null || availableWebcams.Count == 0)
             {
-                throw new InvalidOperationException("No webcams are available at this moment.");
+                throw new ArgumentNullException("There are no available webcams at this moment");
             }
 
-            var lastAvailableCameraIndex = availableWebcams.Count - 1;
-            if (index > lastAvailableCameraIndex)
+            if (!availableWebcams.Any(x => x.Id == cameraId))
             {
-                throw new ArgumentOutOfRangeException($"Webcam index should be in the range between {0} and {lastAvailableCameraIndex} inclusive.");
+                throw new InvalidOperationException($"Webcam with id \"{cameraId}\" is not available at this moment.");
             }
+
+            if (this.webcamSnapshotTimer == null)
+            {
+                InitializeSnapshotTimer();
+            }
+
+            var webcam = new VideoCaptureDevice(cameraId);
+            this.cameras.AddOrUpdate(cameraId, webcam, (id, oldWebcam) =>
+            {
+                if (oldWebcam != null && oldWebcam.IsRunning)
+                {
+                    oldWebcam.Stop();
+                }
+
+                return webcam;
+            });
+
+            webcam.NewFrame += (sender, args) =>
+            {
+                if (this.shouldSaveSnapshot)
+                {
+                    var snapshot = (Bitmap)args.Frame.Clone();
+                    var snapshotAsByteArray = snapshot.ToByteArray();
+                    this.OnWebcamSnapshotTaken.Invoke(this, snapshotAsByteArray);
+
+                    this.shouldSaveSnapshot = false;
+                }
+            };
+
+            webcam.Start();
+        }
+
+        public void StopCamera(string cameraId)
+        {
+            if (this.cameras != null)
+            {
+                var camera = this.cameras[cameraId];
+
+                if (camera.IsRunning)
+                {
+                    camera.Stop();
+                }
+            }
+        }
+
+        private void InitializeSnapshotTimer()
+        {
+            var dueTime = this.config.SnapshotConfig != null ?
+                this.config.SnapshotConfig.DueTime :
+                DefaultSnapshotDueTime;
+
+            var period = this.config.SnapshotConfig != null ?
+                this.config.SnapshotConfig.DueTime :
+                DefaultSnapshotPeriod;
 
             this.webcamSnapshotTimer = new Timer((_) =>
             {
                 this.shouldSaveSnapshot = true;
             },
             null,
-            1000,
-            2000);
-
-            camera = new VideoCaptureDevice(this.availableWebcams[(int)index].MonikerString);
-            camera.NewFrame += (sender, args) =>
-             {
-                 if (this.shouldSaveSnapshot)
-                 {
-                     var snapshot = (Bitmap)args.Frame.Clone();
-                     var snapshotAsByteArray = snapshot.ToByteArray();
-                     this.OnWebcamSnapshotTaken.Invoke(this, snapshotAsByteArray);
-
-                     this.shouldSaveSnapshot = false;
-                 }
-             };
-
-            camera.Start();
-        }
-
-        public void StopCamera()
-        {
-            if (this.camera.IsRunning)
-            {
-                this.camera.Stop();
-            }
+            dueTime,
+            period);
         }
     }
 }

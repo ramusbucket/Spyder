@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using EMS.Core.Models;
 
 namespace EMS.Core.Interfaces
 {
@@ -6,10 +8,10 @@ namespace EMS.Core.Interfaces
     {
         event EventHandler<byte[]> OnWebcamSnapshotTaken;
 
-        bool IsWebcamAvailable();
+        IList<WebcamDetails> GetAvailableWebcams();
 
-        void StartCamera(uint index = 0);
+        void StartCamera(string cameraId);
 
-        void StopCamera();
+        void StopCamera(string cameraId);
     }
 }

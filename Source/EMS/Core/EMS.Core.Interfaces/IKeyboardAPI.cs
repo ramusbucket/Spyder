@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using EMS.Infrastructure.Common.Enums;
 
 namespace EMS.Core.Interfaces

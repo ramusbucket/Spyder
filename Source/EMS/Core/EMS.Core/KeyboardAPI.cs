@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Threading.Tasks;
 using EMS.Core.Interfaces;
 using EMS.Core.Interfaces.Providers;
 using EMS.Infrastructure.Common.Configurations;
@@ -24,11 +24,12 @@ namespace EMS.Core
 
         public void StartListeningToKeyboard()
         {
-            var sleepInterval = this.config != null ? 
-                this.config.SleepIntervalInMilliseconds : 
+            var sleepInterval = this.config != null ?
+                this.config.SleepIntervalInMilliseconds :
                 DefaultSleepIntervalInMilliseconds;
 
             this.isListening = true;
+
             while (this.isListening)
             {
                 for (Int32 i = 0; i < 255; i++)
@@ -46,7 +47,7 @@ namespace EMS.Core
                     }
                 }
 
-                Thread.Sleep(sleepInterval);
+                Task.Delay(sleepInterval).Wait();
             }
         }
 
