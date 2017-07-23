@@ -10,6 +10,15 @@ namespace EMS.Desktop.Headless
     {
         static void Main(string[] args)
         {
+            var jsonConfig = string.Empty;
+            var dependenciesRegister = new DependenciesRegister();
+            var injector = dependenciesRegister.RegisterDependencies(jsonConfig);
+
+            var keyboardListener = injector.Resolve<IListener>(nameof(KeyboardListener));
+
+            var task = Task.Run(() => keyboardListener.Start());
+
+            Task.WaitAll(task);
         }
     }
 }

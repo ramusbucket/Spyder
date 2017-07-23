@@ -6,6 +6,8 @@ namespace EMS.Infrastructure.Common.Configurations.ListenersConfigs
 {
     public class KeyboardListenerConfig
     {
+        public TimerConfig SendCapturedKeysTimerConfig { get; set; }
+
         public int CapturedKeysThreshold { get; set; }
 
         public string DestinationUri { get; set; }
