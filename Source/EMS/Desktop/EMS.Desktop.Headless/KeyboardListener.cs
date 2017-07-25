@@ -17,7 +17,7 @@
         private const int DefaultDueTime = 5000;
         private const int DefaultPeriod = 2000;
         private IKeyboardApi keyboardApi;
-        private ConcurrentQueue<KeyCapturedDetails> capturedKeys;
+        private ConcurrentQueue<CapturedKeyDetails> capturedKeys;
         private KeyboardListenerConfig config;
         private Timer sendCapturedKeysTimer;
 
@@ -26,7 +26,7 @@
         {
             this.config = config;
             this.keyboardApi = keyboardApi;
-            this.capturedKeys = new ConcurrentQueue<KeyCapturedDetails>();
+            this.capturedKeys = new ConcurrentQueue<CapturedKeyDetails>();
         }
 
         public override Task Start()
@@ -60,7 +60,7 @@
 
         private void KeyboardApi_OnKeyPressed(object sender, KeyboardKey e)
         {
-            var capturedKey = new KeyCapturedDetails
+            var capturedKey = new CapturedKeyDetails
             {
                 KeyboardKey = e,
                 CapturedOn = TimeProvider.Current.Now
@@ -77,8 +77,8 @@
             if (capturedKeysCount >= this.config.CapturedKeysThreshold)
             {
                 var isSuccessful = true;
-                var key = default(KeyCapturedDetails);
-                var keysToSend = new List<KeyCapturedDetails>(capturedKeysCount + 1);
+                var key = default(CapturedKeyDetails);
+                var keysToSend = new List<CapturedKeyDetails>(capturedKeysCount + 1);
 
                 for (int i = 0; i < capturedKeysCount && isSuccessful; i++)
                 {

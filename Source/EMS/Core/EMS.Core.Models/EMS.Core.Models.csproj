@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KeyCapturedDetails.cs" />
+    <Compile Include="CapturedKeyDetails.cs" />
+    <Compile Include="ResponseResult.cs" />
     <Compile Include="WebcamDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

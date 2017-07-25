@@ -30,7 +30,7 @@ namespace EMS.Desktop.Headless
                 .RegisterInstance<KeyboardListenerConfig>(new KeyboardListenerConfig
                 {
                     CapturedKeysThreshold = 20,
-                    DestinationUri = "localhost",
+                    DestinationUri = "http://localhost:64435/api/CapturedKeys/PostCapturedKeys",
                     RetrySleepDurationsInMilliseconds = new List<int> { 1, 2, 3, 4, 5 },
                     SendCapturedKeysTimerConfig = new TimerConfig
                     {

@@ -3,7 +3,7 @@ using EMS.Infrastructure.Common.Enums;
 
 namespace EMS.Core.Models
 {
-    public class KeyCapturedDetails
+    public class CapturedKeyDetails
     {
         public KeyboardKey KeyboardKey { get; set; }
 
