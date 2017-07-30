@@ -22,12 +22,14 @@
             this.keyboardApi = keyboardApi;
         }
 
-        public override Task Start()
+        public async override Task Start()
         {
-            base.Start().Wait();
+            await base.Start();
 
             this.keyboardApi.OnKeyPressed += OnKeyPressedHandler;
-            return Task.Run(() => this.keyboardApi.StartListeningToKeyboard());
+
+            await Task.Run(
+                () => this.keyboardApi.StartListeningToKeyboard());
         }
 
         public override void Stop()

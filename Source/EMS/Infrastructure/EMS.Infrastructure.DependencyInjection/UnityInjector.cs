@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using EMS.Infrastructure.Common.Exceptions;
 using EMS.Infrastructure.DependencyInjection.Interfaces;
 using Microsoft.Practices.Unity;
@@ -33,7 +34,7 @@ namespace EMS.Infrastructure.DependencyInjection
         {
             try
             {
-                this.container.RegisterType<TFrom, TTo>(new InjectionConstructor());
+                this.container.RegisterType<TFrom, TTo>();
             }
             catch (Exception exc)
             {
@@ -63,7 +64,7 @@ namespace EMS.Infrastructure.DependencyInjection
         {
             try
             {
-                this.container.RegisterType<TFrom, TTo>(key, new InjectionConstructor());
+                this.container.RegisterType<TFrom, TTo>(key);
             }
             catch (Exception exc)
             {

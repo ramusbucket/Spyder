@@ -21,12 +21,14 @@ namespace EMS.Desktop.Headless
             this.displayApi = displayApi;
         }
 
-        public override Task Start()
+        public async override Task Start()
         {
-            base.Start().Wait();
+            await base.Start();
 
             this.displayApi.OnDisplaySnapshotTaken += OnDisplaySnapshotTakenHandler;
-            return Task.Run(() => this.displayApi.StartWatchingDisplay());
+
+            await Task.Run(
+                () => this.displayApi.StartWatchingDisplay());
         }
 
         public override void Stop()

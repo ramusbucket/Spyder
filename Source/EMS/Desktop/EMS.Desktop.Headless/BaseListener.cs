@@ -37,7 +37,7 @@ namespace EMS.Desktop.Headless
                 this.config.SendCapturedItemsTimerConfig,
                 async (_) => await this.SendCapturedItems());
 
-            return null;
+            return Task.FromResult<object>(null);
         }
 
         public abstract void Stop();

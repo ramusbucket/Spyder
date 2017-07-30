@@ -68,6 +68,9 @@
     <Compile Include="Configurations\CameraApiConfig.cs" />
     <Compile Include="Configurations\DisplayApiConfig.cs" />
     <Compile Include="Configurations\KeyboardApiConfig.cs" />
+    <Compile Include="Configurations\ListenersConfigs\BaseListenerConfig.cs" />
+    <Compile Include="Configurations\ListenersConfigs\CameraListenerConfig.cs" />
+    <Compile Include="Configurations\ListenersConfigs\DisplayListenerConfig.cs" />
     <Compile Include="Configurations\ListenersConfigs\KeyboardListenerConfig.cs" />
     <Compile Include="Configurations\ProcessAPIConfig.cs" />
     <Compile Include="Configurations\TimerConfig.cs" />

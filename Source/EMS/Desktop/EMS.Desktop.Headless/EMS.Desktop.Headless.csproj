@@ -60,7 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseListener.cs" />
+    <Compile Include="CameraListener.cs" />
     <Compile Include="DependenciesRegister.cs" />
+    <Compile Include="DisplayListener.cs" />
     <Compile Include="IListener.cs" />
     <Compile Include="KeyboardListener.cs" />
     <Compile Include="Program.cs" />

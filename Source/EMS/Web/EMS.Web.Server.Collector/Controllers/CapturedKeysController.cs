@@ -12,12 +12,17 @@ namespace EMS.Web.Server.Collector.Controllers
     public class CapturedKeysController : ApiController
     {
         [Route(nameof(PostCapturedKeys))]
-        public IHttpActionResult PostCapturedKeys(IEnumerable<CapturedKeyDetails> capturedKeys)
+        public IHttpActionResult PostCapturedKeys(IEnumerable<CapturedKeyDetails> model)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
             var response = new EmptyResponse
             {
                 IsSuccessful = true,
-                Message = $"Request {capturedKeys} handled successfully.",
+                Message = $"Request handled successfully.",
             };
 
             return this.Ok(response);
