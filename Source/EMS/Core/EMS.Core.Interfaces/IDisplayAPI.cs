@@ -7,5 +7,7 @@ namespace EMS.Core.Interfaces
         event EventHandler<byte[]> OnDisplaySnapshotTaken;
 
         void StartWatchingDisplay();
+
+        void StopWatchingDisplay();
     }
 }

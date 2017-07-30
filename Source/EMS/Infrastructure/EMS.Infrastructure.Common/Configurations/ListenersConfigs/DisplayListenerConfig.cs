@@ -1,6 +1,6 @@
 ﻿namespace EMS.Infrastructure.Common.Configurations.ListenersConfigs
 {
-    public class KeyboardListenerConfig : BaseListenerConfig
+    public class DisplayListenerConfig : BaseListenerConfig
     {
     }
 }

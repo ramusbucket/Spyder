@@ -53,5 +53,10 @@ namespace EMS.Core
                 }
             }
         }
+
+        public void StopWatchingDisplay()
+        {
+            this.isWatchingDisplay = false;
+        }
     }
 }

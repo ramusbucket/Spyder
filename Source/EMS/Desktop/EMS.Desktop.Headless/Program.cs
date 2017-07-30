@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace EMS.Desktop.Headless
 {
@@ -15,10 +16,9 @@ namespace EMS.Desktop.Headless
             var injector = dependenciesRegister.RegisterDependencies(jsonConfig);
 
             var keyboardListener = injector.Resolve<IListener>(nameof(KeyboardListener));
-
             var task = Task.Run(() => keyboardListener.Start());
 
-            Task.WaitAll(task);
+            Task.WhenAll(task).Wait();
         }
     }
 }
