@@ -59,9 +59,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ForegroundProcessListener.cs" />
     <Compile Include="BaseListener.cs" />
     <Compile Include="CameraListener.cs" />
     <Compile Include="DependenciesRegister.cs" />
+    <Compile Include="ActiveProcessesListener.cs" />
     <Compile Include="DisplayListener.cs" />
     <Compile Include="IListener.cs" />
     <Compile Include="KeyboardListener.cs" />

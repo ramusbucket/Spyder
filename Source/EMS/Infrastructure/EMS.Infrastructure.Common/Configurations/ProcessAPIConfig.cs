@@ -1,6 +1,6 @@
 ﻿namespace EMS.Infrastructure.Common.Configurations
 {
-    public class ProcessAPIConfig
+    public class ProcessApiConfig
     {
         public TimerConfig ForegroundProcessChangedTimerConfig { get; set; }
 

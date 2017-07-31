@@ -50,6 +50,11 @@ namespace EMS.Core
 
         public void StartCamera(string cameraId)
         {
+            if (string.IsNullOrEmpty(cameraId))
+            {
+                throw new ArgumentNullException($"Parameter \"{nameof(cameraId)}\" must not be null or empty.");
+            }
+
             var availableWebcams = this.GetAvailableWebcams();
 
             if (availableWebcams == null || availableWebcams.Count == 0)

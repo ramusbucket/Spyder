@@ -38,13 +38,13 @@ namespace EMS.Desktop.Headless
 
         private void OnDisplaySnapshotTakenHandler(object sender, byte[] e)
         {
-            var capturedSnapshot = new CapturedDisplaySnapshotDetails
+            var capturedItem = new CapturedDisplaySnapshotDetails
             {
                 DisplaySnapshot = e,
                 CreatedOn = TimeProvider.Current.Now
             };
 
-            this.capturedItems.Enqueue(capturedSnapshot);
+            this.capturedItems.Enqueue(capturedItem);
         }
     }
 }

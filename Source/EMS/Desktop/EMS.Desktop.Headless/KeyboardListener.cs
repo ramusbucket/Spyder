@@ -39,13 +39,13 @@
 
         private void OnKeyPressedHandler(object sender, KeyboardKey e)
         {
-            var capturedKey = new CapturedKeyDetails
+            var capturedItem = new CapturedKeyDetails
             {
                 KeyboardKey = e,
                 CreatedOn = TimeProvider.Current.Now
             };
 
-            this.capturedItems.Enqueue(capturedKey);
+            this.capturedItems.Enqueue(capturedItem);
         }
     }
 }

@@ -41,8 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auditable.cs" />
-    <Compile Include="CapturedCameraImageDetails.cs" />
+    <Compile Include="CapturedActiveProcessesDetails.cs" />
+    <Compile Include="CapturedCameraSnapshotDetails.cs" />
     <Compile Include="CapturedDisplaySnapshotDetails.cs" />
+    <Compile Include="CapturedForegroundProcessDetails.cs" />
     <Compile Include="CapturedKeyDetails.cs" />
     <Compile Include="ResponseResult.cs" />
     <Compile Include="WebcamDetails.cs" />

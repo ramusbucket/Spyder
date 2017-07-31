@@ -13,5 +13,9 @@ namespace EMS.Core.Interfaces
         Process[] GetActiveProcesses();
 
         string GetForegroundProcessName();
+
+        void StartListeningForForegroundProcessChanged();
+
+        void StartListeningForActiveProcessesChanged();
     }
 }

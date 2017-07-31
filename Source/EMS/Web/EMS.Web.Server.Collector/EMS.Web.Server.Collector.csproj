@@ -234,6 +234,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ForegroundProcessController.cs" />
+    <Compile Include="Controllers\ActiveProcessesController.cs" />
+    <Compile Include="Controllers\CameraSnapshotsController.cs" />
     <Compile Include="Controllers\CapturedKeysController.cs" />
     <Compile Include="Controllers\DisplaySnapshotsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -320,6 +323,10 @@
     <ProjectReference Include="..\..\Core\EMS.Core.Models\EMS.Core.Models.csproj">
       <Project>{7288268B-DE4A-4BB2-A7DB-0EFAB2834371}</Project>
       <Name>EMS.Core.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.Common\EMS.Infrastructure.Common.csproj">
+      <Project>{808B86C4-4C69-492D-BBEA-30E0D937E539}</Project>
+      <Name>EMS.Infrastructure.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

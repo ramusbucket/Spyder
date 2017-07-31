@@ -14,12 +14,12 @@ namespace EMS.Core
         private Timer getForegroundWindowTimer;
         private Timer getProcessStartedTimer;
         private IWin32ApiProvider win32ApiProvider;
-        private ProcessAPIConfig config;
+        private ProcessApiConfig config;
 
         public event EventHandler<Process> OnForegroundProcessChanged;
         public event EventHandler<Process[]> OnActiveProcessesChanged;
 
-        public ProcessApi(IWin32ApiProvider win32ApiProvider, ProcessAPIConfig config)
+        public ProcessApi(IWin32ApiProvider win32ApiProvider, ProcessApiConfig config)
         {
             this.win32ApiProvider = win32ApiProvider;
             this.config = config;
@@ -59,13 +59,13 @@ namespace EMS.Core
             return Process.GetProcesses();
         }
 
-        public void StartTimerForForegroundProcessChanged()
+        public void StartListeningForForegroundProcessChanged()
         {
             this.lastForegroundProcess = GetForegroundProcess();
             this.getForegroundWindowTimer = CreateForegroundProcessTimer();
         }
 
-        public void StartTimerForActiveProcessesChanged()
+        public void StartListeningForActiveProcessesChanged()
         {
             this.lastActiveProcesses = GetActiveProcesses();
             this.getProcessStartedTimer = CreateGetProcessesListTimer();
