@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetworkPacketListener.cs" />
     <Compile Include="ForegroundProcessListener.cs" />
     <Compile Include="BaseListener.cs" />
     <Compile Include="CameraListener.cs" />

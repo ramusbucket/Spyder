@@ -113,12 +113,12 @@ namespace EMS.Core
 
         private void InitializeSnapshotTimer()
         {
-            var dueTime = this.config.SnapshotConfig != null ?
-                this.config.SnapshotConfig.DueTime :
+            var dueTime = this.config.SnapshotTimerConfig != null ?
+                this.config.SnapshotTimerConfig.DueTime :
                 DefaultSnapshotDueTime;
 
-            var period = this.config.SnapshotConfig != null ?
-                this.config.SnapshotConfig.DueTime :
+            var period = this.config.SnapshotTimerConfig != null ?
+                this.config.SnapshotTimerConfig.DueTime :
                 DefaultSnapshotPeriod;
 
             this.webcamSnapshotTimer = new Timer((_) =>

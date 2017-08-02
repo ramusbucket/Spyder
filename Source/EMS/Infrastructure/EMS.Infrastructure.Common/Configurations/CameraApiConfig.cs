@@ -2,6 +2,6 @@
 {
     public class CameraApiConfig
     {
-        public TimerConfig SnapshotConfig { get; set; }
+        public TimerConfig SnapshotTimerConfig { get; set; }
     }
 }

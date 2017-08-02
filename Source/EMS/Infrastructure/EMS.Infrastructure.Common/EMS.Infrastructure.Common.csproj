@@ -68,6 +68,7 @@
     <Compile Include="Configurations\CameraApiConfig.cs" />
     <Compile Include="Configurations\DisplayApiConfig.cs" />
     <Compile Include="Configurations\KeyboardApiConfig.cs" />
+    <Compile Include="Configurations\ListenersConfigs\NetworkListenerConfig.cs" />
     <Compile Include="Configurations\ListenersConfigs\ForegroundProcessListenerConfig.cs" />
     <Compile Include="Configurations\ListenersConfigs\BaseListenerConfig.cs" />
     <Compile Include="Configurations\ListenersConfigs\ActiveProcessesListenerConfig.cs" />

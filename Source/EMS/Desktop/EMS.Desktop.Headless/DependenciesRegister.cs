@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EMS.Core;
+﻿using EMS.Core;
 using EMS.Core.Interfaces;
 using EMS.Core.Interfaces.Providers;
 using EMS.Core.Providers;
@@ -13,8 +8,8 @@ using EMS.Infrastructure.Common.Providers;
 using EMS.Infrastructure.DependencyInjection;
 using EMS.Infrastructure.DependencyInjection.Interfaces;
 using Serilog;
-using Serilog.Formatting;
 using Serilog.Formatting.Json;
+using System.Collections.Generic;
 
 namespace EMS.Desktop.Headless
 {
@@ -34,7 +29,7 @@ namespace EMS.Desktop.Headless
                 .RegisterInstance<DisplayApiConfig>(
                     new DisplayApiConfig { DisplayWatcherSleepIntervalInMilliseconds = 1000 })
                 .RegisterInstance<CameraApiConfig>(
-                    new CameraApiConfig { SnapshotConfig = new TimerConfig { DueTime = 2000, Period = 2000 } })
+                    new CameraApiConfig { SnapshotTimerConfig = new TimerConfig { DueTime = 2000, Period = 2000 } })
                 .RegisterInstance<ProcessApiConfig>(
                     new ProcessApiConfig
                     {
@@ -46,6 +41,7 @@ namespace EMS.Desktop.Headless
                 .Register<IDisplayApi, DisplayApi>()
                 .Register<ICameraApi, CameraApi>()
                 .Register<IProcessApi, ProcessApi>()
+                .Register<INetworkApi, NetworkApi>()
                 .RegisterInstance<KeyboardListenerConfig>(
                     new KeyboardListenerConfig
                     {
@@ -98,7 +94,19 @@ namespace EMS.Desktop.Headless
                     new ForegroundProcessListenerConfig
                     {
                         SendCapturedItemsThreshold = 5,
-                        SendCapturedItemsDestinationUri = "http://localhost:64435/api//ForegroundProcess/PostForegroundProcess",
+                        SendCapturedItemsDestinationUri = "http://localhost:64435/api/ForegroundProcess/PostForegroundProcess",
+                        RetrySleepDurationsInMilliseconds = new List<int> { 1000, 2000, 3000 },
+                        SendCapturedItemsTimerConfig = new TimerConfig
+                        {
+                            DueTime = 5000,
+                            Period = 2000
+                        }
+                    })
+                .RegisterInstance<NetworkListenerConfig>(
+                    new NetworkListenerConfig
+                    {
+                        SendCapturedItemsThreshold = 50,
+                        SendCapturedItemsDestinationUri = "http://localhost:64435/api/NetworkPackets/PostNetworkPackets",
                         RetrySleepDurationsInMilliseconds = new List<int> { 1000, 2000, 3000 },
                         SendCapturedItemsTimerConfig = new TimerConfig
                         {
@@ -110,7 +118,8 @@ namespace EMS.Desktop.Headless
                 .Register<IListener, DisplayListener>(nameof(DisplayListener))
                 .Register<IListener, CameraListener>(nameof(CameraListener))
                 .Register<IListener, ActiveProcessesListener>(nameof(ActiveProcessesListener))
-                .Register<IListener, ForegroundProcessListener>(nameof(ForegroundProcessListener));
+                .Register<IListener, ForegroundProcessListener>(nameof(ForegroundProcessListener))
+                .Register<IListener, NetworkPacketListener>(nameof(NetworkPacketListener));
 
             var keyboardApi = injector.Resolve<IKeyboardApi>();
 
