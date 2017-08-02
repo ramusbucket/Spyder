@@ -6,6 +6,7 @@ using EMS.Core.Models;
 using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using Serilog;
+using System.Linq;
 
 namespace EMS.Desktop.Headless
 {
@@ -42,7 +43,7 @@ namespace EMS.Desktop.Headless
         {
             var capturedItem = new CapturedActiveProcessesDetails
             {
-                CapturedActiveProcesses = e,
+                CapturedActiveProcesses = e.Select(x => x.ProjectToSlimProcess()),
                 CreatedOn = TimeProvider.Current.Now
             };
 

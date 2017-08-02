@@ -42,7 +42,7 @@ namespace EMS.Desktop.Headless
         {
             var capturedItem = new CapturedForegroundProcessDetails
             {
-                CapturedForegroundProcess = e,
+                CapturedForegroundProcess = e.ProjectToSlimProcess(),
                 CreatedOn = TimeProvider.Current.Now
             };
 

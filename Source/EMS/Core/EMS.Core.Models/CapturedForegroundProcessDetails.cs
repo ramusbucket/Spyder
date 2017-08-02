@@ -4,6 +4,6 @@ namespace EMS.Core.Models
 {
     public class CapturedForegroundProcessDetails : Auditable
     {
-        public Process CapturedForegroundProcess { get; set; }
+        public SlimProcess CapturedForegroundProcess { get; set; }
     }
 }
