@@ -9,10 +9,10 @@ using EMS.Core.Models;
 namespace EMS.Web.Server.Collector.Controllers
 {
     [RoutePrefix("api/DisplaySnapshots")]
-    public class DisplaySnapshotsController : ApiController
+    public class DisplaySnapshotsController : BaseKafkaController
     {
         [Route(nameof(PostCapturedDisplaySnapshots))]
-        public IHttpActionResult PostCapturedDisplaySnapshots(IEnumerable<CapturedDisplaySnapshotDetails> model)
+        public IHttpActionResult PostCapturedDisplaySnapshots(IEnumerable<CapturedDisplaySnapshotDTO> model)
         {
             if (!this.ModelState.IsValid)
             {

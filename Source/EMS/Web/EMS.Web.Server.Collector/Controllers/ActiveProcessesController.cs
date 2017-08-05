@@ -5,10 +5,10 @@ using EMS.Core.Models;
 namespace EMS.Web.Server.Collector.Controllers
 {
     [RoutePrefix("api/ActiveProcesses")]
-    public class ActiveProcessesController : ApiController
+    public class ActiveProcessesController : BaseKafkaController
     {
         [Route(nameof(PostActiveProcesses))]
-        public IHttpActionResult PostActiveProcesses(IEnumerable<CapturedActiveProcessesDetails> model)
+        public IHttpActionResult PostActiveProcesses(IEnumerable<CapturedActiveProcessesDTO> model)
         {
             if (!this.ModelState.IsValid)
             {

@@ -8,7 +8,7 @@
     using Infrastructure.Common.Providers;
     using Serilog;
 
-    public class KeyboardListener : BaseListener<CapturedKeyDetails, KeyboardKey>
+    public class KeyboardListener : BaseListener<CapturedKeyDetailsDTO, KeyboardKey>
     {
         private IKeyboardApi keyboardApi;
 
@@ -39,7 +39,7 @@
 
         private void OnKeyPressedHandler(object sender, KeyboardKey e)
         {
-            var capturedItem = new CapturedKeyDetails
+            var capturedItem = new CapturedKeyDetailsDTO
             {
                 KeyboardKey = e,
                 CreatedOn = TimeProvider.Current.Now

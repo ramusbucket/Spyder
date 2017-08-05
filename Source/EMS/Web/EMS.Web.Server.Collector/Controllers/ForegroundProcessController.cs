@@ -5,10 +5,10 @@ using EMS.Core.Models;
 namespace EMS.Web.Server.Collector.Controllers
 {
     [RoutePrefix("api/ForegroundProcess")]
-    public class ForegroundProcessController : ApiController
+    public class ForegroundProcessController : BaseKafkaController
     {
         [Route(nameof(PostForegroundProcess))]
-        public IHttpActionResult PostForegroundProcess(IEnumerable<CapturedForegroundProcessDetails> model)
+        public IHttpActionResult PostForegroundProcess(IEnumerable<CapturedForegroundProcessDTO> model)
         {
             if (!this.ModelState.IsValid)
             {

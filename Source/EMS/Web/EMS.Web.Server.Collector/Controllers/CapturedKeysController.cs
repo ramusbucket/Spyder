@@ -5,18 +5,35 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using EMS.Core.Models;
+using Microsoft.AspNet.Identity;
+using EMS.Infrastructure.Stream;
+using System.Threading.Tasks;
 
 namespace EMS.Web.Server.Collector.Controllers
 {
     [RoutePrefix("api/CapturedKeys")]
-    public class CapturedKeysController : ApiController
+    public class CapturedKeysController : BaseKafkaController
     {
         [Route(nameof(PostCapturedKeys))]
-        public IHttpActionResult PostCapturedKeys(IEnumerable<CapturedKeyDetails> model)
+        public async Task<IHttpActionResult> PostCapturedKeys(IEnumerable<CapturedKeyDetailsDTO> model)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
+            }
+
+            //var key = this.User.Identity.GetUserId();
+
+            try
+            {
+                foreach(var key in model)
+                {
+                    var resultMessage = await this.Producer.ProduceAsync(Topics.CapturedKeyboardKeys, "key", key);
+                }
+            }
+            catch (Exception e)
+            {
+
             }
 
             var response = new EmptyResponse

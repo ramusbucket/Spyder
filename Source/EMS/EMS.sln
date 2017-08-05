@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{9F70
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Desktop.Headless", "Desktop\EMS.Desktop.Headless\EMS.Desktop.Headless.csproj", "{14CAAF6F-CA7B-4574-8823-EE92D0E30AE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Infrastructure.Stream", "EMS.Infrastructure.Stream\EMS.Infrastructure.Stream.csproj", "{73BCEBC6-8C84-4CC9-845E-F21A91793E27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{14CAAF6F-CA7B-4574-8823-EE92D0E30AE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14CAAF6F-CA7B-4574-8823-EE92D0E30AE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14CAAF6F-CA7B-4574-8823-EE92D0E30AE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73BCEBC6-8C84-4CC9-845E-F21A91793E27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73BCEBC6-8C84-4CC9-845E-F21A91793E27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73BCEBC6-8C84-4CC9-845E-F21A91793E27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73BCEBC6-8C84-4CC9-845E-F21A91793E27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,5 +106,6 @@ Global
 		{808B86C4-4C69-492D-BBEA-30E0D937E539} = {36B6E86C-DC31-4B8F-A6D5-DD208200F101}
 		{7288268B-DE4A-4BB2-A7DB-0EFAB2834371} = {EF480747-1667-4356-A5B5-62DEA7BEB113}
 		{14CAAF6F-CA7B-4574-8823-EE92D0E30AE2} = {9F70DE2E-0D98-4512-9F98-86E05C9083F6}
+		{73BCEBC6-8C84-4CC9-845E-F21A91793E27} = {36B6E86C-DC31-4B8F-A6D5-DD208200F101}
 	EndGlobalSection
 EndGlobal

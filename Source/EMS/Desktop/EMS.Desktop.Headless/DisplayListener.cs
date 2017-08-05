@@ -7,7 +7,7 @@ using Serilog;
 
 namespace EMS.Desktop.Headless
 {
-    public class DisplayListener : BaseListener<CapturedDisplaySnapshotDetails, byte[]>
+    public class DisplayListener : BaseListener<CapturedDisplaySnapshotDTO, byte[]>
     {
         private IDisplayApi displayApi;
 
@@ -38,7 +38,7 @@ namespace EMS.Desktop.Headless
 
         private void OnDisplaySnapshotTakenHandler(object sender, byte[] e)
         {
-            var capturedItem = new CapturedDisplaySnapshotDetails
+            var capturedItem = new CapturedDisplaySnapshotDTO
             {
                 DisplaySnapshot = e,
                 CreatedOn = TimeProvider.Current.Now

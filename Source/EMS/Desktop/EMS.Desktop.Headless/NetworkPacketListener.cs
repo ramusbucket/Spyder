@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EMS.Desktop.Headless
 {
-    public class NetworkPacketListener : BaseListener<CapturedNetworkPacketDetails, byte[]>
+    public class NetworkPacketListener : BaseListener<CapturedNetworkPacketDetailsDTO, byte[]>
     {
         private INetworkApi networkApi;
         private string cameraId;
@@ -40,7 +40,7 @@ namespace EMS.Desktop.Headless
 
         private void OnPacketSniffedHandler(object sender, byte[] e)
         {
-            var capturedItem = new CapturedNetworkPacketDetails
+            var capturedItem = new CapturedNetworkPacketDetailsDTO
             {
                 NetworkPacket = e,
                 CreatedOn = TimeProvider.Current.Now

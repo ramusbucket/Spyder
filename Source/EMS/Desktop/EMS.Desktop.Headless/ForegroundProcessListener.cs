@@ -9,7 +9,7 @@ using Serilog;
 
 namespace EMS.Desktop.Headless
 {
-    public class ForegroundProcessListener : BaseListener<CapturedForegroundProcessDetails, Process>
+    public class ForegroundProcessListener : BaseListener<CapturedForegroundProcessDTO, Process>
     {
         private IProcessApi processApi;
 
@@ -40,7 +40,7 @@ namespace EMS.Desktop.Headless
 
         private void OnForegroundProcessChangedHandler(object sender, Process e)
         {
-            var capturedItem = new CapturedForegroundProcessDetails
+            var capturedItem = new CapturedForegroundProcessDTO
             {
                 CapturedForegroundProcess = e.ProjectToSlimProcess(),
                 CreatedOn = TimeProvider.Current.Now

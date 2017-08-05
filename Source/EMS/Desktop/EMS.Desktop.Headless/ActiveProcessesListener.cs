@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace EMS.Desktop.Headless
 {
-    public class ActiveProcessesListener : BaseListener<CapturedActiveProcessesDetails, Process[]>
+    public class ActiveProcessesListener : BaseListener<CapturedActiveProcessesDTO, Process[]>
     {
         private IProcessApi processApi;
 
@@ -41,7 +41,7 @@ namespace EMS.Desktop.Headless
 
         private void OnActiveProcessesChangedHandler(object sender, Process[] e)
         {
-            var capturedItem = new CapturedActiveProcessesDetails
+            var capturedItem = new CapturedActiveProcessesDTO
             {
                 CapturedActiveProcesses = e.Select(x => x.ProjectToSlimProcess()),
                 CreatedOn = TimeProvider.Current.Now

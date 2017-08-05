@@ -5,10 +5,10 @@ using System.Web.Http;
 namespace EMS.Web.Server.Collector.Controllers
 {
     [RoutePrefix("api/NetworkPackets")]
-    public class NetworkPacketsController : ApiController
+    public class NetworkPacketsController : BaseKafkaController
     {
         [Route(nameof(PostNetworkPackets))]
-        public IHttpActionResult PostNetworkPackets(IEnumerable<CapturedNetworkPacketDetails> model)
+        public IHttpActionResult PostNetworkPackets(IEnumerable<CapturedNetworkPacketDetailsDTO> model)
         {
             if (!this.ModelState.IsValid)
             {

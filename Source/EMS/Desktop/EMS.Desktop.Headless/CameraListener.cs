@@ -8,7 +8,7 @@ using Serilog;
 
 namespace EMS.Desktop.Headless
 {
-    public class CameraListener : BaseListener<CapturedCameraSnapshotDetails, byte[]>
+    public class CameraListener : BaseListener<CapturedCameraSnapshotDTO, byte[]>
     {
         private ICameraApi cameraApi;
         private string cameraId;
@@ -41,7 +41,7 @@ namespace EMS.Desktop.Headless
 
         private void OnWebcamSnapshotTakenHandler(object sender, byte[] e)
         {
-            var capturedItem = new CapturedCameraSnapshotDetails
+            var capturedItem = new CapturedCameraSnapshotDTO
             {
                 CameraSnapshot = e,
                 CreatedOn = TimeProvider.Current.Now
