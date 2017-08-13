@@ -24,7 +24,7 @@ namespace EMS.Desktop.Client
         public MainWindow()
         {
             InitializeComponent();
-            var configFilePath = "Configs/Config.json";
+            var configFilePath = $"{System.AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\","")}\\Configs\\Config.json";
             var configJson = File.Exists(configFilePath) ? 
                 File.ReadAllText(configFilePath) : 
                 string.Empty;
