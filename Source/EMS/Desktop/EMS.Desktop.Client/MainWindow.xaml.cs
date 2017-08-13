@@ -1,7 +1,11 @@
 ﻿using EMS.Desktop.Client.Helpers;
 using EMS.Desktop.Client.Models;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -21,7 +25,33 @@ namespace EMS.Desktop.Client
         {
             InitializeComponent();
             var configFilePath = "Configs/Config.json";
-            var config = File.Exists(configFilePath) ? File.ReadAllText("Configs/Config.json") : DefaultConfig;
+            var configJson = File.Exists(configFilePath) ? 
+                File.ReadAllText(configFilePath) : 
+                string.Empty;
+
+            var dependenciesRegister = new DependenciesRegister();
+            var injector = dependenciesRegister.RegisterDependencies(configJson);
+
+            var type = typeof(IListener);
+            var listenerTypes = Assembly.Load("EMS.Desktop.Client")
+                .GetTypes()
+                .Where(
+                    x =>
+                        !x.IsAbstract &&
+                        !x.IsInterface &&
+                        x.IsClass &&
+                        type.IsAssignableFrom(x));
+
+            var listeners = listenerTypes.Select(x => injector.Resolve<IListener>(x.Name));
+            var listenerTasks = new List<Task>(listeners.Count());
+            foreach (var listener in listeners)
+            {
+                listenerTasks.Add(
+                    Task.Run(
+                        async () => await listener.Start()));
+            }
+
+            Task.WaitAll(listenerTasks.ToArray());
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)

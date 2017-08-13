@@ -39,6 +39,18 @@
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Polly, Version=5.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Polly.5.3.1\lib\net45\Polly.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Serilog.2.5.0\lib\net45\Serilog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Serilog.Sinks.File.3.2.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -67,13 +79,23 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DependenciesRegister.cs" />
     <Compile Include="Helpers\PasswordBoxHelper.cs" />
+    <Compile Include="Listeners\ActiveProcessesListener.cs" />
+    <Compile Include="Listeners\BaseListener.cs" />
+    <Compile Include="Listeners\CameraListener.cs" />
+    <Compile Include="Listeners\DisplayListener.cs" />
+    <Compile Include="Listeners\ForegroundProcessListener.cs" />
+    <Compile Include="Listeners\IListener.cs" />
+    <Compile Include="Listeners\KeyboardListener.cs" />
+    <Compile Include="Listeners\NetworkPacketListener.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Config.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -104,6 +126,32 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\StartWindowBackground.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\EMS.Core.Interfaces\EMS.Core.Interfaces.csproj">
+      <Project>{33F3E706-46DE-4F09-A12C-09A5E0F4A397}</Project>
+      <Name>EMS.Core.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\EMS.Core.Models\EMS.Core.Models.csproj">
+      <Project>{7288268B-DE4A-4BB2-A7DB-0EFAB2834371}</Project>
+      <Name>EMS.Core.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\EMS.Core\EMS.Core.csproj">
+      <Project>{501EE9DC-0B5B-47B0-AA82-14D5989A9D9D}</Project>
+      <Name>EMS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.Common\EMS.Infrastructure.Common.csproj">
+      <Project>{808B86C4-4C69-492D-BBEA-30E0D937E539}</Project>
+      <Name>EMS.Infrastructure.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.DependencyInjection.Interfaces\EMS.Infrastructure.DependencyInjection.Interfaces.csproj">
+      <Project>{F17499B4-8079-414C-943D-62B08F2FCD01}</Project>
+      <Name>EMS.Infrastructure.DependencyInjection.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.DependencyInjection\EMS.Infrastructure.DependencyInjection.csproj">
+      <Project>{e9c5306b-bdab-4c01-99eb-80b74633143b}</Project>
+      <Name>EMS.Infrastructure.DependencyInjection</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
