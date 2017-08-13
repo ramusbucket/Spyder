@@ -17,9 +17,8 @@ namespace EMS.Desktop.Client
 {
     public class DependenciesRegister
     {
-        public IInjector RegisterDependencies(string jsonConfig)
+        public IInjector RegisterDependencies(Config config)
         {
-            var config = JsonConvert.DeserializeObject<Config>(jsonConfig);
             var injector = UnityInjector.Instance;
 
             this.RegisterLogger(injector);

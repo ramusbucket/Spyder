@@ -1,9 +1,11 @@
 ﻿using EMS.Desktop.Client.Helpers;
 using EMS.Desktop.Client.Models;
+using EMS.Infrastructure.Common.Providers;
+using EMS.Infrastructure.DependencyInjection.Interfaces;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,21 +19,24 @@ namespace EMS.Desktop.Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        private HttpClient httpClient = new HttpClient();
-        private Brush btnLoginOriginalColor;
         private Config config;
-         
+        private IHttpClient httpClient;
+        private List<Task> listenerTasks;
+        private Brush btnLoginOriginalColor;
+
         public MainWindow()
         {
             InitializeComponent();
-            var configFilePath = $"{System.AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\","")}\\Configs\\Config.json";
-            var configJson = File.Exists(configFilePath) ? 
-                File.ReadAllText(configFilePath) : 
-                string.Empty;
 
+            this.config = LoadConfig();
             var dependenciesRegister = new DependenciesRegister();
-            var injector = dependenciesRegister.RegisterDependencies(configJson);
+            var injector = dependenciesRegister.RegisterDependencies(this.config);
+            this.httpClient = injector.Resolve<IHttpClient>();
+            //this.StartListeners(injector);
+        }
 
+        private void StartListeners(IInjector injector)
+        {
             var type = typeof(IListener);
             var listenerTypes = Assembly.Load("EMS.Desktop.Client")
                 .GetTypes()
@@ -43,15 +48,24 @@ namespace EMS.Desktop.Client
                         type.IsAssignableFrom(x));
 
             var listeners = listenerTypes.Select(x => injector.Resolve<IListener>(x.Name));
-            var listenerTasks = new List<Task>(listeners.Count());
+            this.listenerTasks = new List<Task>(listeners.Count());
             foreach (var listener in listeners)
             {
-                listenerTasks.Add(
+                this.listenerTasks.Add(
                     Task.Run(
                         async () => await listener.Start()));
             }
+        }
 
-            Task.WaitAll(listenerTasks.ToArray());
+        private Config LoadConfig()
+        {
+            var configFilePath = $"{System.AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\", "")}\\Configs\\Config.json";
+            var configJson = File.Exists(configFilePath) ?
+                File.ReadAllText(configFilePath) :
+                string.Empty;
+            var config = JsonConvert.DeserializeObject<Config>(configJson);
+
+            return config;
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -62,13 +76,24 @@ namespace EMS.Desktop.Client
             if (this.IsValidCredential(username) && 
                 this.IsValidCredential(password))
             {
-                this.WindowStyle = WindowStyle.None;
+                // Call register
+
+                // Login
+
+                // Save auth token
+                this.httpClient.PostAsJsonAsync(this.config.UrisConfig.RegisterUserUri, new object { });
+                var isLoginSuccessful = true;
+
+                if(isLoginSuccessful)
+                {
+                    this.Hide();
+                }
             }
         }
 
         private bool IsValidCredential(string text)
         {
-            return string.IsNullOrEmpty(text) && !string.IsNullOrWhiteSpace(text);
+            return !string.IsNullOrEmpty(text) && !string.IsNullOrWhiteSpace(text);
         }
 
         private void btnLogin_MouseEnter(object sender, MouseEventArgs e)

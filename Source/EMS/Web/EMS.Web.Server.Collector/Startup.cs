@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Owin;
+using System.Web.Http;
 
 [assembly: OwinStartup(typeof(EMS.Web.Server.Collector.Startup))]
 
@@ -12,7 +11,13 @@ namespace EMS.Web.Server.Collector
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            var config = GlobalConfiguration.Configuration;
+
+            this.ConfigureAuth(app);
+
+            WebApiConfig.Register(config);
+            app.UseCors(CorsOptions.AllowAll);
+            app.UseWebApi(config);
         }
     }
 }
