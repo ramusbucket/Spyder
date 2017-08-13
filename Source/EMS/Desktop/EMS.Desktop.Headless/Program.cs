@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Serilog;
 
-namespace EMS.Desktop.Headless
+namespace EMS.Desktop.Client
 {
     class Program
     {

@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 
@@ -7,6 +8,11 @@ namespace EMS.Infrastructure.Common.Providers
     public class DefaultHttpClient : IHttpClient
     {
         private HttpClient httpClient;
+
+        public DefaultHttpClient(string baseAddress)
+        {
+            this.httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
+        }
 
         public DefaultHttpClient()
         {

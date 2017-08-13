@@ -15,3 +15,8 @@ http://owin.org/
 
 Exception handling, retry logic, circuit breaker:
 https://github.com/App-vNext/Polly
+
+SignalR
+https://docs.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/mapping-users-to-connections
+
+

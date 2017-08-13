@@ -11,7 +11,7 @@ using Serilog;
 using Serilog.Formatting.Json;
 using System.Collections.Generic;
 
-namespace EMS.Desktop.Headless
+namespace EMS.Desktop.Client
 {
     public class DependenciesRegister
     {
