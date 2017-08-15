@@ -15,7 +15,6 @@ namespace EMS.Web.Server.Collector
 
             this.ConfigureAuth(app);
 
-            WebApiConfig.Register(config);
             app.UseCors(CorsOptions.AllowAll);
             app.UseWebApi(config);
         }

@@ -3,28 +3,38 @@ using EMS.Desktop.Client.Models;
 using EMS.Infrastructure.Common.Providers;
 using EMS.Infrastructure.DependencyInjection.Interfaces;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace EMS.Desktop.Client
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LoginPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LoginPage : Page
     {
+
         private Config config;
         private IHttpClient httpClient;
         private List<Task> listenerTasks;
         private Brush btnLoginOriginalColor;
+        private Brush btnRegisterOriginalColor;
 
-        public MainWindow()
+        public LoginPage()
         {
             InitializeComponent();
 
@@ -68,29 +78,6 @@ namespace EMS.Desktop.Client
             return config;
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
-        {
-            var username = this.tbUsername.Text;
-            var password = this.tbPassword.SecurePassword.DecryptSecureString();
-
-            if (this.IsValidCredential(username) && 
-                this.IsValidCredential(password))
-            {
-                // Call register
-
-                // Login
-
-                // Save auth token
-                this.httpClient.PostAsJsonAsync(this.config.UrisConfig.RegisterUserUri, new object { });
-                var isLoginSuccessful = true;
-
-                if(isLoginSuccessful)
-                {
-                    this.Hide();
-                }
-            }
-        }
-
         private bool IsValidCredential(string text)
         {
             return !string.IsNullOrEmpty(text) && !string.IsNullOrWhiteSpace(text);
@@ -105,6 +92,42 @@ namespace EMS.Desktop.Client
         private void btnLogin_MouseLeave(object sender, MouseEventArgs e)
         {
             this.btnLogin.Foreground = this.btnLoginOriginalColor;
+        }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new RegisterPage(this.config));
+        }
+
+        private void btnRegister_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.btnRegisterOriginalColor = this.btnRegister.Foreground;
+            this.btnRegister.Foreground = new SolidColorBrush(Colors.Black);
+        }
+
+        private void btnRegister_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.btnRegister.Foreground = this.btnRegisterOriginalColor;
+        }
+
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            var username = this.tbUsername.Text;
+            var password = this.tbPassword.SecurePassword.DecryptSecureString();
+
+            if (this.IsValidCredential(username) &&
+                this.IsValidCredential(password))
+            {
+                // Login
+
+                // Save auth token
+                this.httpClient.PostAsJsonAsync(this.config.UrisConfig.RegisterUserUri, new object { });
+                var isLoginSuccessful = true;
+
+                if (isLoginSuccessful)
+                {
+                }
+            }
         }
     }
 }

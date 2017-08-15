@@ -1,0 +1,84 @@
+﻿<Page x:Class="EMS.Desktop.Client.RegisterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EMS.Desktop.Client"
+      mc:Ignorable="d" 
+      d:DesignHeight="350" d:DesignWidth="450"
+      Title="RegisterPage">
+
+    <Grid>
+        <StackPanel Height="300">
+            <Label 
+                x:Name="textBox" 
+                Content="Create account" 
+                Foreground="AntiqueWhite"
+                Background="Transparent"
+                HorizontalAlignment="Center"
+                FontSize="28" 
+                FontWeight="Bold"
+                Margin="0,15,0,0"/>
+
+            <TextBox 
+                Height="28"
+                FontSize="17"
+                Width="240"
+                Name="tbUsername"
+                Text="Ink"
+                Margin="5"/>
+
+            <TextBox 
+                Height="28"
+                FontSize="17"
+                Width="240"
+                Name="tbFullName"
+                Text="Ivan Nikolaev Kolev"
+                Margin="0,0,0,5"/>
+
+            <TextBox 
+                Height="28"
+                FontSize="17"
+                Width="240"
+                Name="tbEmail"
+                Text="admin@spyder.com"
+                Margin="0,0,0,5"/>
+            
+            <PasswordBox 
+                Height="28"
+                FontSize="17"
+                Width="240"
+                Name="tbPassword"
+                HorizontalAlignment="Center"
+                PasswordChar="*"
+                Password="C17h25n0"
+                Margin="0,0,0,5"/>
+
+            <PasswordBox 
+                Height="28"
+                FontSize="17"
+                Width="240"
+                Name="tbConfirmPassword"
+                HorizontalAlignment="Center"
+                PasswordChar="*"
+                Password="C17h25n0"
+                Margin="0,0,0,5"/>
+
+            <Button 
+                Height="36"
+                Width="240"
+                Name="btnRegister"
+                Content="Register"
+                FontSize="17"
+                FontWeight="Bold"
+                Foreground="AntiqueWhite"
+                Background="Transparent" 
+                BorderBrush="AntiqueWhite"
+                BorderThickness="0.8"
+                Click="btnRegister_Click"
+                MouseEnter="btnRegister_MouseEnter"
+                MouseLeave="btnRegister_MouseLeave"
+                Cursor="Hand"/>
+        </StackPanel>
+    </Grid>
+</Page>
