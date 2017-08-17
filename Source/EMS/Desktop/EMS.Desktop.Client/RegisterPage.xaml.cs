@@ -1,4 +1,6 @@
-﻿using EMS.Desktop.Client.Helpers;
+﻿using Easy.Common;
+using Easy.Common.Interfaces;
+using EMS.Desktop.Client.Helpers;
 using EMS.Desktop.Client.Models;
 using Newtonsoft.Json;
 using System;
@@ -16,15 +18,15 @@ namespace EMS.Desktop.Client
     /// </summary>
     public partial class RegisterPage : Page
     {
-        private HttpClient httpClient = new HttpClient();
+        private IRestClient restClient;
         private Brush btnRegisterOriginalColor;
         private Config config;
 
-        public RegisterPage(Config config)
+        public RegisterPage(Config config, IRestClient restClient)
         {
             InitializeComponent();
             this.config = config;
-            this.httpClient.BaseAddress = new Uri(this.config.UrisConfig.BaseServiceUri);
+            this.restClient = restClient;
         }
 
         private void btnRegister_MouseEnter(object sender, MouseEventArgs e)
@@ -57,7 +59,7 @@ namespace EMS.Desktop.Client
                 this.IsValidCredential(fullName) &&
                 this.IsValidCredential(email))
             {
-                var request = new
+                var requestData = new
                 {
                     Email = email,
                     Username = username,
@@ -65,12 +67,15 @@ namespace EMS.Desktop.Client
                     ConfirmPassword = confirmPassword
                 };
 
-                var response = await this.httpClient.PostAsync(this.config.UrisConfig.RegisterUserUri,
-                    new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
+                var requestUri = new Uri($"{this.config.UrisConfig.BaseServiceUri}{this.config.UrisConfig.RegisterUserUri}");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri);
+                requestMessage.Content = new JSONContent(JsonConvert.SerializeObject(requestData),Encoding.UTF8);
 
-                MessageBox.Show(await response.Content.ReadAsStringAsync());
+                var response = await this.restClient.SendAsync(requestMessage);
+
+                MessageBox.Show(response.Content.ReadAsStringAsync().Result);
+                response.EnsureSuccessStatusCode();
             }
         }
-
     }
 }

@@ -13,5 +13,7 @@ namespace EMS.Infrastructure.Common.Providers
 
         Task<HttpResponseMessage> PostAsync<T>(string requestUri, T dataToSend, MediaTypeFormatter mediaFormatter)
             where T : class;
+
+        Task<HttpResponseMessage> SendAsync(HttpRequestMessage request);
     }
 }

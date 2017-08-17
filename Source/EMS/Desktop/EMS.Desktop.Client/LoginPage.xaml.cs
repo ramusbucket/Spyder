@@ -1,4 +1,5 @@
-﻿using EMS.Desktop.Client.Helpers;
+﻿using Easy.Common.Interfaces;
+using EMS.Desktop.Client.Helpers;
 using EMS.Desktop.Client.Models;
 using EMS.Infrastructure.Common.Providers;
 using EMS.Infrastructure.DependencyInjection.Interfaces;
@@ -7,6 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,9 +31,9 @@ namespace EMS.Desktop.Client
     /// </summary>
     public partial class LoginPage : Page
     {
-
+        private OAuthTokenDetails authDetails;
         private Config config;
-        private IHttpClient httpClient;
+        private IRestClient restClient;
         private List<Task> listenerTasks;
         private Brush btnLoginOriginalColor;
         private Brush btnRegisterOriginalColor;
@@ -41,7 +45,7 @@ namespace EMS.Desktop.Client
             this.config = LoadConfig();
             var dependenciesRegister = new DependenciesRegister();
             var injector = dependenciesRegister.RegisterDependencies(this.config);
-            this.httpClient = injector.Resolve<IHttpClient>();
+            this.restClient = injector.Resolve<IRestClient>();
             //this.StartListeners(injector);
         }
 
@@ -96,7 +100,7 @@ namespace EMS.Desktop.Client
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new RegisterPage(this.config));
+            this.NavigationService.Navigate(new RegisterPage(this.config, this.restClient));
         }
 
         private void btnRegister_MouseEnter(object sender, MouseEventArgs e)
@@ -110,7 +114,7 @@ namespace EMS.Desktop.Client
             this.btnRegister.Foreground = this.btnRegisterOriginalColor;
         }
 
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             var username = this.tbUsername.Text;
             var password = this.tbPassword.SecurePassword.DecryptSecureString();
@@ -119,13 +123,43 @@ namespace EMS.Desktop.Client
                 this.IsValidCredential(password))
             {
                 // Login
+                var requestUri = new Uri($"{this.config.UrisConfig.BaseServiceUri}{this.config.UrisConfig.LoginUserUri}");
+                var request = new HttpRequestMessage(HttpMethod.Post, requestUri);
+                request.Content = new FormUrlEncodedContent(
+                    new List<KeyValuePair<string, string>>()
+                    {
+                        new KeyValuePair<string, string>("grant_type","password"),
+                        new KeyValuePair<string, string>("password", password),
+                        new KeyValuePair<string, string>("username", username)
+                    });
 
-                // Save auth token
-                this.httpClient.PostAsJsonAsync(this.config.UrisConfig.RegisterUserUri, new object { });
-                var isLoginSuccessful = true;
+                var rawResponse = await this.restClient.SendAsync(request);
+                var rawResponseContent = await rawResponse.Content.ReadAsStringAsync();
 
-                if (isLoginSuccessful)
+                if (rawResponse.StatusCode != HttpStatusCode.OK)
                 {
+                    var responseContent = JsonConvert.DeserializeObject<LoginResponse>(rawResponseContent);
+                    MessageBox.Show(responseContent.ErrorDescription);
+                }
+                else
+                {
+                    rawResponse.EnsureSuccessStatusCode();
+                    var response = JsonConvert.DeserializeObject<OAuthTokenDetails>(rawResponseContent);
+
+                    // Save auth token
+                    var isLoginSuccessful = !string.IsNullOrEmpty(response.AccessToken);
+                    if (isLoginSuccessful)
+                    {
+                        // Save credentials
+                        this.authDetails = response;
+
+                        // Notify user for successful login
+                        MessageBox.Show("Loggin successful", "Login successful", MessageBoxButton.OK);
+
+                        // Hide UI
+                        
+                        // Start listening
+                    }
                 }
             }
         }

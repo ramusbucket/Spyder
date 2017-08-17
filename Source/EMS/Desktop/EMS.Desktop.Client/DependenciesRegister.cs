@@ -1,4 +1,6 @@
-﻿using EMS.Core;
+﻿using Easy.Common;
+using Easy.Common.Interfaces;
+using EMS.Core;
 using EMS.Core.Interfaces;
 using EMS.Core.Interfaces.Providers;
 using EMS.Core.Providers;
@@ -80,10 +82,8 @@ namespace EMS.Desktop.Client
 
         private void RegisterHelpersAndProviders(IInjector injector, Config config)
         {
-            var httpClientParams = new object[] { config.UrisConfig.BaseServiceUri };
-
             injector
-                .Register<IHttpClient,DefaultHttpClient>(httpClientParams)
+                .RegisterInstance<IRestClient>(new RestClient())
                 .Register<IWin32ApiProvider, Win32ApiProvider>();
         }
 

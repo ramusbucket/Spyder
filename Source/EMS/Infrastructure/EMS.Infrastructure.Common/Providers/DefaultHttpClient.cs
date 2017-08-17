@@ -35,5 +35,10 @@ namespace EMS.Infrastructure.Common.Providers
         {
             return this.httpClient.PostAsync(requestUri, dataToSend, mediaFormatter);
         }
+
+        public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
+        {
+            return this.httpClient.SendAsync(request);
+        }
     }
 }
