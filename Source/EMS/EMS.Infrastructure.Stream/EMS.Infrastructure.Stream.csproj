@@ -53,11 +53,22 @@
   <ItemGroup>
     <Compile Include="JsonSerializer.cs" />
     <Compile Include="JsonDeserializer.cs" />
+    <Compile Include="KafkaClient.cs" />
     <Compile Include="Topics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\EMS.Infrastructure.DependencyInjection.Interfaces\EMS.Infrastructure.DependencyInjection.Interfaces.csproj">
+      <Project>{F17499B4-8079-414C-943D-62B08F2FCD01}</Project>
+      <Name>EMS.Infrastructure.DependencyInjection.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\EMS.Infrastructure.DependencyInjection\EMS.Infrastructure.DependencyInjection.csproj">
+      <Project>{E9C5306B-BDAB-4C01-99EB-80B74633143B}</Project>
+      <Name>EMS.Infrastructure.DependencyInjection</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

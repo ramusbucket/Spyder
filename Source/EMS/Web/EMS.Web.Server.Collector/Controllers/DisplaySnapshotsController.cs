@@ -1,23 +1,23 @@
-﻿using System;
+﻿using EMS.Core.Models;
+using EMS.Infrastructure.Stream;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
-using EMS.Core.Models;
 
 namespace EMS.Web.Server.Collector.Controllers
 {
     [RoutePrefix("api/DisplaySnapshots")]
-    public class DisplaySnapshotsController : BaseKafkaController
+    public class DisplaySnapshotsController : BaseKafkaApiController
     {
         [Route(nameof(PostCapturedDisplaySnapshots))]
-        public IHttpActionResult PostCapturedDisplaySnapshots(IEnumerable<CapturedDisplaySnapshotDTO> model)
+        public async Task<IHttpActionResult> PostCapturedDisplaySnapshots(IEnumerable<CapturedDisplaySnapshotDTO> model)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
             }
+
+            await this.PublishToKafkaMultipleItems(model, Topics.DisplaySnapshots);
 
             var response = new EmptyResponse
             {

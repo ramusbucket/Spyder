@@ -222,7 +222,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\BaseKafkaController.cs" />
+    <Compile Include="Controllers\BaseKafkaApiController.cs" />
     <Compile Include="Controllers\NetworkPacketsController.cs" />
     <Compile Include="Controllers\ForegroundProcessController.cs" />
     <Compile Include="Controllers\ActiveProcessesController.cs" />

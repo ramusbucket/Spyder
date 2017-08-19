@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using EMS.Core.Models;
-using Microsoft.AspNet.Identity;
+﻿using EMS.Core.Models;
+using EMS.Infrastructure.Common.Providers;
 using EMS.Infrastructure.Stream;
+using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace EMS.Web.Server.Collector.Controllers
 {
     [RoutePrefix("api/CapturedKeys")]
-    public class CapturedKeysController : BaseKafkaController
+    public class CapturedKeysController : BaseKafkaApiController
     {
         [Route(nameof(PostCapturedKeys))]
         public async Task<IHttpActionResult> PostCapturedKeys(IEnumerable<CapturedKeyDetailsDTO> model)
@@ -22,19 +19,7 @@ namespace EMS.Web.Server.Collector.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
-            var userId = this.User.Identity.GetUserId();
-
-            try
-            {
-                foreach(var key in model)
-                {
-                    var resultMessage = await this.Producer.ProduceAsync(Topics.CapturedKeyboardKeys, "key", key);
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
+            await this.PublishToKafkaMultipleItems(model, Topics.CapturedKeyboardKeys);
 
             var response = new EmptyResponse
             {

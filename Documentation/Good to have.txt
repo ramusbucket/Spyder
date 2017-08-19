@@ -1,0 +1,5 @@
+Log errors to ElasticSearch/Kibana using Serilog sinks.
+	Front-end servers
+	Database servers
+
+Log statistics to Grafana.
