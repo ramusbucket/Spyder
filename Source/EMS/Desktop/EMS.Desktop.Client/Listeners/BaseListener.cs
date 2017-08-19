@@ -8,6 +8,11 @@ using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using Polly;
 using Serilog;
+using Easy.Common.Interfaces;
+using System.Net.Http;
+using Easy.Common;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace EMS.Desktop.Client
 {
@@ -15,13 +20,14 @@ namespace EMS.Desktop.Client
         where T : class
     {
         protected ILogger logger;
-        protected IHttpClient httpClient;
+        protected IRestClient httpClient;
         protected ConcurrentQueue<T> capturedItems;
         protected Timer sendCapturedKeysTimer;
         protected BaseListenerConfig config;
+        protected Uri sendCapturedItemsUri;
 
         public BaseListener(
-            IHttpClient httpClient,
+            IRestClient httpClient,
             ILogger logger,
             BaseListenerConfig config)
         {
@@ -29,6 +35,7 @@ namespace EMS.Desktop.Client
             this.logger = logger;
             this.httpClient = httpClient;
             this.capturedItems = new ConcurrentQueue<T>();
+            this.sendCapturedItemsUri = new Uri(this.config.SendCapturedItemsDestinationUri);
         }
 
         public virtual Task Start()
@@ -80,9 +87,11 @@ namespace EMS.Desktop.Client
                   .ExecuteAsync(
                     async () =>
                     {
-                        var response = await this.httpClient.PostAsJsonAsync(
-                            this.config.SendCapturedItemsDestinationUri,
-                            itemsToSend);
+                        var httpRequest = new HttpRequestMessage(HttpMethod.Post, sendCapturedItemsUri)
+                        {
+                            Content = new JSONContent(JsonConvert.SerializeObject(itemsToSend), Encoding.UTF8)
+                        };
+                        var response = await this.httpClient.SendAsync(httpRequest);
                         response.EnsureSuccessStatusCode();
                     });
             }

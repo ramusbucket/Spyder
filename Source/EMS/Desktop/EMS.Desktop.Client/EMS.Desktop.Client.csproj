@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Easy.Common, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Easy.Common.2.0.0\lib\net45\Easy.Common.dll</HintPath>
@@ -106,6 +109,7 @@
     <Compile Include="MainNavigationWindow.xaml.cs">
       <DependentUpon>MainNavigationWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Identity.cs" />
     <Compile Include="Models\LoginResponse.cs" />
     <Compile Include="Models\OAuthTokenDetails.cs" />
     <Compile Include="Models\RegisterResponse.cs" />
@@ -158,6 +162,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="Configs\Config.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

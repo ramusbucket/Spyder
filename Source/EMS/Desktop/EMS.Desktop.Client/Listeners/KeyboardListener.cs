@@ -7,13 +7,14 @@
     using Infrastructure.Common.Enums;
     using Infrastructure.Common.Providers;
     using Serilog;
+    using Easy.Common.Interfaces;
 
     public class KeyboardListener : BaseListener<CapturedKeyDetailsDTO, KeyboardKey>
     {
         private IKeyboardApi keyboardApi;
 
         public KeyboardListener(
-            IHttpClient httpClient,
+            IRestClient httpClient,
             ILogger logger,
             IKeyboardApi keyboardApi,
             KeyboardListenerConfig config)

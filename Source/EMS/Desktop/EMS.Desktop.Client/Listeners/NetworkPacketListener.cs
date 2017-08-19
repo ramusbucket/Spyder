@@ -1,4 +1,5 @@
-﻿using EMS.Core.Interfaces;
+﻿using Easy.Common.Interfaces;
+using EMS.Core.Interfaces;
 using EMS.Core.Models;
 using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
@@ -14,7 +15,7 @@ namespace EMS.Desktop.Client
         private string cameraId;
 
         public NetworkPacketListener(
-            IHttpClient httpClient,
+            IRestClient httpClient,
             ILogger logger,
             INetworkApi networkApi,
             NetworkListenerConfig config)

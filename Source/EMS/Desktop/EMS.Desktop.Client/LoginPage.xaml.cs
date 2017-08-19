@@ -1,28 +1,19 @@
 ﻿using Easy.Common.Interfaces;
 using EMS.Desktop.Client.Helpers;
 using EMS.Desktop.Client.Models;
-using EMS.Infrastructure.Common.Providers;
 using EMS.Infrastructure.DependencyInjection.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EMS.Desktop.Client
 {
@@ -37,16 +28,15 @@ namespace EMS.Desktop.Client
         private List<Task> listenerTasks;
         private Brush btnLoginOriginalColor;
         private Brush btnRegisterOriginalColor;
+        private IInjector injector;
 
         public LoginPage()
         {
             InitializeComponent();
 
             this.config = LoadConfig();
-            var dependenciesRegister = new DependenciesRegister();
-            var injector = dependenciesRegister.RegisterDependencies(this.config);
+            this.injector = DependenciesRegister.RegisterDependencies(config);
             this.restClient = injector.Resolve<IRestClient>();
-            //this.StartListeners(injector);
         }
 
         private void StartListeners(IInjector injector)
@@ -146,15 +136,16 @@ namespace EMS.Desktop.Client
                     if (isLoginSuccessful)
                     {
                         // Save credentials
-                        this.authDetails = response;
+                        Identity.SetIdentity(response);
 
                         // Notify user for successful login
-                        MessageBox.Show("Loggin successful", "Login successful", MessageBoxButton.OK);
+                        MessageBox.Show($"Welcome, {Identity.AuthToken.UserName}!", "Login successful", MessageBoxButton.OK);
+
+                        // Start listening
+                        this.StartListeners(this.injector);
 
                         // Hide UI
                         (this.Parent as MainNavigationWindow).Hide();
-
-                        // Start listening
                     }
                 }
                 else
@@ -162,6 +153,10 @@ namespace EMS.Desktop.Client
                     var responseContent = JsonConvert.DeserializeObject<LoginResponse>(rawResponseContent);
                     MessageBox.Show(responseContent.ErrorDescription);
                 }
+            }
+            else
+            {
+                MessageBox.Show("Please enter your credentials in order to log in", "Info", MessageBoxButton.OK);
             }
         }
     }

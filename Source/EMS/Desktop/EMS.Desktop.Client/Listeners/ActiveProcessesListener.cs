@@ -7,6 +7,7 @@ using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using Serilog;
 using System.Linq;
+using Easy.Common.Interfaces;
 
 namespace EMS.Desktop.Client
 {
@@ -15,7 +16,7 @@ namespace EMS.Desktop.Client
         private IProcessApi processApi;
 
         public ActiveProcessesListener(
-            IHttpClient httpClient,
+            IRestClient httpClient,
             ILogger logger,
             IProcessApi processApi,
             ActiveProcessesListenerConfig config)

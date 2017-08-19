@@ -4,6 +4,7 @@ using EMS.Core.Models;
 using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using Serilog;
+using Easy.Common.Interfaces;
 
 namespace EMS.Desktop.Client
 {
@@ -12,7 +13,7 @@ namespace EMS.Desktop.Client
         private IDisplayApi displayApi;
 
         public DisplayListener(
-            IHttpClient httpClient,
+            IRestClient httpClient,
             ILogger logger,
             IDisplayApi displayApi,
             DisplayListenerConfig config)

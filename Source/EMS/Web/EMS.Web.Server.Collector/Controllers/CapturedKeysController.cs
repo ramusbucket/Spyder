@@ -22,7 +22,7 @@ namespace EMS.Web.Server.Collector.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
-            //var key = this.User.Identity.GetUserId();
+            var userId = this.User.Identity.GetUserId();
 
             try
             {

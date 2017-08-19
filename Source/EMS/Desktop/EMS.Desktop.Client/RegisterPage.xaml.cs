@@ -71,7 +71,7 @@ namespace EMS.Desktop.Client
                     ConfirmPassword = confirmPassword
                 };
 
-                var requestUriAsString = $"{this.config.UrisConfig.BaseServiceUri}{this.config.UrisConfig.RegisterUserUri}";
+                var requestUriAsString = this.config.UrisConfig.RegisterUserUri;
                 var requestUri = new Uri(requestUriAsString);
                 var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri);
                 requestMessage.Content = new JSONContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8);
