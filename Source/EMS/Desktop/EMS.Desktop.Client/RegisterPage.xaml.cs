@@ -1,9 +1,12 @@
 ﻿using Easy.Common;
 using Easy.Common.Interfaces;
+using EMS.Desktop.Client.Exceptions;
 using EMS.Desktop.Client.Helpers;
 using EMS.Desktop.Client.Models;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Windows;
@@ -20,6 +23,7 @@ namespace EMS.Desktop.Client
     {
         private IRestClient restClient;
         private Brush btnRegisterOriginalColor;
+        private Brush btnBackOriginalColor;
         private Config config;
 
         public RegisterPage(Config config, IRestClient restClient)
@@ -67,15 +71,47 @@ namespace EMS.Desktop.Client
                     ConfirmPassword = confirmPassword
                 };
 
-                var requestUri = new Uri($"{this.config.UrisConfig.BaseServiceUri}{this.config.UrisConfig.RegisterUserUri}");
+                var requestUriAsString = $"{this.config.UrisConfig.BaseServiceUri}{this.config.UrisConfig.RegisterUserUri}";
+                var requestUri = new Uri(requestUriAsString);
                 var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri);
-                requestMessage.Content = new JSONContent(JsonConvert.SerializeObject(requestData),Encoding.UTF8);
+                requestMessage.Content = new JSONContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8);
 
                 var response = await this.restClient.SendAsync(requestMessage);
 
-                MessageBox.Show(response.Content.ReadAsStringAsync().Result);
-                response.EnsureSuccessStatusCode();
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Account created successfully!", "Success", MessageBoxButton.OK);
+                    response.EnsureSuccessStatusCode();
+                }
+                else
+                {
+                    var errors = ApiException.FromHttpResponseMessage(response);
+                    MessageBox.Show($"{errors.Errors.Aggregate("Errors: ", (agr, error) => agr + error)}", errors.Message, MessageBoxButton.OK);
+                }
             }
+            else
+            {
+                MessageBox.Show(
+                    "Missing credentials. Username/Password/Name/Email cannot be empty or whitespace.",
+                    "Warning",
+                    MessageBoxButton.OK);
+            }
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.GoBack();
+        }
+
+        private void btnBack_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.btnBackOriginalColor = this.btnBack.Foreground;
+            this.btnBack.Foreground = new SolidColorBrush(Colors.Black);
+        }
+
+        private void btnBack_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.btnBack.Foreground = this.btnBackOriginalColor;
         }
     }
 }

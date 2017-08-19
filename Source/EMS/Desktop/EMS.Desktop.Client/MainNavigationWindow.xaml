@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EMS.Desktop.Client"
         mc:Ignorable="d"
-        Title="Spyder (Anti-cheat)" Height="340" Width="450"
-                  Source="LoginPage.xaml">
+        Title="Spyder (Anti-cheat)" 
+        Height="400" 
+        Width="500"
+        Source="LoginPage.xaml">
     <Window.Background>
         <ImageBrush ImageSource="Resources\StartWindowBackground.jpg" />
     </Window.Background>

@@ -136,12 +136,7 @@ namespace EMS.Desktop.Client
                 var rawResponse = await this.restClient.SendAsync(request);
                 var rawResponseContent = await rawResponse.Content.ReadAsStringAsync();
 
-                if (rawResponse.StatusCode != HttpStatusCode.OK)
-                {
-                    var responseContent = JsonConvert.DeserializeObject<LoginResponse>(rawResponseContent);
-                    MessageBox.Show(responseContent.ErrorDescription);
-                }
-                else
+                if (rawResponse.IsSuccessStatusCode)
                 {
                     rawResponse.EnsureSuccessStatusCode();
                     var response = JsonConvert.DeserializeObject<OAuthTokenDetails>(rawResponseContent);
@@ -157,9 +152,15 @@ namespace EMS.Desktop.Client
                         MessageBox.Show("Loggin successful", "Login successful", MessageBoxButton.OK);
 
                         // Hide UI
-                        
+                        (this.Parent as MainNavigationWindow).Hide();
+
                         // Start listening
                     }
+                }
+                else
+                {
+                    var responseContent = JsonConvert.DeserializeObject<LoginResponse>(rawResponseContent);
+                    MessageBox.Show(responseContent.ErrorDescription);
                 }
             }
         }

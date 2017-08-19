@@ -24,6 +24,8 @@ namespace EMS.Desktop.Client
         {
             InitializeComponent();
             this.ShowsNavigationUI = false;
+            //this.WindowStyle = WindowStyle.None;
+            this.ResizeMode = ResizeMode.NoResize;
         }
     }
 }
