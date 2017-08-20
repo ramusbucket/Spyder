@@ -11,4 +11,12 @@ namespace EMS.Infrastructure.Stream
             return JsonConvert.DeserializeObject(Encoding.UTF8.GetString(data));
         }
     }
+
+    public class JsonDeserializer2 : IDeserializer<string>
+    {
+        public string Deserialize(byte[] data)
+        {
+            return Encoding.UTF8.GetString(data);
+        }
+    }
 }

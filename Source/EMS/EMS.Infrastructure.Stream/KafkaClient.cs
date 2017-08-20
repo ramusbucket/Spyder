@@ -10,7 +10,7 @@ namespace EMS.Infrastructure.Stream
     public static class KafkaClient
     {
         private static Lazy<Producer<string, object>> producerWithPartitionKey;
-        private static Lazy<Consumer<string, object>> consumerWithPartitionKey;
+        private static Lazy<Consumer<string, string>> consumerWithPartitionKey;
 
         static KafkaClient()
         {
@@ -19,8 +19,8 @@ namespace EMS.Infrastructure.Stream
                     () => UnityInjector.Instance.Resolve<Producer<string, object>>());
 
             consumerWithPartitionKey =
-                new Lazy<Consumer<string, object>>(
-                    () => UnityInjector.Instance.Resolve<Consumer<string, object>>());
+                new Lazy<Consumer<string, string>>(
+                    () => UnityInjector.Instance.Resolve<Consumer<string, string>>());
         }
 
         public static Producer<string, object> Producer
@@ -31,7 +31,7 @@ namespace EMS.Infrastructure.Stream
             }
         }
 
-        public static Consumer<string, object> Consumer
+        public static Consumer<string, string> Consumer
         {
             get
             {

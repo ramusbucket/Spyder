@@ -67,6 +67,5 @@ namespace EMS.Web.Server.Collector.App_Start
             var kafkaBrokers = "localhost:9092";
             return kafkaBrokers;
         }
-
     }
 }
