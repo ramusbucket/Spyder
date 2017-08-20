@@ -1,56 +1,44 @@
-﻿using Confluent.Kafka;
-using EMS.Core.Models;
+﻿using EMS.Core.Models;
 using EMS.Infrastructure.Stream;
-using EMS.Web.Common;
-using MongoDB.Bson;
+using EMS.Web.Common.Mongo;
 using MongoDB.Driver;
-using Newtonsoft.Json;
 using System;
+using System.Linq;
+using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace EMS.Web.Worker.MongoSaver.Models
 {
-    public class NetworkPacketsSaver
+    public class NetworkPacketsSaver : BaseMongoSaver<CapturedNetworkPacket, CapturedNetworkPacketDetailsDTO>
     {
-        private readonly CancellationToken cToken;
-        private MongoClient mongoClient;
-        private IMongoDatabase mongoDatabase;
-        private IMongoCollection<CapturedNetworkPacketDetailsDTO> mongoCollection;
-
-        public NetworkPacketsSaver(CancellationToken cToken)
+        public NetworkPacketsSaver(
+            CancellationToken cToken, 
+            IMongoCollection<CapturedNetworkPacket> mongoCollection) 
+            : base(cToken, mongoCollection, Topics.NetworkPackets)
         {
-            this.cToken = cToken;
-            this.mongoClient = new MongoClient("mongodb://localhost:27017");
-            this.mongoDatabase = mongoClient.GetDatabase("Spyder");
-            this.mongoCollection = mongoDatabase.GetCollection<CapturedNetworkPacketDetailsDTO>(MongoCollections.NetworkPackets);
         }
 
-        public void Execute()
+        protected override CapturedNetworkPacket FormatReceivedMessage(CapturedNetworkPacketDetailsDTO message)
         {
-            KafkaClient.Consumer.OnMessage += OnMessageReceived;
-            KafkaClient.Consumer.Subscribe(Topics.NetworkPackets);
+            var packet = message.NetworkPacket;
+            var protocol = packet.Skip(9).First().ToProtocolString();
+            var hostAddress = new IPAddress(BitConverter.ToUInt32(packet, 12)).ToString();
+            var hostPort = ((ushort)IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet, 20)));
+            var destinationAddress = new IPAddress(BitConverter.ToUInt32(packet, 16)).ToString();
+            var destinationPort = ((ushort)IPAddress.NetworkToHostOrder(BitConverter.ToInt16(packet, 22)));
 
-            while (!cToken.IsCancellationRequested)
+            var item = new CapturedNetworkPacket
             {
-                KafkaClient.Consumer.Poll(TimeSpan.FromMilliseconds(100));
-            }
-        }
+                UserId = message.UserId,
+                CreatedOn = message.CreatedOn,
+                Protocol = protocol,
+                HostAddress = hostAddress,
+                HostPort = hostPort,
+                DestinationAddress = destinationAddress,
+                DestinationPort = destinationPort
+            };
 
-        private void OnMessageReceived(object sender, Message<string, string> kafkaMessage)
-        {
-            var message = JsonConvert.DeserializeObject<CapturedNetworkPacketDetailsDTO>(kafkaMessage.Value);
-            
-            if (message == null)
-            {
-                // Log invalid message read with the message value and details
-            }
-            else
-            {
-                this.mongoCollection.InsertOneAsync(message).Wait();
-
-                // notify WebAPI for db change (semi-push-notification)
-            }
+            return item;
         }
     }
 }

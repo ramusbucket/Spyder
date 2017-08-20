@@ -213,6 +213,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BaseMongoSaver.cs" />
+    <Compile Include="Models\ActiveProcessesSaver.cs" />
+    <Compile Include="Models\DisplaySnapshotsSaver.cs" />
+    <Compile Include="Models\ForegroundProcessesSaver.cs" />
+    <Compile Include="Models\KeyboardKeysSaver.cs" />
+    <Compile Include="Models\Extensions.cs" />
+    <Compile Include="Models\CameraSnapshotsSaver.cs" />
     <Compile Include="Models\NetworkPacketsSaver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -299,6 +306,10 @@
       <Project>{73BCEBC6-8C84-4CC9-845E-F21A91793E27}</Project>
       <Name>EMS.Infrastructure.Stream</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.Common\EMS.Infrastructure.Common.csproj">
+      <Project>{808B86C4-4C69-492D-BBEA-30E0D937E539}</Project>
+      <Name>EMS.Infrastructure.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.DependencyInjection.Interfaces\EMS.Infrastructure.DependencyInjection.Interfaces.csproj">
       <Project>{F17499B4-8079-414C-943D-62B08F2FCD01}</Project>
       <Name>EMS.Infrastructure.DependencyInjection.Interfaces</Name>
@@ -306,10 +317,6 @@
     <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.DependencyInjection\EMS.Infrastructure.DependencyInjection.csproj">
       <Project>{E9C5306B-BDAB-4C01-99EB-80B74633143B}</Project>
       <Name>EMS.Infrastructure.DependencyInjection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EMS.Web.Common\EMS.Web.Common.csproj">
-      <Project>{A05AD360-FD24-4582-B427-CFBEE1E81CBC}</Project>
-      <Name>EMS.Web.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

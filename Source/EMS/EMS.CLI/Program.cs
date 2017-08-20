@@ -320,18 +320,20 @@ namespace EMS.CLI
 
     public static class Extensions
     {
-        public static string ToProtocolString(this byte b)
+        public static string ToProtocolString(this byte protocolNumberByte)
         {
-            switch (b)
+            switch (protocolNumberByte)
             {
                 case 1:
                     return "ICMP";
+                case 2:
+                    return "IGMP";
                 case 6:
                     return "TCP";
                 case 17:
                     return "UDP";
                 default:
-                    return "#" + b.ToString();
+                    return "#" + protocolNumberByte.ToString();
             }
         }
     }

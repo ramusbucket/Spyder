@@ -40,13 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Auditable.cs" />
-    <Compile Include="CapturedActiveProcessesDTO.cs" />
-    <Compile Include="CapturedNetworkPacketDetailsDTO.cs" />
-    <Compile Include="CapturedCameraSnapshotDTO.cs" />
-    <Compile Include="CapturedDisplaySnapshotDTO.cs" />
-    <Compile Include="CapturedForegroundProcessDTO.cs" />
-    <Compile Include="CapturedKeyDetailsDTO.cs" />
+    <Compile Include="DTOs\AuditableDTO.cs" />
+    <Compile Include="DTOs\CapturedActiveProcessesDTO.cs" />
+    <Compile Include="DTOs\CapturedNetworkPacketDetailsDTO.cs" />
+    <Compile Include="DTOs\CapturedCameraSnapshotDTO.cs" />
+    <Compile Include="DTOs\CapturedDisplaySnapshotDTO.cs" />
+    <Compile Include="DTOs\CapturedForegroundProcessDTO.cs" />
+    <Compile Include="DTOs\CapturedKeyDetailsDTO.cs" />
+    <Compile Include="DTOs\SlimProcess.cs" />
+    <Compile Include="DTOs\SlimProcessStartInfo.cs" />
+    <Compile Include="Mongo\Auditable.cs" />
+    <Compile Include="Mongo\CapturedActiveProcesses.cs" />
+    <Compile Include="Mongo\CapturedCameraSnapshot.cs" />
+    <Compile Include="Mongo\CapturedDisplaySnapshot.cs" />
+    <Compile Include="Mongo\CapturedForegroundProcess.cs" />
+    <Compile Include="Mongo\CapturedKeyboardKey.cs" />
+    <Compile Include="Mongo\CapturedNetworkPacket.cs" />
+    <Compile Include="Mongo\MongoCollections.cs" />
     <Compile Include="ResponseResult.cs" />
     <Compile Include="WebcamDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -60,9 +70,7 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DTOs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

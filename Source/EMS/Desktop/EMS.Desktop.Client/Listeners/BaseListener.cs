@@ -13,6 +13,8 @@ using System.Net.Http;
 using Easy.Common;
 using Newtonsoft.Json;
 using System.Text;
+using System.Net.Http.Headers;
+using EMS.Desktop.Client.Models;
 
 namespace EMS.Desktop.Client
 {
@@ -87,10 +89,10 @@ namespace EMS.Desktop.Client
                   .ExecuteAsync(
                     async () =>
                     {
-                        var httpRequest = new HttpRequestMessage(HttpMethod.Post, sendCapturedItemsUri)
-                        {
-                            Content = new JSONContent(JsonConvert.SerializeObject(itemsToSend), Encoding.UTF8)
-                        };
+                        var httpRequest = new HttpRequestMessage(HttpMethod.Post, sendCapturedItemsUri);
+                        httpRequest.Content = new JSONContent(JsonConvert.SerializeObject(itemsToSend), Encoding.UTF8);
+                        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Authorization", $"Bearer {Identity.AuthToken.AccessToken}");
+
                         var response = await this.httpClient.SendAsync(httpRequest);
                         response.EnsureSuccessStatusCode();
                     });
