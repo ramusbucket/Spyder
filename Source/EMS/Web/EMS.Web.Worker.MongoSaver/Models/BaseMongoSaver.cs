@@ -1,8 +1,12 @@
 ﻿using Confluent.Kafka;
+using Confluent.Kafka.Serialization;
 using EMS.Infrastructure.Stream;
+using EMS.Web.Common.Mongo;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +17,7 @@ namespace EMS.Web.Worker.MongoSaver.Models
         Task Execute();
     }
 
-    public abstract class BaseMongoSaver<TOut,TIn> : IMongoSaver
+    public abstract class BaseMongoSaver<TOut, TIn> : IMongoSaver
         where TOut : class
         where TIn : class
     {
@@ -22,6 +26,7 @@ namespace EMS.Web.Worker.MongoSaver.Models
         private MongoClient mongoClient;
         private IMongoDatabase mongoDatabase;
         private IMongoCollection<TOut> mongoCollection;
+        private Consumer<string, string> consumer;
 
         public BaseMongoSaver(CancellationToken cToken, IMongoCollection<TOut> mongoCollection, string inputKafkaTopic)
         {
@@ -32,12 +37,33 @@ namespace EMS.Web.Worker.MongoSaver.Models
 
         public async Task Execute()
         {
-            KafkaClient.Consumer.OnMessage += OnMessageReceived;
-            KafkaClient.Consumer.Subscribe(this.inputKafkaTopic);
+            var consumerConfig = new Dictionary<string, object>
+            {
+                { "group.id", "DefaultKafkaConsumer" },
+                { "enable.auto.commit", false },
+                { "auto.commit.interval.ms", 5000 },
+                { "statistics.interval.ms", 60000 },
+                { "bootstrap.servers", "localhost:9092" },
+                { "default.topic.config", new Dictionary<string, object>()
+                    {
+                        { "auto.offset.reset", "smallest" }
+                    }
+                }
+            };
+
+            var keyDeserializer = new StringDeserializer(Encoding.UTF8);
+            var valueDeserializer = new JsonDeserializer2();
+
+            this.consumer = new Consumer<string, string>(
+                consumerConfig,
+                keyDeserializer,
+                valueDeserializer);
+            this.consumer.OnMessage += OnMessageReceived;
+            this.consumer.Subscribe(this.inputKafkaTopic);
 
             while (!cToken.IsCancellationRequested)
             {
-                KafkaClient.Consumer.Poll(TimeSpan.FromMilliseconds(100));
+                this.consumer.Poll(TimeSpan.FromMilliseconds(100));
             }
         }
 
