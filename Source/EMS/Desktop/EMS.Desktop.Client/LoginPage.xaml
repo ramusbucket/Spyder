@@ -21,6 +21,7 @@
                 Margin="0,15,0,0"/>
 
             <TextBox 
+                Text="Inka"
                 Height="28"
                 FontSize="17"
                 Width="240"
@@ -28,6 +29,7 @@
                 Margin="5"/>
 
             <PasswordBox 
+                Password="C17h25n0#"
                 Height="28"
                 FontSize="17"
                 Width="240"

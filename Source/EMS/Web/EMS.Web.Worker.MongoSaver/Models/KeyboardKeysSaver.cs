@@ -9,7 +9,9 @@ namespace EMS.Web.Worker.MongoSaver.Models
 {
     public class KeyboardKeysSaver : BaseMongoSaver<CapturedKeyboardKey, CapturedKeyDetailsDTO>
     {
-        public KeyboardKeysSaver(CancellationToken cToken, IMongoCollection<CapturedKeyboardKey> mongoCollection)
+        public KeyboardKeysSaver(
+            CancellationToken cToken, 
+            IMongoCollection<CapturedKeyboardKey> mongoCollection)
             : base(cToken, mongoCollection, Topics.CapturedKeyboardKeys)
         {
         }

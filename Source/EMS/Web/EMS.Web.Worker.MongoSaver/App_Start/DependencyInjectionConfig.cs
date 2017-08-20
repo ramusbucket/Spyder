@@ -44,22 +44,23 @@ namespace EMS.Web.Worker.MongoSaver.App_Start
 
             injector.RegisterInstance<IMongoClient>(mongoClient);
             injector.RegisterInstance<IMongoDatabase>(mongoDatabase);
-            injector.RegisterInstance<IMongoCollection<CapturedNetworkPacket>>(nameof(CapturedNetworkPacket), networkPacketsCollection);
-            injector.RegisterInstance<IMongoCollection<CapturedKeyboardKey>>(nameof(CapturedKeyboardKey), keyboardKeysCollection);
-            injector.RegisterInstance<IMongoCollection<CapturedCameraSnapshot>>(nameof(CapturedCameraSnapshot), cameraSnapshotsCollection);
-            injector.RegisterInstance<IMongoCollection<CapturedActiveProcesses>>(nameof(CapturedActiveProcesses), activeProcessesCollection);
-            injector.RegisterInstance<IMongoCollection<CapturedDisplaySnapshot>>(nameof(CapturedDisplaySnapshot), displaySnapshotsCollection);
-            injector.RegisterInstance<IMongoCollection<CapturedForegroundProcess>>(nameof(CapturedForegroundProcess), foregroundProcessesCollection);
+            injector.RegisterInstance<IMongoCollection<CapturedNetworkPacket>>(networkPacketsCollection);
+            injector.RegisterInstance<IMongoCollection<CapturedKeyboardKey>>(keyboardKeysCollection);
+            injector.RegisterInstance<IMongoCollection<CapturedCameraSnapshot>>(cameraSnapshotsCollection);
+            injector.RegisterInstance<IMongoCollection<CapturedActiveProcesses>>(activeProcessesCollection);
+            injector.RegisterInstance<IMongoCollection<CapturedDisplaySnapshot>>(displaySnapshotsCollection);
+            injector.RegisterInstance<IMongoCollection<CapturedForegroundProcess>>(foregroundProcessesCollection);
         }
 
         private void RegisterMongoSavers(IInjector injector)
         {
-            injector.Register<NetworkPacketsSaver, NetworkPacketsSaver>();
-            injector.Register<CameraSnapshotsSaver, CameraSnapshotsSaver>();
-            injector.Register<ActiveProcessesSaver, ActiveProcessesSaver>();
-            injector.Register<CameraSnapshotsSaver, CameraSnapshotsSaver>();
-            injector.Register<CameraSnapshotsSaver, CameraSnapshotsSaver>();
-            injector.Register<CameraSnapshotsSaver, CameraSnapshotsSaver>();
+            injector
+                .Register<IMongoSaver, KeyboardKeysSaver>(nameof(KeyboardKeysSaver))
+                .Register<IMongoSaver, NetworkPacketsSaver>(nameof(NetworkPacketsSaver))
+                .Register<IMongoSaver, CameraSnapshotsSaver>(nameof(CameraSnapshotsSaver))
+                .Register<IMongoSaver, ActiveProcessesSaver>(nameof(ActiveProcessesSaver))
+                .Register<IMongoSaver, DisplaySnapshotsSaver>(nameof(DisplaySnapshotsSaver))
+                .Register<IMongoSaver, ForegroundProcessesSaver>(nameof(ForegroundProcessesSaver));
         }
 
         private void RegisterKafkaProducer(IInjector injector)

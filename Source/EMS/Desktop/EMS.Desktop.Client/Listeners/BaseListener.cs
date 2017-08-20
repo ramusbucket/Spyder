@@ -91,7 +91,7 @@ namespace EMS.Desktop.Client
                     {
                         var httpRequest = new HttpRequestMessage(HttpMethod.Post, sendCapturedItemsUri);
                         httpRequest.Content = new JSONContent(JsonConvert.SerializeObject(itemsToSend), Encoding.UTF8);
-                        httpRequest.Headers.Authorization = new AuthenticationHeaderValue("Authorization", $"Bearer {Identity.AuthToken.AccessToken}");
+                        httpRequest.Headers.Add("Authorization", $"Bearer {Identity.AuthToken.AccessToken}");
 
                         var response = await this.httpClient.SendAsync(httpRequest);
                         response.EnsureSuccessStatusCode();

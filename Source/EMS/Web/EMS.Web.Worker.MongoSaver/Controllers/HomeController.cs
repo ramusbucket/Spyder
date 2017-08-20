@@ -14,7 +14,7 @@ namespace EMS.Web.Worker.MongoSaver.Controllers
     public class HomeController : Controller
     {
         private static CancellationToken token = new CancellationToken();
-        private static List<IMongoSaver> savers;
+        private static IEnumerable<IMongoSaver> savers;
 
         public ActionResult Index()
         {
@@ -23,12 +23,12 @@ namespace EMS.Web.Worker.MongoSaver.Controllers
             return View();
         }
 
-        public ActionResult RunNetworkPacketsSaver()
+        public async Task<ActionResult> StartSavers()
         {
             var injector = UnityInjector.Instance;
 
             var type = typeof(IMongoSaver);
-            var listenerTypes = Assembly.Load("EMS.Web.Worker.MongoSaver")
+            var saversTypes = Assembly.Load("EMS.Web.Worker.MongoSaver")
                 .GetTypes()
                 .Where(
                     x =>
@@ -37,10 +37,10 @@ namespace EMS.Web.Worker.MongoSaver.Controllers
                         x.IsClass &&
                         type.IsAssignableFrom(x));
 
-            savers = listenerTypes.Select(x => injector.Resolve<IMongoSaver>()).ToList();
+            savers = saversTypes.Select(x => injector.Resolve<IMongoSaver>(x.Name)).ToList();
             foreach (var saver in savers)
             {
-                saver.Execute();
+                Task.Run(()=> saver.Execute());
             }
 
             return this.View();

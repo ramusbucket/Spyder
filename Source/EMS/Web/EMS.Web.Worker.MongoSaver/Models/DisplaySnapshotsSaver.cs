@@ -10,8 +10,7 @@ namespace EMS.Web.Worker.MongoSaver.Models
     {
         public DisplaySnapshotsSaver(
             CancellationToken cToken, 
-            IMongoCollection<CapturedDisplaySnapshot> mongoCollection, 
-            string inputKafkaTopic) 
+            IMongoCollection<CapturedDisplaySnapshot> mongoCollection) 
             : base(cToken, mongoCollection, Topics.DisplaySnapshots)
         {
         }

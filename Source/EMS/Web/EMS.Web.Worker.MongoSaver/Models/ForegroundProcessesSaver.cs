@@ -8,7 +8,9 @@ namespace EMS.Web.Worker.MongoSaver.Models
 {
     public class ForegroundProcessesSaver : BaseMongoSaver<CapturedForegroundProcess, CapturedForegroundProcessDTO>
     {
-        public ForegroundProcessesSaver(CancellationToken cToken, IMongoCollection<CapturedForegroundProcess> mongoCollection) 
+        public ForegroundProcessesSaver(
+            CancellationToken cToken, 
+            IMongoCollection<CapturedForegroundProcess> mongoCollection) 
             : base(cToken, mongoCollection, Topics.ForegroundProcesses)
         {
         }

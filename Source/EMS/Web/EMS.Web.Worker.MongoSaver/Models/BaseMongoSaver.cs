@@ -4,12 +4,13 @@ using MongoDB.Driver;
 using Newtonsoft.Json;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace EMS.Web.Worker.MongoSaver.Models
 {
     public interface IMongoSaver
     {
-        void Execute();
+        Task Execute();
     }
 
     public abstract class BaseMongoSaver<TOut,TIn> : IMongoSaver
@@ -29,7 +30,7 @@ namespace EMS.Web.Worker.MongoSaver.Models
             this.inputKafkaTopic = inputKafkaTopic;
         }
 
-        public void Execute()
+        public async Task Execute()
         {
             KafkaClient.Consumer.OnMessage += OnMessageReceived;
             KafkaClient.Consumer.Subscribe(this.inputKafkaTopic);

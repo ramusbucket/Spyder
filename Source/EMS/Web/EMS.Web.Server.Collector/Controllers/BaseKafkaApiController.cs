@@ -13,7 +13,7 @@ namespace EMS.Web.Server.Collector.Controllers
     [Authorize]
     public class BaseKafkaApiController : ApiController
     {
-        private readonly string RootApplicationDirectory = HostingEnvironment.ApplicationPhysicalPath;
+        private static readonly string RootApplicationDirectory = HostingEnvironment.ApplicationPhysicalPath;
 
         protected virtual async Task PublishToKafkaMultipleItems(IEnumerable<BaseDTO> data, string topicName)
         {
