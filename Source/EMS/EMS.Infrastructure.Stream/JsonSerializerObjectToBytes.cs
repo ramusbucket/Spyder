@@ -4,8 +4,7 @@ using System.Text;
 
 namespace EMS.Infrastructure.Stream
 {
-
-    public class JsonSerializer : ISerializer<object>
+    public class JsonSerializerObjectToBytes : ISerializer<object>
     {
         public byte[] Serialize(object data)
         {

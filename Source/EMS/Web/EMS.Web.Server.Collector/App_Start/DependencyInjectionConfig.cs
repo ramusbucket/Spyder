@@ -24,7 +24,7 @@ namespace EMS.Web.Server.Collector.App_Start
             var producerConfig = new Dictionary<string, object> { { "bootstrap.servers", kafkaBrokers } };
 
             var keySerializer = new StringSerializer(Encoding.UTF8);
-            var valueSerializer = new JsonSerializer();
+            var valueSerializer = new JsonSerializerObjectToBytes();
 
             var producer = new Producer<string, object>(
                 producerConfig,
@@ -52,7 +52,7 @@ namespace EMS.Web.Server.Collector.App_Start
             };
 
             var keyDeserializer = new StringDeserializer(Encoding.UTF8);
-            var valueDeserializer = new JsonDeserializer();
+            var valueDeserializer = new JsonDeserializerBytesToObject();
 
             var consumer = new Consumer<string, object>(
                 consumerConfig,

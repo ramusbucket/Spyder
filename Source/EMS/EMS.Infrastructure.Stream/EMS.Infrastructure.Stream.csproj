@@ -51,9 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JsonSerializer.cs" />
-    <Compile Include="JsonDeserializer.cs" />
+    <Compile Include="JsonSerializerObjectToBytes.cs" />
+    <Compile Include="JsonDeserializerBytesToObject.cs" />
     <Compile Include="KafkaClient.cs" />
+    <Compile Include="JsonDeserializerBytesToString.cs" />
     <Compile Include="Topics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,12 +1,9 @@
 ﻿using Confluent.Kafka;
-using Confluent.Kafka.Serialization;
-using EMS.Infrastructure.Stream;
-using EMS.Web.Common.Mongo;
+using EMS.Infrastructure.Common.Providers;
+using EMS.Web.Worker.MongoSaver.App_Start;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,7 +11,9 @@ namespace EMS.Web.Worker.MongoSaver.Models
 {
     public interface IMongoSaver
     {
-        Task Execute();
+        Task Start();
+
+        ServiceStatistics Statistics { get; }
     }
 
     public abstract class BaseMongoSaver<TOut, TIn> : IMongoSaver
@@ -33,54 +32,50 @@ namespace EMS.Web.Worker.MongoSaver.Models
             this.cToken = cToken;
             this.mongoCollection = mongoCollection;
             this.inputKafkaTopic = inputKafkaTopic;
+            this.Statistics = new ServiceStatistics();
         }
 
-        public async Task Execute()
+        public ServiceStatistics Statistics { get; private set; }
+
+        public async Task Start()
         {
-            var consumerConfig = new Dictionary<string, object>
-            {
-                { "group.id", "DefaultKafkaConsumer" },
-                { "enable.auto.commit", false },
-                { "auto.commit.interval.ms", 5000 },
-                { "statistics.interval.ms", 60000 },
-                { "bootstrap.servers", "localhost:9092" },
-                { "default.topic.config", new Dictionary<string, object>()
-                    {
-                        { "auto.offset.reset", "smallest" }
-                    }
-                }
-            };
+            // Extract to base worker in a proper place
+            this.Statistics.StartDate = TimeProvider.Current.UtcNow;
 
-            var keyDeserializer = new StringDeserializer(Encoding.UTF8);
-            var valueDeserializer = new JsonDeserializer2();
-
-            this.consumer = new Consumer<string, string>(
-                consumerConfig,
-                keyDeserializer,
-                valueDeserializer);
+            this.consumer = DependencyInjectionConfig.GetKafkaConsumerInstance();
             this.consumer.OnMessage += OnMessageReceived;
             this.consumer.Subscribe(this.inputKafkaTopic);
 
             while (!cToken.IsCancellationRequested)
             {
                 this.consumer.Poll(TimeSpan.FromMilliseconds(100));
+                this.Statistics.LastPollDate = TimeProvider.Current.UtcNow;
             }
         }
 
         protected virtual void OnMessageReceived(object sender, Message<string, string> kafkaMessage)
         {
-            var message = JsonConvert.DeserializeObject<TIn>(kafkaMessage.Value);
+            if (kafkaMessage.Value == null)
+            {
+                // Log invalid message read with the message details
+                return;
+            }
 
+            var message = JsonConvert.DeserializeObject<TIn>(kafkaMessage.Value);
             if (message == null)
             {
                 // Log invalid message read with the message value and details
+                return;
             }
-            else
-            {
-                var mongoItem = this.FormatReceivedMessage(message);
-                this.mongoCollection.InsertOneAsync(mongoItem).Wait();
-                // notify WebAPI for db change (semi-push-notification)
-            }
+
+            this.Statistics.LastReceivedMessageDate = TimeProvider.Current.UtcNow;
+
+            var mongoItem = this.FormatReceivedMessage(message);
+            this.mongoCollection.InsertOneAsync(mongoItem).Wait();
+            // notify WebAPI for db change (semi-push-notification)
+
+            this.Statistics.LastProcessedItemDate = TimeProvider.Current.UtcNow;
+            this.Statistics.ProcessedItemsCount++;
         }
 
         protected abstract TOut FormatReceivedMessage(TIn message);

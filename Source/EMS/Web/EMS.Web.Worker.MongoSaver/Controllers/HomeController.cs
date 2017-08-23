@@ -13,8 +13,7 @@ namespace EMS.Web.Worker.MongoSaver.Controllers
 {
     public class HomeController : Controller
     {
-        private static CancellationToken token = new CancellationToken();
-        private static IEnumerable<IMongoSaver> savers;
+        public static IEnumerable<IMongoSaver> savers;
 
         public ActionResult Index()
         {
@@ -23,7 +22,7 @@ namespace EMS.Web.Worker.MongoSaver.Controllers
             return View();
         }
 
-        public async Task<ActionResult> StartSavers()
+        public async Task<JsonResult> StartSavers()
         {
             var injector = UnityInjector.Instance;
 
@@ -40,10 +39,10 @@ namespace EMS.Web.Worker.MongoSaver.Controllers
             savers = saversTypes.Select(x => injector.Resolve<IMongoSaver>(x.Name)).ToList();
             foreach (var saver in savers)
             {
-                Task.Run(()=> saver.Execute());
+                Task.Run(() => saver.Start());
             }
 
-            return this.View();
+            return this.Json(new { Success = true }, JsonRequestBehavior.AllowGet);
         }
     }
 }

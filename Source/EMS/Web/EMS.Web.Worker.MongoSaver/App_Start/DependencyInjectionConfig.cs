@@ -65,52 +65,63 @@ namespace EMS.Web.Worker.MongoSaver.App_Start
 
         private void RegisterKafkaProducer(IInjector injector)
         {
-            var kafkaBrokers = GetKafkaBrokers();
-            var producerConfig = new Dictionary<string, object> { { "bootstrap.servers", kafkaBrokers } };
-
-            var keySerializer = new StringSerializer(Encoding.UTF8);
-            var valueSerializer = new JsonSerializer();
-
-            var producer = new Producer<string, object>(
-                producerConfig,
-                keySerializer,
-                valueSerializer);
-
+            Producer<string, object> producer = GetKafkaProducerInstance();
             injector.RegisterInstance(producer);
         }
 
         private void RegisterKafkaConsumer(IInjector injector)
         {
-            var kafkaBrokers = GetKafkaBrokers();
-            var consumerConfig = new Dictionary<string, object>
+            Consumer<string, string> consumer = GetKafkaConsumerInstance();
+            injector.RegisterInstance(consumer);
+        }
+
+        public static Producer<string, object> GetKafkaProducerInstance()
+        {
+            var producerConfig = GetKafkaProducerConfiguration();
+            var keySerializer = new StringSerializer(Encoding.UTF8);
+            var valueSerializer = new JsonSerializerObjectToBytes();
+
+            return new Producer<string, object>(
+                producerConfig,
+                keySerializer,
+                valueSerializer);
+        }
+
+        public static Consumer<string, string> GetKafkaConsumerInstance()
+        {
+            var consumerConfig = GetKafkaConsumerConfiguration();
+            var keyDeserializer = new StringDeserializer(Encoding.UTF8);
+            var valueDeserializer = new JsonDeserializerBytesToString();
+
+            return new Consumer<string, string>(
+                consumerConfig,
+                keyDeserializer,
+                valueDeserializer);
+        }
+
+        public static Dictionary<string, object> GetKafkaConsumerConfiguration()
+        {
+            return new Dictionary<string, object>
             {
                 { "group.id", "DefaultKafkaConsumer" },
                 { "enable.auto.commit", false },
                 { "auto.commit.interval.ms", 5000 },
                 { "statistics.interval.ms", 60000 },
-                { "bootstrap.servers", kafkaBrokers },
+                { "bootstrap.servers", "localhost:9092" },
                 { "default.topic.config", new Dictionary<string, object>()
                     {
                         { "auto.offset.reset", "smallest" }
                     }
                 }
             };
-
-            var keyDeserializer = new StringDeserializer(Encoding.UTF8);
-            var valueDeserializer = new JsonDeserializer2();
-
-            var consumer = new Consumer<string, string>(
-                consumerConfig,
-                keyDeserializer,
-                valueDeserializer);
-
-            injector.RegisterInstance(consumer);
         }
 
-        private string GetKafkaBrokers()
+        public static Dictionary<string, object> GetKafkaProducerConfiguration()
         {
-            var kafkaBrokers = "localhost:9092";
-            return kafkaBrokers;
+            return new Dictionary<string, object>
+            {
+                { "bootstrap.servers", "localhost:9092" }
+            };
         }
     }
 }
