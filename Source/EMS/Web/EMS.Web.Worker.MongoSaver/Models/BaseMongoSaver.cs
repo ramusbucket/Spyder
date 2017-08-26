@@ -4,8 +4,13 @@ using EMS.Web.Worker.MongoSaver.App_Start;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using EMS.Web.Worker.MongoSaver.Controllers;
+using EMS.Web.Worker.MongoSaver.Hubs;
+using Microsoft.AspNet.SignalR;
 
 namespace EMS.Web.Worker.MongoSaver.Models
 {
@@ -76,8 +81,26 @@ namespace EMS.Web.Worker.MongoSaver.Models
 
             this.Statistics.LastProcessedItemDate = TimeProvider.Current.UtcNow;
             this.Statistics.ProcessedItemsCount++;
+
+            PushStatisticsToAllClients();
         }
 
         protected abstract TOut FormatReceivedMessage(TIn message);
+
+        private void PushStatisticsToAllClients()
+        {
+            var context = GlobalHost.ConnectionManager.GetHubContext<ServiceStatisticsHub>();
+            var statistics = HomeController.savers?
+                .Where(x => x.Statistics != null)
+                .Select(x => new
+                {
+                    Saver = x.GetType().Name,
+                    Stats = x.Statistics
+                })
+                .ToList();
+
+            var statsAsJson = JsonConvert.SerializeObject(statistics);
+            context.Clients.All.pushStatistics(statsAsJson);
+        }
     }
 }

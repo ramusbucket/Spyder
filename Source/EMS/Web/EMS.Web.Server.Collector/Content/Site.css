@@ -15,3 +15,11 @@ select,
 textarea {
     max-width: 280px;
 }
+
+p.bold {
+    font-weight: bolder;
+}
+
+span.big {
+    font-size: 30px;
+}

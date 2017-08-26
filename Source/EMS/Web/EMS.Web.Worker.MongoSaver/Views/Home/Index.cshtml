@@ -1,4 +1,5 @@
-﻿<div class="help-block"></div>
+﻿@model List<string>
+<div class="help-block"></div>
 <div class="jumbotron text-center">
     <h1 class="text-center">Mongo saver service</h1>
     <h2>Status:<span class="text-success">Active</span></h2>
@@ -6,7 +7,16 @@
 
 <div class="row text-center">
     <a class="btn btn-success" href="/Home/StartSavers">Start savers</a>
-    <button class="btn btn-info" href="" id="getServiceStatus">Get Service Status</button>
+</div>
+
+<div class="row">
+    @foreach (var saver in this.Model)
+    {
+        <div class="row">
+            <h1>@saver</h1>
+            <p id="@saver">Statistics</p>
+        </div>
+    }
 </div>
 
 @section scripts {
@@ -25,10 +35,25 @@
             serviceStatistics.client.pushStatistics = function (result) {
                 // Add the message to the page.
 
+                //LastException
+                //LastExceptionDate
+                //LastExceptionMessage
+                //LastPollDate
+                //LastProcessedItemDate
+                //LastReceivedMessageDate
+                //ProcessedItemsCount
+                //StartDate
                 var stats = JSON.parse(result);
 
+                for (val of result) {
+                    var saver = val.Saver;
+                    var saverStats = val.Stats;
+
+                    $(`#${saver}`).innerText = JSON.stringify(saverStats);
+                }
+
                 console.log(stats);
-               // Parse statistics to a readable json
+                // Parse statistics to a readable json
             };
 
             $.connection.hub

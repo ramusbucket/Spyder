@@ -12,16 +12,16 @@ namespace EMS.Web.Worker.MongoSaver.Hubs
 {
     public class ServiceStatisticsHub : Hub
     {
-        public void GetServiceStatus()
+        public void PushServiceStatusToAllClients()
         {
             var statistics = HomeController.savers?.Where(x => x.Statistics != null).Select(x => x.Statistics).ToList();
-            GetStatistics(statistics);
+            PushStatistics(statistics);
         }
 
-        private void GetStatistics(List<ServiceStatistics> statistics)
+        private void PushStatistics(List<ServiceStatistics> statistics)
         {
-            var statsAsJson = JsonConvert.SerializeObject(statistics, Formatting.Indented);
-            Clients.Caller.pushStatistics(statsAsJson);
+            var statsAsJson = JsonConvert.SerializeObject(statistics);
+            Clients.All.pushStatistics(statsAsJson);
         }
     }
 

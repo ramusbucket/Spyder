@@ -19,7 +19,14 @@ namespace EMS.Web.Worker.MongoSaver.Controllers
         {
             ViewBag.Title = "Home Page";
 
-            return View();
+            var pivotType = typeof(IMongoSaver);
+            var savers = Assembly.GetAssembly(pivotType)
+                .GetTypes()
+                .Where(x => pivotType.IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface && x.IsClass)
+                .Select(x => x.Name)
+                .ToList();
+
+            return View(savers);
         }
 
         public async Task<JsonResult> StartSavers()

@@ -1,8 +1,10 @@
-﻿using EMS.Core.Models;
+﻿using System;
+using EMS.Core.Models;
 using EMS.Infrastructure.Common.Providers;
 using EMS.Infrastructure.Stream;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using EMS.Web.Server.Collector.Models;
@@ -28,9 +30,28 @@ namespace EMS.Web.Server.Collector.Controllers
             var kafkaResponse = await KafkaClient.PublishMultiple(data, topicName, key);
 
             CollectorStatistics.Counters.AddOrUpdate(
-                this.GetType().Name,
+                SplitPascalCase(this.GetType().Name),
                 (k) => 1,
                 (k, v) => v + 1);
+        }
+
+        private string SplitPascalCase(string text)
+        {
+            var result = new StringBuilder();
+
+            foreach (var character in text)
+            {
+                if (char.IsUpper(character))
+                {
+                    result.Append($" {character}");
+                }
+                else
+                {
+                    result.Append(character);
+                }
+            }
+
+            return result.ToString();
         }
     }
 }
