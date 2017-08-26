@@ -3,22 +3,19 @@ using EMS.Infrastructure.Common.Providers;
 using EMS.Infrastructure.Stream;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using System.Web.Hosting;
 using System.Web.Http;
+using EMS.Web.Server.Collector.Models;
 
 namespace EMS.Web.Server.Collector.Controllers
 {
-    [Authorize]
+    [System.Web.Http.Authorize]
     public class BaseKafkaApiController : ApiController
     {
-        private static readonly string RootApplicationDirectory = HostingEnvironment.ApplicationPhysicalPath;
-
         protected virtual async Task PublishToKafkaMultipleItems(IEnumerable<BaseDTO> data, string topicName)
         {
             var userId = this.User.Identity.GetUserId();
-            foreach(var item in data)
+            foreach (var item in data)
             {
                 item.UserId = userId;
             }
@@ -30,13 +27,10 @@ namespace EMS.Web.Server.Collector.Controllers
             // Handle the error by logging it in elastic search
             var kafkaResponse = await KafkaClient.PublishMultiple(data, topicName, key);
 
-            var directoryPath = $@"{RootApplicationDirectory}\App_Data\" + topicName;
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
-            File.WriteAllText($@"{directoryPath}\{TimeProvider.Current.UtcNow.ToFileTimeUtc()}.txt","OK");
+            CollectorStatistics.Counters.AddOrUpdate(
+                this.GetType().Name,
+                (k) => 1,
+                (k, v) => v + 1);
         }
     }
 }
