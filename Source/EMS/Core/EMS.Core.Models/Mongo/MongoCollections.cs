@@ -1,4 +1,4 @@
-﻿namespace EMS.Web.Common.Mongo
+﻿namespace EMS.Core.Models.Mongo
 {
     public class MongoCollections
     {
@@ -8,5 +8,6 @@
         public const string DisplaySnapshots = nameof(DisplaySnapshots);
         public const string ForegroundProcesses = nameof(ForegroundProcesses);
         public const string CapturedKeyboardKeys = nameof(CapturedKeyboardKeys);
+        public const string MonitoringSessions = nameof(MonitoringSessions);
     }
 }

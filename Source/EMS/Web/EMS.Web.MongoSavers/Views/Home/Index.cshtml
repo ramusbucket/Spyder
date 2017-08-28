@@ -1,0 +1,23 @@
+﻿@model IEnumerable<EMS.Web.MongoSavers.Models.ServiceStatisticsModel>
+<div class="help-block"></div>
+<div class="jumbotron text-center">
+    <h1 class="text-center">Mongo savers</h1>
+    <h2>Status:<span class="text-success">Active</span></h2>
+</div>
+
+<div class="row">
+    @foreach (var saver in this.Model)
+    {
+        <div class="col-lg-6">
+            <h1>@saver.SaverName</h1>
+
+            <p>@nameof(saver.SaverStats.StartDate): <span id="@saver">@saver.SaverStats.StartDate</span></p>
+            <p>@nameof(saver.SaverStats.LastExceptionDate): <span id="@saver">@saver.SaverStats.LastExceptionDate</span></p>
+            <p>@nameof(saver.SaverStats.LastExceptionMessage): <span id="@saver">@saver.SaverStats.LastExceptionMessage</span></p>
+            <p>@nameof(saver.SaverStats.LastPollDate): <span id="@saver">@saver.SaverStats.LastPollDate</span></p>
+            <p>@nameof(saver.SaverStats.LastProcessedItemDate): <span id="@saver">@saver.SaverStats.LastProcessedItemDate</span></p>
+            <p>@nameof(saver.SaverStats.LastReceivedMessageDate): <span id="@saver">@saver.SaverStats.LastReceivedMessageDate</span></p>
+            <p>@nameof(saver.SaverStats.ProcessedItemsCount): <span id="@saver">@saver.SaverStats.ProcessedItemsCount</span></p>
+        </div>
+    }
+</div>

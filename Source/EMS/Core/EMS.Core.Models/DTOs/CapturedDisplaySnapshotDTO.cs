@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace EMS.Core.Models
+﻿namespace EMS.Core.Models.DTOs
 {
-    public class CapturedDisplaySnapshotDTO : BaseDTO
+    public class CapturedDisplaySnapshotDto : AuditableDto
     {
         public byte[] DisplaySnapshot { get; set; }
     }

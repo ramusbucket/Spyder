@@ -1,6 +1,6 @@
-﻿namespace EMS.Core.Models
+﻿namespace EMS.Core.Models.DTOs
 {
-    public class CapturedNetworkPacketDetailsDTO : BaseDTO
+    public class CapturedNetworkPacketDetailsDto : AuditableDto
     {
         public byte[] NetworkPacket { get; set; }
     }

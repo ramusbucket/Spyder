@@ -1,4 +1,7 @@
-﻿namespace EMS.Desktop.Client
+﻿using EMS.Core.Models.DTOs;
+using EMS.Desktop.Client.Models;
+
+namespace EMS.Desktop.Client
 {
     using System.Threading.Tasks;
     using Core.Interfaces;
@@ -9,7 +12,7 @@
     using Serilog;
     using Easy.Common.Interfaces;
 
-    public class KeyboardListener : BaseListener<CapturedKeyDetailsDTO, KeyboardKey>
+    public class KeyboardListener : BaseListener<CapturedKeyDetailsDto>
     {
         private IKeyboardApi keyboardApi;
 
@@ -40,10 +43,11 @@
 
         private void OnKeyPressedHandler(object sender, KeyboardKey e)
         {
-            var capturedItem = new CapturedKeyDetailsDTO
+            var capturedItem = new CapturedKeyDetailsDto
             {
                 KeyboardKey = e,
-                CreatedOn = TimeProvider.Current.Now
+                CreatedOn = TimeProvider.Current.Now,
+                SessionId = Identity.SessionId
             };
 
             this.capturedItems.Enqueue(capturedItem);

@@ -8,10 +8,12 @@ using EMS.Infrastructure.Common.Providers;
 using Serilog;
 using System.Linq;
 using Easy.Common.Interfaces;
+using EMS.Core.Models.DTOs;
+using EMS.Desktop.Client.Models;
 
 namespace EMS.Desktop.Client
 {
-    public class ActiveProcessesListener : BaseListener<CapturedActiveProcessesDTO, Process[]>
+    public class ActiveProcessesListener : BaseListener<CapturedActiveProcessesDto>
     {
         private IProcessApi processApi;
 
@@ -42,10 +44,11 @@ namespace EMS.Desktop.Client
 
         private void OnActiveProcessesChangedHandler(object sender, Process[] e)
         {
-            var capturedItem = new CapturedActiveProcessesDTO
+            var capturedItem = new CapturedActiveProcessesDto
             {
                 CapturedActiveProcesses = e.Select(x => x.ProjectToSlimProcess()),
-                CreatedOn = TimeProvider.Current.Now
+                CreatedOn = TimeProvider.Current.Now,
+                SessionId = Identity.SessionId
             };
 
             this.capturedItems.Enqueue(capturedItem);

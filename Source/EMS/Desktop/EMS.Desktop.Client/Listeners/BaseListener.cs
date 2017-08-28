@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using EMS.Infrastructure.Common.Configurations;
 using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
-using EMS.Infrastructure.Common.Providers;
 using Polly;
 using Serilog;
 using Easy.Common.Interfaces;
@@ -13,12 +12,12 @@ using System.Net.Http;
 using Easy.Common;
 using Newtonsoft.Json;
 using System.Text;
-using System.Net.Http.Headers;
+using EMS.Core.Models.DTOs;
 using EMS.Desktop.Client.Models;
 
 namespace EMS.Desktop.Client
 {
-    public abstract class BaseListener<T, K> : IListener
+    public abstract class BaseListener<T> : IListener
         where T : class
     {
         protected ILogger logger;

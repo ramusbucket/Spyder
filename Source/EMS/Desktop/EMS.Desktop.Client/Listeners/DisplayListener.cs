@@ -5,10 +5,12 @@ using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using Serilog;
 using Easy.Common.Interfaces;
+using EMS.Core.Models.DTOs;
+using EMS.Desktop.Client.Models;
 
 namespace EMS.Desktop.Client
 {
-    public class DisplayListener : BaseListener<CapturedDisplaySnapshotDTO, byte[]>
+    public class DisplayListener : BaseListener<CapturedDisplaySnapshotDto>
     {
         private IDisplayApi displayApi;
 
@@ -39,10 +41,11 @@ namespace EMS.Desktop.Client
 
         private void OnDisplaySnapshotTakenHandler(object sender, byte[] e)
         {
-            var capturedItem = new CapturedDisplaySnapshotDTO
+            var capturedItem = new CapturedDisplaySnapshotDto
             {
                 DisplaySnapshot = e,
-                CreatedOn = TimeProvider.Current.Now
+                CreatedOn = TimeProvider.Current.Now,
+                SessionId = Identity.SessionId
             };
 
             this.capturedItems.Enqueue(capturedItem);

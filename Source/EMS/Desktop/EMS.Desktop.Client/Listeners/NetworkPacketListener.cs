@@ -1,15 +1,16 @@
 ﻿using Easy.Common.Interfaces;
 using EMS.Core.Interfaces;
-using EMS.Core.Models;
 using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using Serilog;
 using System;
 using System.Threading.Tasks;
+using EMS.Core.Models.DTOs;
+using EMS.Desktop.Client.Models;
 
 namespace EMS.Desktop.Client
 {
-    public class NetworkPacketListener : BaseListener<CapturedNetworkPacketDetailsDTO, byte[]>
+    public class NetworkPacketListener : BaseListener<CapturedNetworkPacketDetailsDto>
     {
         private INetworkApi networkApi;
         private string cameraId;
@@ -41,10 +42,11 @@ namespace EMS.Desktop.Client
 
         private void OnPacketSniffedHandler(object sender, byte[] e)
         {
-            var capturedItem = new CapturedNetworkPacketDetailsDTO
+            var capturedItem = new CapturedNetworkPacketDetailsDto
             {
                 NetworkPacket = e,
-                CreatedOn = TimeProvider.Current.Now
+                CreatedOn = TimeProvider.Current.Now,
+                SessionId = Identity.SessionId
             };
 
             this.capturedItems.Enqueue(capturedItem);

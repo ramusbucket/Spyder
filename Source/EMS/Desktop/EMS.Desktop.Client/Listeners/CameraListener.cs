@@ -6,10 +6,12 @@ using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using Serilog;
 using Easy.Common.Interfaces;
+using EMS.Core.Models.DTOs;
+using EMS.Desktop.Client.Models;
 
 namespace EMS.Desktop.Client
 {
-    public class CameraListener : BaseListener<CapturedCameraSnapshotDTO, byte[]>
+    public class CameraListener : BaseListener<CapturedCameraSnapshotDto>
     {
         private ICameraApi cameraApi;
         private string cameraId;
@@ -42,10 +44,11 @@ namespace EMS.Desktop.Client
 
         private void OnWebcamSnapshotTakenHandler(object sender, byte[] e)
         {
-            var capturedItem = new CapturedCameraSnapshotDTO
+            var capturedItem = new CapturedCameraSnapshotDto
             {
                 CameraSnapshot = e,
-                CreatedOn = TimeProvider.Current.Now
+                CreatedOn = TimeProvider.Current.Now,
+                SessionId = Identity.SessionId
             };
 
             this.capturedItems.Enqueue(capturedItem);

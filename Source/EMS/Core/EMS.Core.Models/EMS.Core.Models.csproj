@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=2.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MongoDB.Bson.2.4.4\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,23 +44,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DTOs\AuditableDTO.cs" />
-    <Compile Include="DTOs\CapturedActiveProcessesDTO.cs" />
-    <Compile Include="DTOs\CapturedNetworkPacketDetailsDTO.cs" />
-    <Compile Include="DTOs\CapturedCameraSnapshotDTO.cs" />
-    <Compile Include="DTOs\CapturedDisplaySnapshotDTO.cs" />
-    <Compile Include="DTOs\CapturedForegroundProcessDTO.cs" />
-    <Compile Include="DTOs\CapturedKeyDetailsDTO.cs" />
+    <Compile Include="DTOs\AuditableDto.cs" />
+    <Compile Include="DTOs\CapturedActiveProcessesDto.cs" />
+    <Compile Include="DTOs\CapturedNetworkPacketDetailsDto.cs" />
+    <Compile Include="DTOs\CapturedCameraSnapshotDto.cs" />
+    <Compile Include="DTOs\CapturedDisplaySnapshotDto.cs" />
+    <Compile Include="DTOs\CapturedForegroundProcessDto.cs" />
+    <Compile Include="DTOs\CapturedKeyDetailsDto.cs" />
+    <Compile Include="DTOs\ProcessExtensions.cs" />
     <Compile Include="DTOs\SlimProcess.cs" />
     <Compile Include="DTOs\SlimProcessStartInfo.cs" />
-    <Compile Include="Mongo\Auditable.cs" />
-    <Compile Include="Mongo\CapturedActiveProcesses.cs" />
-    <Compile Include="Mongo\CapturedCameraSnapshot.cs" />
-    <Compile Include="Mongo\CapturedDisplaySnapshot.cs" />
-    <Compile Include="Mongo\CapturedForegroundProcess.cs" />
-    <Compile Include="Mongo\CapturedKeyboardKey.cs" />
-    <Compile Include="Mongo\CapturedNetworkPacket.cs" />
+    <Compile Include="Mongo\AuditableMongoDocument.cs" />
+    <Compile Include="Mongo\BaseMongoDocument.cs" />
+    <Compile Include="Mongo\CapturedActiveProcessesMongoDocument.cs" />
+    <Compile Include="Mongo\CapturedCameraSnapshotMongoDocument.cs" />
+    <Compile Include="Mongo\CapturedDisplaySnapshotMongoDocument.cs" />
+    <Compile Include="Mongo\CapturedForegroundProcessMongoDocument.cs" />
+    <Compile Include="Mongo\CapturedKeyboardKeyMongoDocument.cs" />
+    <Compile Include="Mongo\CapturedNetworkPacketMongoDocument.cs" />
     <Compile Include="Mongo\MongoCollections.cs" />
+    <Compile Include="Mongo\MonitoringSessionMongoDocument.cs" />
     <Compile Include="ResponseResult.cs" />
     <Compile Include="WebcamDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

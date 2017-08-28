@@ -1,6 +1,6 @@
-﻿namespace EMS.Core.Models
+﻿namespace EMS.Core.Models.DTOs
 {
-    public class CapturedCameraSnapshotDTO : BaseDTO
+    public class CapturedCameraSnapshotDto : AuditableDto
     {
         public byte[] CameraSnapshot { get; set; }
     }

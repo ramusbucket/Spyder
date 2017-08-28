@@ -1,0 +1,52 @@
+﻿<div class="help-block"></div>
+
+Get active sessions
+MongoDB collection for active users mapping
+MonitoringSessions
+=>UserId
+=>SessionId
+=>IsActive
+
+Create sessionId on desktop application level.
+
+Activation/Deactivation is done on mongo savers level.
+If we didn't receive any update for sessionID = X in the last N minutes, 
+the session is marked as inactive.
+We will have a worker that scans mongoDb collections 
+for the last updated item from given sessionId and checks if its update date is < DateTime.Now - 60 mins
+
+Mongo indexes
+CollectionItem creation date (might be possible to extract it from object id)
+otherwise, add a base mongo item with insertion date
+
+// Mongo Savers
+// Save the item and make a push notification to Website about this item
+if
+=> SessionId
+=> 
+
+// Home controller
+// Realtime brief view of users activity
+var activeSessions = db.Collection("MonitoringSessions").find({isActive: true})
+
+foreach(session in activeSessions)
+{
+    
+}
+
+
+// scaling mongo savers
+// => potential many push notification requests
+// => we kill the website
+
+// implement timer on client level(javascript)
+// => request ajax updates
+// flaws
+// => potential multiple redundant requests to MongoDB
+
+// Display last 5 user desktop snapshots
+// Display last 5 user camera snapshots
+// Display last 5 user foreground processes
+// Display last 5 user started processes
+// Display last 20 user tcp/ip requests
+// Display last 100 user keys pressed (with option to reconstruct as sentence)

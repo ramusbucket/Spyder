@@ -1,8 +1,8 @@
 ﻿using EMS.Infrastructure.Common.Enums;
 
-namespace EMS.Core.Models
+namespace EMS.Core.Models.DTOs
 {
-    public class CapturedKeyDetailsDTO : BaseDTO
+    public class CapturedKeyDetailsDto : AuditableDto
     {
         public KeyboardKey KeyboardKey { get; set; }
     }

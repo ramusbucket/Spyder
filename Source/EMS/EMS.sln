@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Core.Extensions", "Core
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{DB1CF46D-2B67-4316-8F30-83D4E2A46323}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Web.Server.Collector", "Web\EMS.Web.Server.Collector\EMS.Web.Server.Collector.csproj", "{31A185E9-1312-456A-900E-5365B82F0F16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Web.KafkaSavers", "Web\EMS.Web.KafkaSavers\EMS.Web.KafkaSavers.csproj", "{31A185E9-1312-456A-900E-5365B82F0F16}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Infrastructure.DependencyInjection", "Infrastructure\EMS.Infrastructure.DependencyInjection\EMS.Infrastructure.DependencyInjection.csproj", "{E9C5306B-BDAB-4C01-99EB-80B74633143B}"
 EndProject
@@ -37,7 +37,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Infrastructure.Stream",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Desktop.Client", "Desktop\EMS.Desktop.Client\EMS.Desktop.Client.csproj", "{96D29032-2AAA-4DBC-AE78-CBE0C7DB6AD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Web.Worker.MongoSaver", "Web\EMS.Web.Worker.MongoSaver\EMS.Web.Worker.MongoSaver.csproj", "{129D146B-E490-4F48-B996-C8CBF52BDA94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Web.MongoSavers", "Web\EMS.Web.MongoSavers\EMS.Web.MongoSavers.csproj", "{129D146B-E490-4F48-B996-C8CBF52BDA94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Web.Website", "Web\EMS.Web.Website\EMS.Web.Website.csproj", "{A99C8E88-C9B2-460A-8448-25A1B6D76BD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +99,10 @@ Global
 		{129D146B-E490-4F48-B996-C8CBF52BDA94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{129D146B-E490-4F48-B996-C8CBF52BDA94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{129D146B-E490-4F48-B996-C8CBF52BDA94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A99C8E88-C9B2-460A-8448-25A1B6D76BD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A99C8E88-C9B2-460A-8448-25A1B6D76BD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A99C8E88-C9B2-460A-8448-25A1B6D76BD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A99C8E88-C9B2-460A-8448-25A1B6D76BD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,5 +120,6 @@ Global
 		{73BCEBC6-8C84-4CC9-845E-F21A91793E27} = {36B6E86C-DC31-4B8F-A6D5-DD208200F101}
 		{96D29032-2AAA-4DBC-AE78-CBE0C7DB6AD5} = {9F70DE2E-0D98-4512-9F98-86E05C9083F6}
 		{129D146B-E490-4F48-B996-C8CBF52BDA94} = {DB1CF46D-2B67-4316-8F30-83D4E2A46323}
+		{A99C8E88-C9B2-460A-8448-25A1B6D76BD3} = {DB1CF46D-2B67-4316-8F30-83D4E2A46323}
 	EndGlobalSection
 EndGlobal

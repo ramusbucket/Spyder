@@ -1,9 +1,6 @@
-﻿using EMS.Core.Models.DTOs;
-using System.Diagnostics;
-
-namespace EMS.Core.Models
+﻿namespace EMS.Core.Models.DTOs
 {
-    public class CapturedForegroundProcessDTO : BaseDTO
+    public class CapturedForegroundProcessDto : AuditableDto
     {
         public SlimProcess CapturedForegroundProcess { get; set; }
     }

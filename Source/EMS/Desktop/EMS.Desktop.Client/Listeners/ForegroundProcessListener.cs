@@ -7,10 +7,12 @@ using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using Serilog;
 using Easy.Common.Interfaces;
+using EMS.Core.Models.DTOs;
+using EMS.Desktop.Client.Models;
 
 namespace EMS.Desktop.Client
 {
-    public class ForegroundProcessListener : BaseListener<CapturedForegroundProcessDTO, Process>
+    public class ForegroundProcessListener : BaseListener<CapturedForegroundProcessDto>
     {
         private IProcessApi processApi;
 
@@ -41,10 +43,11 @@ namespace EMS.Desktop.Client
 
         private void OnForegroundProcessChangedHandler(object sender, Process e)
         {
-            var capturedItem = new CapturedForegroundProcessDTO
+            var capturedItem = new CapturedForegroundProcessDto
             {
                 CapturedForegroundProcess = e.ProjectToSlimProcess(),
-                CreatedOn = TimeProvider.Current.Now
+                CreatedOn = TimeProvider.Current.Now,
+                SessionId = Identity.SessionId
             };
 
             this.capturedItems.Enqueue(capturedItem);

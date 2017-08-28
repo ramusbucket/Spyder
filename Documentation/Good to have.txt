@@ -3,3 +3,5 @@ Log errors to ElasticSearch/Kibana using Serilog sinks.
 	Database servers
 
 Log statistics to Grafana.
+
+Connect database to both web applications.
