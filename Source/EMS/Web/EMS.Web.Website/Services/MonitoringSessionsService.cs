@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EMS.Core.Models.Mongo;
+using EMS.Web.Website.Models;
 using MongoDB.Driver;
 
 namespace EMS.Web.Website.Services
@@ -20,7 +22,7 @@ namespace EMS.Web.Website.Services
         {
             var mongoDb = new MongoClient("mongodb://localhost:27017")
                 .GetDatabase("Spyder");
-           
+
             _monitoringSessionsCollection =
                 mongoDb.GetCollection<MonitoringSessionMongoDocument>(MongoCollections.MonitoringSessions);
 
@@ -43,14 +45,50 @@ namespace EMS.Web.Website.Services
                 mongoDb.GetCollection<CapturedDisplaySnapshotMongoDocument>(MongoCollections.DisplaySnapshots);
         }
 
-        public async Task<IEnumerable<MonitoringSessionMongoDocument>> GetActiveSessions(
-            int page = 1, 
+        public async Task<IEnumerable<SessionViewModel>> GetActiveSessionsDetails(
+            int page = 1,
             int itemsPerPage = 12)
         {
             if (page < 1)
             {
                 var message = $"Parameter: \"{nameof(page)}\" must not have a value lower than 1.";
-                throw new ArgumentOutOfRangeException(nameof(page),message);
+                throw new ArgumentOutOfRangeException(nameof(page), message);
+            }
+
+            if (itemsPerPage < 1)
+            {
+                var message = $"Parameter: \"{nameof(itemsPerPage)}\" must not have a value lower than 1.";
+                throw new ArgumentOutOfRangeException(nameof(itemsPerPage), message);
+            }
+
+            var sessionsIds = (await GetActiveSessions(page, itemsPerPage)).Select(x => x.Id.SessionId);
+            var result = sessionsIds.Select(async x => new SessionViewModel
+            {
+                KeyboardKeys = await GetKeyboardKeys(x),
+                NetworkPackets = await GetNetworkPackets(x),
+                CameraSnapshots = await GetCameraSnapshots(x),
+                DisplaySnapshots = await GetDisplaySnapshots(x),
+                ForegroundProcesses = await GetForegroundProcesses(x)
+            });
+
+            var realResult = new List<SessionViewModel>();
+            foreach (var r in result)
+            {
+                var x = await r;
+                realResult.Add(x);
+            }
+
+            return realResult;
+        }
+
+        public async Task<IEnumerable<MonitoringSessionMongoDocument>> GetActiveSessions(
+            int page = 1,
+            int itemsPerPage = 12)
+        {
+            if (page < 1)
+            {
+                var message = $"Parameter: \"{nameof(page)}\" must not have a value lower than 1.";
+                throw new ArgumentOutOfRangeException(nameof(page), message);
             }
 
             if (itemsPerPage < 1)
@@ -72,8 +110,8 @@ namespace EMS.Web.Website.Services
         }
 
         public async Task<IEnumerable<CapturedCameraSnapshotMongoDocument>> GetCameraSnapshots(
-            string sessionId, 
-            int page = 1, 
+            string sessionId,
+            int page = 1,
             int itemsPerPage = 3)
         {
             return await GetPageFromCollection<CapturedCameraSnapshotMongoDocument>(
@@ -137,18 +175,18 @@ namespace EMS.Web.Website.Services
             int itemsPerPage = 3)
         {
             return await GetPageFromCollection<CapturedActiveProcessesMongoDocument>(
-                _activeProcessesCollection, 
+                _activeProcessesCollection,
                 sessionId,
-                page, 
+                page,
                 itemsPerPage);
         }
 
-        public async Task<IEnumerable<T>> GetPageFromCollection<T>(
+        private async Task<IEnumerable<T>> GetPageFromCollection<T>(
             IMongoCollection<T> mongoCollection,
             string sessionId,
             int page = 1,
             int itemsPerPage = 3)
-            where T: AuditableMongoDocument
+            where T : AuditableMongoDocument
         {
             if (page < 1)
             {
@@ -184,6 +222,43 @@ namespace EMS.Web.Website.Services
 
     public interface IMonitoringSessionsService
     {
+        Task<IEnumerable<SessionViewModel>> GetActiveSessionsDetails(
+            int page = 1,
+            int itemsPerPage = 12);
+
+        Task<IEnumerable<MonitoringSessionMongoDocument>> GetActiveSessions(
+            int page = 1,
+            int itemsPerPage = 12);
+
+        Task<IEnumerable<CapturedCameraSnapshotMongoDocument>> GetCameraSnapshots(
+            string sessionId,
+            int page = 1,
+            int itemsPerPage = 3);
+
+        Task<IEnumerable<CapturedDisplaySnapshotMongoDocument>> GetDisplaySnapshots(
+            string sessionId,
+            int page = 1,
+            int itemsPerPage = 3);
+
+        Task<IEnumerable<CapturedKeyboardKeyMongoDocument>> GetKeyboardKeys(
+            string sessionId,
+            int page = 1,
+            int itemsPerPage = 3);
+
+        Task<IEnumerable<CapturedNetworkPacketMongoDocument>> GetNetworkPackets(
+            string sessionId,
+            int page = 1,
+            int itemsPerPage = 3);
+
+        Task<IEnumerable<CapturedForegroundProcessMongoDocument>> GetForegroundProcesses(
+            string sessionId,
+            int page = 1,
+            int itemsPerPage = 3);
+
+        Task<IEnumerable<CapturedActiveProcessesMongoDocument>> GetActiveProcesses(
+            string sessionId,
+            int page = 1,
+            int itemsPerPage = 3);
 
     }
 }

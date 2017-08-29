@@ -79,17 +79,13 @@
 @section scripts {
     <script>
         var activeSessions;
-        var url = "/MonitoringSessions/GetActiveSessions?page=1&itemsPerPage=2";
-
+        var url = "/MonitoringSessions/GetActiveSessionsDetails?page=1&itemsPerPage=6";
 
         $.get(url, function (response) {
             if (response.IsSuccessful) {
                 activeSessions = response.Result;
                 var activeSessionsCount = activeSessions.length;
-                for (var i = 0; i < activeSessionsCount; i++) {
-                    
-
-                }
+                
                 console.log(activeSessions);
             } else {
                 console.log(response.Message);
