@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using EMS.Core.Models;
 using EMS.Core.Models.Mongo;
 using MongoDB.Driver;
 
@@ -12,7 +8,6 @@ namespace EMS.Web.Website.Services
 {
     public class MonitoringSessionsService : IMonitoringSessionsService
     {
-
         private readonly IMongoCollection<MonitoringSessionMongoDocument> _monitoringSessionsCollection;
         private readonly IMongoCollection<CapturedActiveProcessesMongoDocument> _activeProcessesCollection;
         private readonly IMongoCollection<CapturedForegroundProcessMongoDocument> _foregroundProcessesCollection;
@@ -23,9 +18,9 @@ namespace EMS.Web.Website.Services
 
         public MonitoringSessionsService()
         {
-            var mongoClient = new MongoClient("mongodb://localhost:27017");
-            var mongoDb = mongoClient.GetDatabase("Spyder");
-
+            var mongoDb = new MongoClient("mongodb://localhost:27017")
+                .GetDatabase("Spyder");
+           
             _monitoringSessionsCollection =
                 mongoDb.GetCollection<MonitoringSessionMongoDocument>(MongoCollections.MonitoringSessions);
 
@@ -68,7 +63,6 @@ namespace EMS.Web.Website.Services
                 x => x.IsActive,
                 new FindOptions<MonitoringSessionMongoDocument, MonitoringSessionMongoDocument>()
                 {
-                    AllowPartialResults = true,
                     Limit = itemsPerPage,
                     Skip = (page - 1) * itemsPerPage,
                     Sort = new SortDefinitionBuilder<MonitoringSessionMongoDocument>().Descending(x => x.CreatedAt)
@@ -82,35 +76,11 @@ namespace EMS.Web.Website.Services
             int page = 1, 
             int itemsPerPage = 3)
         {
-            if (page < 1)
-            {
-                var message = $"Parameter: \"{nameof(page)}\" must not have a value lower than 1.";
-                throw new ArgumentOutOfRangeException(nameof(page), message);
-            }
-
-            if (itemsPerPage < 1)
-            {
-                var message = $"Parameter: \"{nameof(itemsPerPage)}\" must not have a value lower than 1.";
-                throw new ArgumentOutOfRangeException(nameof(itemsPerPage), message);
-            }
-
-            if (string.IsNullOrWhiteSpace(sessionId))
-            {
-                var message = $"Parameter: \"{nameof(sessionId)}\" must not be a null, empty or whitespace value.";
-                throw new ArgumentOutOfRangeException(nameof(sessionId), message);
-            }
-
-            var cameraSnapshotsCursor = await _cameraSnapshotsCollection.FindAsync(
-                x => x.SessionId == sessionId,
-                new FindOptions<CapturedCameraSnapshotMongoDocument, CapturedCameraSnapshotMongoDocument>()
-                {
-                    AllowPartialResults = true,
-                    Limit = itemsPerPage,
-                    Skip = (page - 1) * itemsPerPage,
-                    Sort = new SortDefinitionBuilder<CapturedCameraSnapshotMongoDocument>().Descending(x => x.CreatedOn)
-                });
-
-            return await cameraSnapshotsCursor.ToListAsync();
+            return await GetPageFromCollection<CapturedCameraSnapshotMongoDocument>(
+                _cameraSnapshotsCollection,
+                sessionId,
+                page,
+                itemsPerPage);
         }
 
         public async Task<IEnumerable<CapturedDisplaySnapshotMongoDocument>> GetDisplaySnapshots(
@@ -118,35 +88,11 @@ namespace EMS.Web.Website.Services
             int page = 1,
             int itemsPerPage = 3)
         {
-            if (page < 1)
-            {
-                var message = $"Parameter: \"{nameof(page)}\" must not have a value lower than 1.";
-                throw new ArgumentOutOfRangeException(nameof(page), message);
-            }
-
-            if (itemsPerPage < 1)
-            {
-                var message = $"Parameter: \"{nameof(itemsPerPage)}\" must not have a value lower than 1.";
-                throw new ArgumentOutOfRangeException(nameof(itemsPerPage), message);
-            }
-
-            if (string.IsNullOrWhiteSpace(sessionId))
-            {
-                var message = $"Parameter: \"{nameof(sessionId)}\" must not be a null, empty or whitespace value.";
-                throw new ArgumentOutOfRangeException(nameof(sessionId), message);
-            }
-
-            var displaySnapshotsCursor = await _displaySnapshotsCollection.FindAsync(
-                x => x.SessionId == sessionId,
-                new FindOptions<CapturedDisplaySnapshotMongoDocument, CapturedDisplaySnapshotMongoDocument>()
-                {
-                    AllowPartialResults = true,
-                    Limit = itemsPerPage,
-                    Skip = (page - 1) * itemsPerPage,
-                    Sort = new SortDefinitionBuilder<CapturedDisplaySnapshotMongoDocument>().Descending(x => x.CreatedOn)
-                });
-
-            return await displaySnapshotsCursor.ToListAsync();
+            return await GetPageFromCollection<CapturedDisplaySnapshotMongoDocument>(
+                _displaySnapshotsCollection,
+                sessionId,
+                page,
+                itemsPerPage);
         }
 
         public async Task<IEnumerable<CapturedKeyboardKeyMongoDocument>> GetKeyboardKeys(
@@ -154,35 +100,11 @@ namespace EMS.Web.Website.Services
             int page = 1,
             int itemsPerPage = 3)
         {
-            if (page < 1)
-            {
-                var message = $"Parameter: \"{nameof(page)}\" must not have a value lower than 1.";
-                throw new ArgumentOutOfRangeException(nameof(page), message);
-            }
-
-            if (itemsPerPage < 1)
-            {
-                var message = $"Parameter: \"{nameof(itemsPerPage)}\" must not have a value lower than 1.";
-                throw new ArgumentOutOfRangeException(nameof(itemsPerPage), message);
-            }
-
-            if (string.IsNullOrWhiteSpace(sessionId))
-            {
-                var message = $"Parameter: \"{nameof(sessionId)}\" must not be a null, empty or whitespace value.";
-                throw new ArgumentOutOfRangeException(nameof(sessionId), message);
-            }
-
-            var keyboardKeysCursor = await _keyboardKeysCollection.FindAsync(
-                x => x.SessionId == sessionId,
-                new FindOptions<CapturedKeyboardKeyMongoDocument, CapturedKeyboardKeyMongoDocument>()
-                {
-                    AllowPartialResults = true,
-                    Limit = itemsPerPage,
-                    Skip = (page - 1) * itemsPerPage,
-                    Sort = new SortDefinitionBuilder<CapturedKeyboardKeyMongoDocument>().Descending(x => x.CreatedOn)
-                });
-
-            return await keyboardKeysCursor.ToListAsync();
+            return await GetPageFromCollection<CapturedKeyboardKeyMongoDocument>(
+                _keyboardKeysCollection,
+                sessionId,
+                page,
+                itemsPerPage);
         }
 
         public async Task<IEnumerable<CapturedNetworkPacketMongoDocument>> GetNetworkPackets(
@@ -190,35 +112,11 @@ namespace EMS.Web.Website.Services
             int page = 1,
             int itemsPerPage = 3)
         {
-            if (page < 1)
-            {
-                var message = $"Parameter: \"{nameof(page)}\" must not have a value lower than 1.";
-                throw new ArgumentOutOfRangeException(nameof(page), message);
-            }
-
-            if (itemsPerPage < 1)
-            {
-                var message = $"Parameter: \"{nameof(itemsPerPage)}\" must not have a value lower than 1.";
-                throw new ArgumentOutOfRangeException(nameof(itemsPerPage), message);
-            }
-
-            if (string.IsNullOrWhiteSpace(sessionId))
-            {
-                var message = $"Parameter: \"{nameof(sessionId)}\" must not be a null, empty or whitespace value.";
-                throw new ArgumentOutOfRangeException(nameof(sessionId), message);
-            }
-
-            var networkPacketsCursor = await _networkPacketsCollection.FindAsync(
-                x => x.SessionId == sessionId,
-                new FindOptions<CapturedNetworkPacketMongoDocument, CapturedNetworkPacketMongoDocument>()
-                {
-                    AllowPartialResults = true,
-                    Limit = itemsPerPage,
-                    Skip = (page - 1) * itemsPerPage,
-                    Sort = new SortDefinitionBuilder<CapturedNetworkPacketMongoDocument>().Descending(x => x.CreatedOn)
-                });
-
-            return await networkPacketsCursor.ToListAsync();
+            return await GetPageFromCollection<CapturedNetworkPacketMongoDocument>(
+                _networkPacketsCollection,
+                sessionId,
+                page,
+                itemsPerPage);
         }
 
         public async Task<IEnumerable<CapturedForegroundProcessMongoDocument>> GetForegroundProcesses(
@@ -226,35 +124,11 @@ namespace EMS.Web.Website.Services
             int page = 1,
             int itemsPerPage = 3)
         {
-            if (page < 1)
-            {
-                var message = $"Parameter: \"{nameof(page)}\" must not have a value lower than 1.";
-                throw new ArgumentOutOfRangeException(nameof(page), message);
-            }
-
-            if (itemsPerPage < 1)
-            {
-                var message = $"Parameter: \"{nameof(itemsPerPage)}\" must not have a value lower than 1.";
-                throw new ArgumentOutOfRangeException(nameof(itemsPerPage), message);
-            }
-
-            if (string.IsNullOrWhiteSpace(sessionId))
-            {
-                var message = $"Parameter: \"{nameof(sessionId)}\" must not be a null, empty or whitespace value.";
-                throw new ArgumentOutOfRangeException(nameof(sessionId), message);
-            }
-
-            var foregroundProcessesCursor = await _foregroundProcessesCollection.FindAsync(
-                x => x.SessionId == sessionId,
-                new FindOptions<CapturedForegroundProcessMongoDocument, CapturedForegroundProcessMongoDocument>()
-                {
-                    AllowPartialResults = true,
-                    Limit = itemsPerPage,
-                    Skip = (page - 1) * itemsPerPage,
-                    Sort = new SortDefinitionBuilder<CapturedForegroundProcessMongoDocument>().Descending(x => x.CreatedOn)
-                });
-
-            return await foregroundProcessesCursor.ToListAsync();
+            return await GetPageFromCollection<CapturedForegroundProcessMongoDocument>(
+                _foregroundProcessesCollection,
+                sessionId,
+                page,
+                itemsPerPage);
         }
 
         public async Task<IEnumerable<CapturedActiveProcessesMongoDocument>> GetActiveProcesses(
@@ -262,35 +136,49 @@ namespace EMS.Web.Website.Services
             int page = 1,
             int itemsPerPage = 3)
         {
+            return await GetPageFromCollection<CapturedActiveProcessesMongoDocument>(
+                _activeProcessesCollection, 
+                sessionId,
+                page, 
+                itemsPerPage);
+        }
+
+        public async Task<IEnumerable<T>> GetPageFromCollection<T>(
+            IMongoCollection<T> mongoCollection,
+            string sessionId,
+            int page = 1,
+            int itemsPerPage = 3)
+            where T: AuditableMongoDocument
+        {
             if (page < 1)
             {
-                var message = $"Parameter: \"{nameof(page)}\" must not have a value lower than 1.";
+                var message = $"Argument {nameof(page)} must not have a value lower than 1.";
                 throw new ArgumentOutOfRangeException(nameof(page), message);
             }
 
             if (itemsPerPage < 1)
             {
-                var message = $"Parameter: \"{nameof(itemsPerPage)}\" must not have a value lower than 1.";
+                var message = $"Argument {nameof(itemsPerPage)} must not have a value lower than 1.";
                 throw new ArgumentOutOfRangeException(nameof(itemsPerPage), message);
             }
 
             if (string.IsNullOrWhiteSpace(sessionId))
             {
-                var message = $"Parameter: \"{nameof(sessionId)}\" must not be a null, empty or whitespace value.";
+                var message = $"Argument {nameof(sessionId)} must not be a null, empty or whitespace value.";
                 throw new ArgumentOutOfRangeException(nameof(sessionId), message);
             }
 
-            var networkPacketsCursor = await _activeProcessesCollection.FindAsync(
+            var pagedItemsCursor = await mongoCollection.FindAsync(
                 x => x.SessionId == sessionId,
-                new FindOptions<CapturedActiveProcessesMongoDocument, CapturedActiveProcessesMongoDocument>()
+                new FindOptions<T, T>()
                 {
                     AllowPartialResults = true,
                     Limit = itemsPerPage,
                     Skip = (page - 1) * itemsPerPage,
-                    Sort = new SortDefinitionBuilder<CapturedActiveProcessesMongoDocument>().Descending(x => x.CreatedOn)
+                    Sort = new SortDefinitionBuilder<T>().Descending(x => x.CreatedOn)
                 });
 
-            return await networkPacketsCursor.ToListAsync();
+            return await pagedItemsCursor.ToListAsync();
         }
     }
 
