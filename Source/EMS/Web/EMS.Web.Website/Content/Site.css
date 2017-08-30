@@ -15,3 +15,20 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.snapshot-small {
+    width: 7vw;
+}
+
+.padding-none {
+    padding: 0px;
+}
+
+.margin-none {
+    margin: 0px;
+}
+
+li.margins-none {
+    margin: 0; 
+    padding: 0;
+}
