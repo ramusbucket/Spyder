@@ -9,6 +9,9 @@ namespace EMS.Core.Models.Mongo
         public string UserId { get; set; }
 
         [BsonElement]
+        public string UserName { get; set; }
+
+        [BsonElement]
         public string SessionId { get; set; }
 
         [BsonElement]

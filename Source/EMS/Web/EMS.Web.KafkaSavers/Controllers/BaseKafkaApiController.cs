@@ -18,9 +18,12 @@ namespace EMS.Web.KafkaSavers.Controllers
         protected virtual async Task PublishToKafkaMultipleItems(IEnumerable<AuditableDto> data, string topicName)
         {
             var userId = this.User.Identity.GetUserId();
+            var userName = this.User.Identity.GetUserName();
+
             foreach (var item in data)
             {
                 item.UserId = userId;
+                item.UserName = userName;
             }
 
             var key = TimeProvider.Current.UtcNow.Ticks.ToString();

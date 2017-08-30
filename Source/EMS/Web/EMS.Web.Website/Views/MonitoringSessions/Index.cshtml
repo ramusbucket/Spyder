@@ -1,0 +1,109 @@
+﻿@using EMS.Web.Website.Models
+@model SessionsWithDetailsViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="help-block"></div>
+
+<div class="row">
+
+    @if (this.Model.Message != null)
+    {
+        <h1 class="text-danger">@this.Model.Message</h1>
+    }
+
+    @foreach (var vm in this.Model.Sessions)
+    {
+        <div class="col-lg-4" data-session-id="@vm.SessionId" data-user-id="@vm.UserId">
+            <h1>
+                <a href="/MonitoringSessions/Details/@vm.SessionId">@vm.UserName</a>
+            </h1>
+
+            <div class="row camera-snapshots">
+                <h5>Camera</h5>
+                <ul class="list-inline">
+                    @foreach (var cameraSnapshot in vm.CameraSnapshots)
+                    {
+                        <li>
+                            <img src="@Html.Image(cameraSnapshot.CameraSnapshot)" width="100" height="80" />
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="row display-snapshots">
+                <h5>Display</h5>
+                <ul class="list-inline">
+                    @foreach (var displaySnapshot in vm.DisplaySnapshots)
+                    {
+                        <li>
+                            <img src="@Html.Image(displaySnapshot.DisplaySnapshot)" width="100" height="80" />
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="row keyboard-keys">
+                <h5>Pressed keys</h5>
+                <ul class="list-inline">
+                    @foreach (var keyboardKey in vm.KeyboardKeys)
+                    {
+                        <li>
+                            <span>@keyboardKey.KeyboardKey</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="row network-packets">
+                <h5>Network traffic</h5>
+                <ul class="list-inline">
+                    @foreach (var networkPacket in vm.NetworkPackets)
+                    {
+                        <li>
+                            <span>
+                                @($"{networkPacket.HostAddress}{networkPacket.HostPort} -> {networkPacket.DestinationAddress}{networkPacket.DestinationPort} ({networkPacket.Protocol})")
+                            </span>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="row foreground-processes">
+                <h5>Foreground processes</h5>
+                <ul class="list-inline">
+                    @foreach (var foregroundProcess in vm.ForegroundProcesses)
+                    {
+                        <li>
+                            <span>
+                                @foregroundProcess.ForegroundProcess.ProcessName
+                            </span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts {
+    <script>
+        var activeSessions;
+        var url = "/MonitoringSessions/GetActiveSessionsWithDetails?page=1&itemsPerPage=6";
+
+        //$.get(url, function (response) {
+        //    if (response.IsSuccessful) {
+        //        activeSessions = response.Result;
+        //        var activeSessionsCount = activeSessions.length;
+
+        //        console.log(activeSessions);
+        //    } else {
+        //        console.log(response.Message);
+        //    }
+        //});
+    </script>
+}
+
+

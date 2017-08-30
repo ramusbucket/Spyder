@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EMS.Core.Models.Mongo;
 using EMS.Web.Website.Models;
@@ -61,24 +60,31 @@ namespace EMS.Web.Website.Services
                 throw new ArgumentOutOfRangeException(nameof(itemsPerPage), message);
             }
 
-            var sessionsIds = (await GetActiveSessions(page, itemsPerPage)).Select(x => x.Id.SessionId);
-            var result = sessionsIds.Select(async x => new SessionViewModel
-            {
-                KeyboardKeys = await GetKeyboardKeys(x),
-                NetworkPackets = await GetNetworkPackets(x),
-                CameraSnapshots = await GetCameraSnapshots(x),
-                DisplaySnapshots = await GetDisplaySnapshots(x),
-                ForegroundProcesses = await GetForegroundProcesses(x)
-            });
+            var activeSessions = (await GetActiveSessions(page, itemsPerPage));
 
-            var realResult = new List<SessionViewModel>();
-            foreach (var r in result)
+            var results = new List<SessionViewModel>();
+            foreach (var session in activeSessions)
             {
-                var x = await r;
-                realResult.Add(x);
+                var sessionId = session.SessionId;
+                var userId = session.UserId;
+                var userName = session.UserName;
+
+                var vm = new SessionViewModel
+                {
+                    UserId = userId,
+                    UserName = userName,
+                    SessionId = sessionId,
+                    KeyboardKeys = await GetKeyboardKeys(sessionId),
+                    NetworkPackets = await GetNetworkPackets(sessionId),
+                    CameraSnapshots = await GetCameraSnapshots(sessionId),
+                    DisplaySnapshots = await GetDisplaySnapshots(sessionId),
+                    ForegroundProcesses = await GetForegroundProcesses(sessionId)
+                };
+
+                results.Add(vm);
             }
-
-            return realResult;
+            
+            return results;
         }
 
         public async Task<IEnumerable<MonitoringSessionMongoDocument>> GetActiveSessions(
@@ -103,7 +109,7 @@ namespace EMS.Web.Website.Services
                 {
                     Limit = itemsPerPage,
                     Skip = (page - 1) * itemsPerPage,
-                    Sort = new SortDefinitionBuilder<MonitoringSessionMongoDocument>().Descending(x => x.CreatedAt)
+                    Sort = new SortDefinitionBuilder<MonitoringSessionMongoDocument>().Descending(x => x.CreatedOn)
                 });
 
             return await activeSessionsCursor.ToListAsync();
@@ -136,7 +142,7 @@ namespace EMS.Web.Website.Services
         public async Task<IEnumerable<CapturedKeyboardKeyMongoDocument>> GetKeyboardKeys(
             string sessionId,
             int page = 1,
-            int itemsPerPage = 3)
+            int itemsPerPage = 12)
         {
             return await GetPageFromCollection<CapturedKeyboardKeyMongoDocument>(
                 _keyboardKeysCollection,

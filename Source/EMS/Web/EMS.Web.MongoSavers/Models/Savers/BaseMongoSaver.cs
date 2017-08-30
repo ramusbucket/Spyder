@@ -69,55 +69,22 @@ namespace EMS.Web.MongoSavers.Models.Savers
 
             var mongoItem = FormatReceivedMessage(message);
 
-            //var findDefinition = new FilterDefinitionBuilder<MonitoringSessionMongoDocument>()
-            //    .Where(x=> x.SessionId == mongoItem.SessionId && x.UserId == mongoItem.UserId);
-
-            //var updateDefinition = new ObjectUpdateDefinition<MonitoringSessionMongoDocument>(mongoItem)
-            //    .Set(x => x.SessionId, mongoItem.SessionId)
-            //    .Set(x => x.UserId, mongoItem.UserId)
-            //    .Set(x => x.CreatedOn, mongoItem.CreatedOn)
-            //    .Set(x => x.IsActive, true);
-
-            //var updateOptions = new UpdateOptions() { IsUpsert = true };
-
-            //var updateResult = _sessionsCollection.UpdateOne(
-            //    findDefinition,
-            //    updateDefinition,
-            //    updateOptions);
-
-            //var count = _sessionsCollection.Count(x => x.SessionId == mongoItem.SessionId &&
-            //                                           x.UserId == mongoItem.UserId);
-
-            //if (count == 0)
-            //{
-            //    _sessionsCollection.InsertOne(
-            //        new MonitoringSessionMongoDocument
-            //    {
-            //        UserId =  mongoItem.UserId,
-            //        SessionId =  mongoItem.SessionId,
-            //        CreatedOn = mongoItem.CreatedOn,
-            //        IsActive = true,
-            //    });
-            //}
-
             var session = new MonitoringSessionMongoDocument
             {
-                Id = new MonitoringSessionId
-                {
-                    UserId = mongoItem.UserId,
-                    SessionId = mongoItem.SessionId
-                },
-                CreatedAt = TimeProvider.Current.UtcNow,
+                UserId = mongoItem.UserId,
+                SessionId = mongoItem.SessionId,
+                UserName = mongoItem.UserName,
+                CreatedOn = TimeProvider.Current.UtcNow,
                 IsActive = true
             };
 
             var updateResult = _sessionsCollection.FindOneAndUpdate(
                 new FilterDefinitionBuilder<MonitoringSessionMongoDocument>()
-                    .Where(x => x.Id.SessionId == session.Id.SessionId && x.Id.UserId == session.Id.UserId),
+                    .Where(x => x.SessionId == session.SessionId && x.UserId == session.UserId),
                 new UpdateDefinitionBuilder<MonitoringSessionMongoDocument>()
-                    .Set(x => x.Id.UserId,session.Id.UserId)
-                    .Set(x=> x.Id.SessionId, session.Id.SessionId)
-                    .Set(x=> x.CreatedAt, session.CreatedAt)
+                    .Set(x => x.UserId,session.UserId)
+                    .Set(x=> x.SessionId, session.SessionId)
+                    .Set(x=> x.CreatedOn, session.CreatedOn)
                     .Set(x=> x.IsActive, true),
                 new FindOneAndUpdateOptions<MonitoringSessionMongoDocument, MonitoringSessionMongoDocument>()
                 {

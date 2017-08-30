@@ -1,24 +1,10 @@
-﻿using System;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace EMS.Core.Models.Mongo
 {
-    public class MonitoringSessionMongoDocument
+    public class MonitoringSessionMongoDocument : AuditableMongoDocument
     {
-        [BsonId]
-        public MonitoringSessionId Id { get; set; }
-
+        [BsonElement]
         public bool IsActive { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-    }
-
-    public class MonitoringSessionId
-    {
-        [BsonElement]
-        public string UserId { get; set; }
-
-        [BsonElement]
-        public string SessionId { get; set; }
     }
 }

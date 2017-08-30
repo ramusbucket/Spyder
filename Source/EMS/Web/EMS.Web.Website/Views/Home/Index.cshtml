@@ -79,7 +79,7 @@
 @section scripts {
     <script>
         var activeSessions;
-        var url = "/MonitoringSessions/GetActiveSessionsDetails?page=1&itemsPerPage=6";
+        var url = "/MonitoringSessions/GetActiveSessionsWithDetails?page=1&itemsPerPage=6";
 
         $.get(url, function (response) {
             if (response.IsSuccessful) {
