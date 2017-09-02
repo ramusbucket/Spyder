@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
 using EMS.Infrastructure.DependencyInjection;
 using EMS.Infrastructure.DependencyInjection.Interfaces;
+using EMS.Infrastructure.Statistics;
 using EMS.Infrastructure.Stream;
 
 namespace EMS.Web.KafkaSavers
@@ -16,12 +18,29 @@ namespace EMS.Web.KafkaSavers
 
             this.RegisterKafkaProducer(injector);
             this.RegisterKafkaConsumer(injector);
+            this.RegisterStatsCollector(injector);
+        }
+
+        private void RegisterStatsCollector(IInjector injector)
+        {
+            var producer = injector.Resolve<Producer<string, object>>();
+            var applicationName = Assembly.GetExecutingAssembly().FullName;
+            var topic = "Metrics";
+            var serverName = "Home";
+
+            injector.RegisterInstance<IStatisticsCollector>(
+                new KafkaStatisticsCollector(producer, topic, applicationName, serverName));
         }
 
         private void RegisterKafkaProducer(IInjector injector)
         {
             var kafkaBrokers = GetKafkaBrokers();
-            var producerConfig = new Dictionary<string, object> { { "bootstrap.servers", kafkaBrokers } };
+            var producerConfig = new Dictionary<string, object>
+            {
+                { "bootstrap.servers", kafkaBrokers },
+                { "socket.blocking.max.ms", 1 },
+                { "linger.ms", 0}
+            };
 
             var keySerializer = new StringSerializer(Encoding.UTF8);
             var valueSerializer = new JsonSerializerObjectToBytes();

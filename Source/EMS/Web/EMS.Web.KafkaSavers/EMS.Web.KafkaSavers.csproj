@@ -332,6 +332,10 @@
       <Project>{E9C5306B-BDAB-4C01-99EB-80B74633143B}</Project>
       <Name>EMS.Infrastructure.DependencyInjection</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.Statistics\EMS.Infrastructure.Statistics.csproj">
+      <Project>{4B3B1AEC-25D4-4E76-8AEC-D7C146C22E09}</Project>
+      <Name>EMS.Infrastructure.Statistics</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

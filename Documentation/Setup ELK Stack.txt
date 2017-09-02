@@ -1,0 +1,16 @@
+Download elasticsearch.zip from official site
+Unzip elastisearch.zip
+
+Start elasticsearch
+Enter root folder
+Open cmd/powershell/bash 
+bin\elasticsearch.bat
+
+Check if started
+curl GET http://127.0.0.1:9200
+
+Create index (use PUT to specify document id / use POST to let elastic autogenerate id)
+
+curl POST http://127.0.0.1:9200/<indexName>/<documentType> -d '{"id": 4, "username": "john", "last_login": "2015-01-18 12:34:56"}'
+
+curl PUT http://127.0.0.1:9200/<indexName>/<documentType> -d '{"id": 4, "username": "john", "last_login": "2015-01-18 12:34:56"}'

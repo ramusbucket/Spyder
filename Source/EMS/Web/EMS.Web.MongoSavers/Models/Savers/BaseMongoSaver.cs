@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Confluent.Kafka;
 using EMS.Core.Models.Mongo;
 using EMS.Infrastructure.Common.Providers;
+using EMS.Infrastructure.Statistics;
 using EMS.Web.MongoSavers.App_Start;
 using MongoDB.Driver;
 using Newtonsoft.Json;
@@ -23,6 +24,8 @@ namespace EMS.Web.MongoSavers.Models.Savers
         private readonly IMongoCollection<TOut> _outCollection;
 
         private readonly IMongoCollection<MonitoringSessionMongoDocument> _sessionsCollection;
+
+        private readonly IStatisticsCollector _statsCollector;
 
         protected BaseMongoSaver(CancellationToken cToken, IMongoCollection<TOut> outCollection, string kafkaConsumerTopic)
         {
@@ -78,19 +81,24 @@ namespace EMS.Web.MongoSavers.Models.Savers
                 IsActive = true
             };
 
-            var updateResult = _sessionsCollection.FindOneAndUpdate(
-                new FilterDefinitionBuilder<MonitoringSessionMongoDocument>()
-                    .Where(x => x.SessionId == session.SessionId && x.UserId == session.UserId),
-                new UpdateDefinitionBuilder<MonitoringSessionMongoDocument>()
-                    .Set(x => x.UserId,session.UserId)
-                    .Set(x=> x.SessionId, session.SessionId)
-                    .Set(x=> x.CreatedOn, session.CreatedOn)
-                    .Set(x=> x.IsActive, true),
-                new FindOneAndUpdateOptions<MonitoringSessionMongoDocument, MonitoringSessionMongoDocument>()
-                {
-                    IsUpsert = true
-                });
-            _outCollection.InsertOne(mongoItem);
+            var updateResult = _statsCollector.Measure(
+                () => _sessionsCollection.FindOneAndUpdate(
+                    new FilterDefinitionBuilder<MonitoringSessionMongoDocument>()
+                        .Where(x => x.SessionId == session.SessionId && x.UserId == session.UserId),
+                    new UpdateDefinitionBuilder<MonitoringSessionMongoDocument>()
+                        .Set(x => x.UserId, session.UserId)
+                        .Set(x => x.SessionId, session.SessionId)
+                        .Set(x => x.CreatedOn, session.CreatedOn)
+                        .Set(x => x.IsActive, true),
+                    new FindOneAndUpdateOptions<MonitoringSessionMongoDocument, MonitoringSessionMongoDocument>()
+                    {
+                        IsUpsert = true
+                    }), 
+                nameof(_sessionsCollection.FindOneAndUpdate));
+
+            _statsCollector.Measure(
+                () => _outCollection.InsertOne(mongoItem), 
+                nameof(_outCollection.InsertOne));
             // notify WebAPI for db change (semi-push-notification)
 
             Statistics.LastProcessedItemDate = TimeProvider.Current.UtcNow;

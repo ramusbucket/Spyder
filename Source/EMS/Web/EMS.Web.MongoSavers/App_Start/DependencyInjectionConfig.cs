@@ -6,9 +6,11 @@ using EMS.Infrastructure.Stream;
 using EMS.Web.MongoSavers.Models;
 using MongoDB.Driver;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using EMS.Core.Models.Mongo;
+using EMS.Infrastructure.Statistics;
 using EMS.Web.MongoSavers.Models.Savers;
 
 namespace EMS.Web.MongoSavers.App_Start
@@ -24,6 +26,18 @@ namespace EMS.Web.MongoSavers.App_Start
             this.RegisterKafkaConsumer(injector);
             this.RegisterMongoCollections(injector);
             this.RegisterMongoSavers(injector);
+            this.RegisterStatsCollector(injector);
+        }
+
+        private void RegisterStatsCollector(IInjector injector)
+        {
+            var producer = injector.Resolve<Producer<string, object>>();
+            var applicationName = Assembly.GetExecutingAssembly().FullName;
+            var topic = "Metrics";
+            var serverName = "Home";
+
+            injector.RegisterInstance<IStatisticsCollector>(
+                new KafkaStatisticsCollector(producer, topic, applicationName, serverName));
         }
 
         private void RegisterCancellationToken(IInjector injector)

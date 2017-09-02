@@ -22,3 +22,6 @@ https://docs.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/mappin
 Web API Distributed Access Tokens
 https://support.microsoft.com/en-us/help/2915218/resolving-view-state-message-authentication-code-mac-errors#AppendixA (generate machine key)
 https://stackoverflow.com/questions/25749818/sharing-oauth-tokens-across-two-web-api-projects
+
+ELK Stack
+https://logz.io/learn/complete-guide-elk-stack/#What is the ELK Stack?

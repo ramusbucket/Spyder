@@ -1,12 +1,12 @@
 ﻿{
   "UrisConfig": {
-    "RegisterUserUri": "http://localhost:7000/api/Account/Register",
-    "LoginUserUri": "http://localhost:7000/Token"
+    "RegisterUserUri": "http://localhost:64435/api/Account/Register",
+    "LoginUserUri": "http://localhost:64435/Token"
   },
   "ListenersConfig": {
     "KeyboardListenerConfig": {
       "SendCapturedItemsThreshold": 20,
-      "SendCapturedItemsDestinationUri": "http://localhost:7000/api/CapturedKeys/PostCapturedKeys",
+      "SendCapturedItemsDestinationUri": "http://localhost:64435/api/CapturedKeys/PostCapturedKeys",
       "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
       "SendCapturedItemsTimerConfig": {
         "DueTime": 5000,
@@ -15,7 +15,7 @@
     },
     "DisplayListenerConfig": {
       "SendCapturedItemsThreshold": 3,
-      "SendCapturedItemsDestinationUri": "http://localhost:7000/api/DisplaySnapshots/PostCapturedDisplaySnapshots",
+      "SendCapturedItemsDestinationUri": "http://localhost:64435/api/DisplaySnapshots/PostCapturedDisplaySnapshots",
       "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
       "SendCapturedItemsTimerConfig": {
         "DueTime": 5000,
@@ -24,7 +24,7 @@
     },
     "CameraListenerConfig": {
       "SendCapturedItemsThreshold": 3,
-      "SendCapturedItemsDestinationUri": "http://localhost:7000/api/CameraSnapshots/PostCameraSnapshots",
+      "SendCapturedItemsDestinationUri": "http://localhost:64435/api/CameraSnapshots/PostCameraSnapshots",
       "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
       "SendCapturedItemsTimerConfig": {
         "DueTime": 5000,
@@ -33,7 +33,7 @@
     },
     "ActiveProcessesListenerConfig": {
       "SendCapturedItemsThreshold": 1,
-      "SendCapturedItemsDestinationUri": "http://localhost:7000/api/ActiveProcesses/PostActiveProcesses",
+      "SendCapturedItemsDestinationUri": "http://localhost:64435/api/ActiveProcesses/PostActiveProcesses",
       "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
       "SendCapturedItemsTimerConfig": {
         "DueTime": 5000,
@@ -42,7 +42,7 @@
     },
     "ForegroundProcessListenerConfig": {
       "SendCapturedItemsThreshold": 5,
-      "SendCapturedItemsDestinationUri": "http://localhost:7000/api/ForegroundProcess/PostForegroundProcess",
+      "SendCapturedItemsDestinationUri": "http://localhost:64435/api/ForegroundProcess/PostForegroundProcess",
       "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
       "SendCapturedItemsTimerConfig": {
         "DueTime": 5000,
@@ -51,7 +51,7 @@
     },
     "NetworkListenerConfig": {
       "SendCapturedItemsThreshold": 50,
-      "SendCapturedItemsDestinationUri": "http://localhost:7000/api/NetworkPackets/PostNetworkPackets",
+      "SendCapturedItemsDestinationUri": "http://localhost:64435/api/NetworkPackets/PostNetworkPackets",
       "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
       "SendCapturedItemsTimerConfig": {
         "DueTime": 5000,
