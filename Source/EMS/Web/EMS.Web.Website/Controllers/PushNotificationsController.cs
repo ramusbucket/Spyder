@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using EMS.Core.Models.Mongo;
+using EMS.Web.Website.Hubs;
+using Microsoft.AspNet.SignalR;
 
 namespace EMS.Web.Website.Controllers
 {
@@ -18,30 +20,27 @@ namespace EMS.Web.Website.Controllers
         [Route("Update")]
         public IHttpActionResult Update(object item)
         {
-            if (item is CapturedActiveProcessesMongoDocument)
-            {
-                
-            }
-            if (item is CapturedForegroundProcessMongoDocument)
-            {
+            var hub = GlobalHost.ConnectionManager.GetHubContext<PushNotificationsHub>();
 
-            }
-            if (item is CapturedCameraSnapshotMongoDocument)
+            // Fix this shit with the network packets, the load is not even funny
+            if ((item as CapturedForegroundProcessMongoDocument) != null)
             {
-
+                hub.Clients.All.pushForegroundProcess(item);
             }
-            if (item is CapturedDisplaySnapshotMongoDocument)
+            if ((item as CapturedCameraSnapshotMongoDocument) != null)
             {
-
+                hub.Clients.All.pushCameraSnapshot(item);
             }
-            if (item is CapturedKeyboardKeyMongoDocument)
+            if ((item as CapturedDisplaySnapshotMongoDocument) != null)
             {
-
+                hub.Clients.All.pushDisplaySnapshot(item);
             }
-            if (item is CapturedNetworkPacketMongoDocument)
+            if ((item as CapturedKeyboardKeyMongoDocument) != null)
             {
-
+                hub.Clients.All.pushKeyboardKeys(item);
             }
+
+            hub.Clients.All.pushForegroundProcess(item);
 
             return Ok();
         }

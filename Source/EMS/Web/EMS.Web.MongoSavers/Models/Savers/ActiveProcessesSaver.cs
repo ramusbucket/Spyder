@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Easy.Common.Interfaces;
 using EMS.Core.Models.DTOs;
 using EMS.Core.Models.Mongo;
 using EMS.Infrastructure.Statistics;
@@ -12,8 +13,9 @@ namespace EMS.Web.MongoSavers.Models.Savers
         public ActiveProcessesSaver(
             CancellationToken cToken, 
             IMongoCollection<CapturedActiveProcessesMongoDocument> outCollection,
-            IStatisticsCollector statsCollector) 
-            : base(cToken, outCollection, Topics.ActiveProcesses, statsCollector)
+            IStatisticsCollector statsCollector,
+            IRestClient restClient) 
+            : base(cToken, outCollection, Topics.ActiveProcesses, statsCollector, restClient)
         {
         }
 

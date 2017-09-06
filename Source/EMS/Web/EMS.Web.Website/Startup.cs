@@ -13,6 +13,7 @@ namespace EMS.Web.Website
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            app.MapSignalR();
         }
     }
 }

@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using Easy.Common;
+using Easy.Common.Interfaces;
 using EMS.Core.Models.Mongo;
 using EMS.Infrastructure.Statistics;
 using EMS.Web.MongoSavers.Models.Savers;
@@ -27,6 +29,12 @@ namespace EMS.Web.MongoSavers.App_Start
             this.RegisterMongoCollections(injector);
             this.RegisterMongoSavers(injector);
             this.RegisterStatsCollector(injector);
+            this.RegisterRestClient(injector);
+        }
+
+        private void RegisterRestClient(IInjector injector)
+        {
+            injector.RegisterInstance<IRestClient>(new RestClient());
         }
 
         private void RegisterStatsCollector(IInjector injector)

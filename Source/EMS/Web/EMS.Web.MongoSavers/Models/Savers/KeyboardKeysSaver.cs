@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Easy.Common.Interfaces;
 using EMS.Core.Models.DTOs;
 using EMS.Core.Models.Mongo;
 using EMS.Infrastructure.Statistics;
@@ -12,8 +13,9 @@ namespace EMS.Web.MongoSavers.Models.Savers
         public KeyboardKeysSaver(
             CancellationToken cToken, 
             IMongoCollection<CapturedKeyboardKeyMongoDocument> outCollection,
-            IStatisticsCollector statsCollector)
-            : base(cToken, outCollection, Topics.CapturedKeyboardKeys, statsCollector)
+            IStatisticsCollector statsCollector,
+            IRestClient restClient)
+            : base(cToken, outCollection, Topics.CapturedKeyboardKeys, statsCollector, restClient)
         {
         }
 

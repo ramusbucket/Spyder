@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Confluent.Kafka;
+using Easy.Common;
 using Easy.Common.Interfaces;
 using EMS.Core.Models.Mongo;
 using EMS.Infrastructure.Common.Providers;
@@ -113,8 +116,10 @@ namespace EMS.Web.MongoSavers.Models.Savers
 
             // notify WebAPI for db change (semi-push-notification)
             // keep in mind that during high loads, you might kill the users browsers and the website
-            var request = new HttpRequestMessage(HttpMethod.Post, new Uri("http://localhost:60101/api/PushNotifications/"))
-            _restClient.SendAsync()
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                new Uri("http://localhost:60101/api/PushNotifications/Update"));
+            request.Content = new JSONContent(JsonConvert.SerializeObject(mongoItem), Encoding.UTF8);
+            var repsonse = _restClient.SendAsync(request).Result;
         }
 
         protected abstract TOut FormatReceivedMessage(TIn message);
