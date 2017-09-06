@@ -23,13 +23,12 @@ namespace EMS.Web.KafkaSavers
 
         private void RegisterStatsCollector(IInjector injector)
         {
+            var serverName = "Localhost";
+            var applicationName = "EMS.Web.KafkaSavers";
             var producer = injector.Resolve<Producer<string, object>>();
-            var applicationName = Assembly.GetExecutingAssembly().FullName;
-            var topic = "Metrics";
-            var serverName = "Home";
 
             injector.RegisterInstance<IStatisticsCollector>(
-                new KafkaStatisticsCollector(producer, topic, applicationName, serverName));
+                new KafkaStatisticsCollector(producer, applicationName, serverName));
         }
 
         private void RegisterKafkaProducer(IInjector injector)

@@ -42,7 +42,7 @@ namespace EMS.Infrastructure.Stream
         public static async Task<Message<string, object>> PublishSingle(
             object item,
             string topicName,
-            string key)
+            string key = null)
         {
             return await Producer.ProduceAsync(topicName, key, item);
         }
@@ -50,7 +50,7 @@ namespace EMS.Infrastructure.Stream
         public static async Task<Message<string, object>[]> PublishMultiple(
             IEnumerable<object> items,
             string topicName,
-            string key)
+            string key = null)
         {
             var tasks = new List<Task<Message<string, object>>>(items.Count());
 

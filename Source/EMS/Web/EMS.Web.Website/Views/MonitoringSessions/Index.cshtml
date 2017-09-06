@@ -23,7 +23,7 @@
 
             <div class="row">
                 <h5>Camera</h5>
-                <ul class="list-inline">
+                <ul class="list-inline" id="@($"camera-{vm.SessionId}")">
                     @foreach (var cameraSnapshot in vm.CameraSnapshots)
                     {
                         <li class="margins-none">
@@ -35,7 +35,7 @@
 
             <div class="row">
                 <h5>Display</h5>
-                <ul class="list-inline">
+                <ul class="list-inline" id="@($"display-{vm.SessionId}")">
                     @foreach (var displaySnapshot in vm.DisplaySnapshots)
                     {
                         <li class="margins-none">
@@ -47,7 +47,7 @@
 
             <div class="row">
                 <h5>Pressed keys</h5>
-                <ul class="list-inline">
+                <ul class="list-inline" id="@($"keyboard-{vm.SessionId}")">
                     @foreach (var keyboardKey in vm.KeyboardKeys)
                     {
                         <li>
@@ -59,7 +59,7 @@
 
             <div class="row">
                 <h5>Network traffic</h5>
-                <ul class="list-inline">
+                <ul class="list-inline" id="@($"network-{vm.SessionId}")">
                     @foreach (var networkPacket in vm.NetworkPackets)
                     {
                         <li>
@@ -73,7 +73,7 @@
 
             <div class="row ">
                 <h5>Foreground processes</h5>
-                <ul class="list-inline">
+                <ul class="list-inline" id="@($"processes-{vm.SessionId}")">
                     @foreach (var foregroundProcess in vm.ForegroundProcesses)
                     {
                         <li>
@@ -92,6 +92,10 @@
     <script>
         var activeSessions;
         var url = "/MonitoringSessions/GetActiveSessionsWithDetails?page=1&itemsPerPage=6";
+
+        // Establish SignalR connection
+        // Create handlers for 5 different types of push notifications
+        // Update UI (remove last index, insert at first index)
 
         //$.get(url, function (response) {
         //    if (response.IsSuccessful) {

@@ -10,24 +10,22 @@ namespace EMS.Infrastructure.Statistics
         private readonly Producer<string, object> _producer;
         private readonly string _applicationName;
         private readonly string _serverName;
-        private readonly string _topic;
 
-        public KafkaStatisticsCollector(Producer<string, object> producer, string topic, string applicationName, string serverName)
+        public KafkaStatisticsCollector(Producer<string, object> producer, string applicationName, string serverName)
         {
             _producer = producer;
             _applicationName = applicationName;
             _serverName = serverName;
-            _topic = topic;
         }
 
-        public void Send<T>(T stats)
+        public void Send<T>(T stats, string topic)
         {
-            _producer.ProduceAsync(_topic, null, stats);
+            _producer.ProduceAsync(topic, null, stats);
         }
 
-        public async Task SendWithAck<T>(T stats)
+        public async Task SendWithAck<T>(T stats, string topic)
         {
-            var message = await _producer.ProduceAsync(_topic, null, stats);
+            var message = await _producer.ProduceAsync(topic, null, stats);
 
             if (message == null)
             {
@@ -40,7 +38,7 @@ namespace EMS.Infrastructure.Statistics
             }
         }
 
-        public T Measure<T>(Func<T> action, string actionName)
+        public T Measure<T>(Func<T> action, string actionName, string topic)
         {
             var stopwatch = Stopwatch.StartNew();
             var result = action.Invoke();
@@ -54,12 +52,12 @@ namespace EMS.Infrastructure.Statistics
                 ActionExecutionTime = (long)stopwatch.Elapsed.TotalMilliseconds
             };
 
-            Send(statistics);
+            Send(statistics, topic);
 
             return result;
         }
 
-        public void Measure(Action action, string actionName)
+        public void Measure(Action action, string actionName, string topic)
         {
             var stopwatch = Stopwatch.StartNew();
             action.Invoke();
@@ -73,10 +71,10 @@ namespace EMS.Infrastructure.Statistics
                 ActionExecutionTime = (long)stopwatch.Elapsed.TotalMilliseconds
             };
 
-            Send(statistics);
+            Send(statistics, topic);
         }
 
-        public async Task Measure(Func<Task> action, string actionName = null)
+        public async Task Measure(Func<Task> action, string actionName, string topic)
         {
             var stopwatch = Stopwatch.StartNew();
             await action.Invoke();
@@ -90,10 +88,10 @@ namespace EMS.Infrastructure.Statistics
                 ActionExecutionTime = (long)stopwatch.Elapsed.TotalMilliseconds
             };
 
-            Send(statistics);
+            Send(statistics, topic);
         }
 
-        public async Task<T> Measure<T>(Func<Task<T>> action, string actionName)
+        public async Task<T> Measure<T>(Func<Task<T>> action, string actionName, string topic)
         {
             var stopwatch = Stopwatch.StartNew();
             var result = await action.Invoke();
@@ -108,12 +106,12 @@ namespace EMS.Infrastructure.Statistics
                 ActionExecutionTime = (long)stopwatch.Elapsed.TotalMilliseconds
             };
 
-            Send(statistics);
+            Send(statistics, topic);
 
             return result;
         }
 
-        public async Task<T> MeasureWithAck<T>(Func<T> action, string actionName)
+        public async Task<T> MeasureWithAck<T>(Func<T> action, string actionName, string topic)
         {
             var stopwatch = Stopwatch.StartNew();
             var result = action.Invoke();
@@ -127,12 +125,12 @@ namespace EMS.Infrastructure.Statistics
                 ActionExecutionTime = (long)stopwatch.Elapsed.TotalMilliseconds
             };
 
-            await SendWithAck(statistics);
+            await SendWithAck(statistics, topic);
 
             return result;
         }
 
-        public async Task MeasureWithAck(Action action, string actionName)
+        public async Task MeasureWithAck(Action action, string actionName, string topic)
         {
             var stopwatch = Stopwatch.StartNew();
             action.Invoke();
@@ -146,10 +144,10 @@ namespace EMS.Infrastructure.Statistics
                 ActionExecutionTime = (long)stopwatch.Elapsed.TotalMilliseconds
             };
 
-            await SendWithAck(statistics);
+            await SendWithAck(statistics, topic);
         }
 
-        public async Task MeasureWithAck(Func<Task> action, string actionName = null)
+        public async Task MeasureWithAck(Func<Task> action, string actionName, string topic)
         {
             var stopwatch = Stopwatch.StartNew();
             await action.Invoke();
@@ -163,10 +161,10 @@ namespace EMS.Infrastructure.Statistics
                 ActionExecutionTime = (long)stopwatch.Elapsed.TotalMilliseconds
             };
 
-            await SendWithAck(statistics);
+            await SendWithAck(statistics, topic);
         }
 
-        public async Task<T> MeasureWithAck<T>(Func<Task<T>> action, string actionName)
+        public async Task<T> MeasureWithAck<T>(Func<Task<T>> action, string actionName, string topic)
         {
             var stopwatch = Stopwatch.StartNew();
             var result = await action.Invoke();
@@ -181,7 +179,7 @@ namespace EMS.Infrastructure.Statistics
                 ActionExecutionTime = (long)stopwatch.Elapsed.TotalMilliseconds
             };
 
-            await SendWithAck(statistics);
+            await SendWithAck(statistics, topic);
 
             return result;
         }

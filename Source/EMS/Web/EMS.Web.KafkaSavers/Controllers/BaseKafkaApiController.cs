@@ -1,16 +1,11 @@
-﻿using System;
-using EMS.Core.Models;
-using EMS.Infrastructure.Common.Providers;
-using EMS.Infrastructure.Stream;
+﻿using EMS.Infrastructure.Stream;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using EMS.Core.Models.DTOs;
 using EMS.Infrastructure.DependencyInjection;
 using EMS.Infrastructure.Statistics;
-using EMS.Web.KafkaSavers.Models;
 
 namespace EMS.Web.KafkaSavers.Controllers
 {
@@ -27,47 +22,43 @@ namespace EMS.Web.KafkaSavers.Controllers
         protected virtual async Task PublishToKafkaMultipleItems(IEnumerable<AuditableDto> data, string topicName)
         {
             var userId = this.User.Identity.GetUserId();
-            var userName = this.User.Identity.GetUserName();
-
-            foreach (var item in data)
-            {
-                item.UserId = userId;
-                item.UserName = userName;
-            }
+            var userName = this.User.Identity.Name;
 
             // TODO
             // Might result in Producer error while publishing one of the messages
             // Handle the error by logging it in elastic search
-
-            var kafkaResponse = await _statsCollector.MeasureWithAck(
-                async () => await KafkaClient.PublishMultiple(data, topicName, null),
-                nameof(KafkaClient.PublishMultiple));
-
-            _statsCollector.Send(new { Topic = topicName });
-
-            CollectorStatistics.Counters.AddOrUpdate(
-                SplitPascalCase(this.GetType().Name),
-                (k) => 1,
-                (k, v) => v + 1);
-        }
-
-        private string SplitPascalCase(string text)
-        {
-            var result = new StringBuilder();
-
-            foreach (var character in text)
+            foreach (var item in data)
             {
-                if (char.IsUpper(character))
+                item.UserId = userId;
+                item.UserName = userName;
+
+                var kafkaProducerResponse =
+                    await _statsCollector.MeasureWithAck(
+                        async () => await KafkaClient.PublishSingle(item, topicName),
+                        nameof(KafkaClient.PublishSingle), 
+                        "metrics");
+
+                if (kafkaProducerResponse.Error.HasError)
                 {
-                    result.Append($" {character}");
-                }
-                else
-                {
-                    result.Append(character);
+                    await _statsCollector.SendWithAck(
+                        new
+                        {
+                            Error = kafkaProducerResponse.Error.Reason,
+                            Topic = topicName,
+                            UserId = userId,
+                            Item = item
+                        },
+                        "logs");
                 }
             }
 
-            return result.ToString();
+            _statsCollector.Send(
+                new
+                {
+                    Topic = topicName,
+                    ApplicationName = "KafkaSavers"
+                },
+                "metrics");
         }
     }
 }

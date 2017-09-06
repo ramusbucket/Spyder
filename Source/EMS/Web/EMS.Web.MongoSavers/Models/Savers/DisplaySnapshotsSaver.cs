@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using EMS.Core.Models.DTOs;
 using EMS.Core.Models.Mongo;
+using EMS.Infrastructure.Statistics;
 using EMS.Infrastructure.Stream;
 using MongoDB.Driver;
 
@@ -10,8 +11,9 @@ namespace EMS.Web.MongoSavers.Models.Savers
     {
         public DisplaySnapshotsSaver(
             CancellationToken cToken, 
-            IMongoCollection<CapturedDisplaySnapshotMongoDocument> outCollection) 
-            : base(cToken, outCollection, Topics.DisplaySnapshots)
+            IMongoCollection<CapturedDisplaySnapshotMongoDocument> outCollection,
+            IStatisticsCollector statsCollector) 
+            : base(cToken, outCollection, Topics.DisplaySnapshots, statsCollector)
         {
         }
 

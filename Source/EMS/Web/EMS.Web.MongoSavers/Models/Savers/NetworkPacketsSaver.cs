@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading;
 using EMS.Core.Models.DTOs;
 using EMS.Core.Models.Mongo;
+using EMS.Infrastructure.Statistics;
 using EMS.Infrastructure.Stream;
 using MongoDB.Driver;
 
@@ -13,8 +14,9 @@ namespace EMS.Web.MongoSavers.Models.Savers
     {
         public NetworkPacketsSaver(
             CancellationToken cToken, 
-            IMongoCollection<CapturedNetworkPacketMongoDocument> outCollection) 
-            : base(cToken, outCollection, Topics.NetworkPackets)
+            IMongoCollection<CapturedNetworkPacketMongoDocument> outCollection,
+            IStatisticsCollector statsCollector) 
+            : base(cToken, outCollection, Topics.NetworkPackets, statsCollector)
         {
         }
 

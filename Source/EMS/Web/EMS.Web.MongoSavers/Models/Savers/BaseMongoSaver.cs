@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Confluent.Kafka;
+using Easy.Common.Interfaces;
 using EMS.Core.Models.Mongo;
 using EMS.Infrastructure.Common.Providers;
 using EMS.Infrastructure.Statistics;
@@ -27,13 +29,22 @@ namespace EMS.Web.MongoSavers.Models.Savers
 
         private readonly IStatisticsCollector _statsCollector;
 
-        protected BaseMongoSaver(CancellationToken cToken, IMongoCollection<TOut> outCollection, string kafkaConsumerTopic)
+        private readonly IRestClient _restClient;
+
+        protected BaseMongoSaver(
+            CancellationToken cToken,
+            IMongoCollection<TOut> outCollection,
+            string kafkaConsumerTopic,
+            IStatisticsCollector statsCollector,
+            IRestClient restClient)
         {
             _cToken = cToken;
             _outCollection = outCollection;
             _sessionsCollection = outCollection.Database.GetCollection<MonitoringSessionMongoDocument>(MongoCollections.MonitoringSessions);
             _kafkaConsumerTopic = kafkaConsumerTopic;
             _kafkaConsumer = DependencyInjectionConfig.GetKafkaConsumerInstance();
+            _statsCollector = statsCollector;
+            _restClient = restClient;
             Statistics = new ServiceStatistics();
         }
 
@@ -41,15 +52,15 @@ namespace EMS.Web.MongoSavers.Models.Savers
 
         public async Task Start()
         {
-            Statistics.StartDate = TimeProvider.Current.UtcNow;
-
             _kafkaConsumer.OnMessage += OnMessageReceived;
             _kafkaConsumer.Subscribe(_kafkaConsumerTopic);
 
             while (!_cToken.IsCancellationRequested)
             {
-                _kafkaConsumer.Poll(TimeSpan.FromMilliseconds(100));
-                Statistics.LastPollDate = TimeProvider.Current.UtcNow;
+                _statsCollector.Measure(
+                    () => _kafkaConsumer.Poll(TimeSpan.FromMilliseconds(100)), 
+                    nameof(_kafkaConsumer.Poll),
+                    "metrics");
             }
         }
 
@@ -67,8 +78,6 @@ namespace EMS.Web.MongoSavers.Models.Savers
                 // Log invalid message read with the message value and details
                 return;
             }
-
-            Statistics.LastReceivedMessageDate = TimeProvider.Current.UtcNow;
 
             var mongoItem = FormatReceivedMessage(message);
 
@@ -93,16 +102,19 @@ namespace EMS.Web.MongoSavers.Models.Savers
                     new FindOneAndUpdateOptions<MonitoringSessionMongoDocument, MonitoringSessionMongoDocument>()
                     {
                         IsUpsert = true
-                    }), 
-                nameof(_sessionsCollection.FindOneAndUpdate));
+                    }),
+                nameof(_sessionsCollection.FindOneAndUpdate),
+                "metrics");
 
             _statsCollector.Measure(
-                () => _outCollection.InsertOne(mongoItem), 
-                nameof(_outCollection.InsertOne));
-            // notify WebAPI for db change (semi-push-notification)
+                () => _outCollection.InsertOne(mongoItem),
+                nameof(_outCollection.InsertOne),
+                "metrics");
 
-            Statistics.LastProcessedItemDate = TimeProvider.Current.UtcNow;
-            Statistics.ProcessedItemsCount++;
+            // notify WebAPI for db change (semi-push-notification)
+            // keep in mind that during high loads, you might kill the users browsers and the website
+            var request = new HttpRequestMessage(HttpMethod.Post, new Uri("http://localhost:60101/api/PushNotifications/"))
+            _restClient.SendAsync()
         }
 
         protected abstract TOut FormatReceivedMessage(TIn message);

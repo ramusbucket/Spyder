@@ -31,13 +31,12 @@ namespace EMS.Web.MongoSavers.App_Start
 
         private void RegisterStatsCollector(IInjector injector)
         {
-            var producer = injector.Resolve<Producer<string, object>>();
-            var applicationName = Assembly.GetExecutingAssembly().FullName;
-            var topic = "Metrics";
             var serverName = "Home";
+            var applicationName = "EMS.Web.MongoSavers";
+            var producer = injector.Resolve<Producer<string, object>>();
 
             injector.RegisterInstance<IStatisticsCollector>(
-                new KafkaStatisticsCollector(producer, topic, applicationName, serverName));
+                new KafkaStatisticsCollector(producer, applicationName, serverName));
         }
 
         private void RegisterCancellationToken(IInjector injector)
