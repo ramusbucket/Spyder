@@ -74,11 +74,11 @@
             <div class="row ">
                 <h5>Foreground processes</h5>
                 <ul class="list-inline" id="@($"processes-{vm.SessionId}")">
-                    @foreach (var activeProcess in vm.ActiveProcesses.OrderByDescending(x => x.CreatedOn).SelectMany(x => x.ActiveProcesses).Take(3))
+                    @foreach (var activeProcess in vm.ActiveProcesses)
                     {
                         <li>
                             <span>
-                                @activeProcess.ProcessName
+                                @activeProcess.ActiveProcess.ProcessName
                             </span>
                         </li>
                     }

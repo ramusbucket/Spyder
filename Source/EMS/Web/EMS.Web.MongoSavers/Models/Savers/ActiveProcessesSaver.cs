@@ -23,7 +23,7 @@ namespace EMS.Web.MongoSavers.Models.Savers
         {
             return new CapturedActiveProcessesMongoDocument
             {
-                ActiveProcesses = message.CapturedActiveProcesses,
+                ActiveProcess = message.CapturedActiveProcess,
                 CreatedOn = message.CreatedOn,
                 UserId = message.UserId,
                 SessionId = message.SessionId

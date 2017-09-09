@@ -47,7 +47,7 @@ namespace EMS.Desktop.Client.Listeners
             {
                 var capturedItem = new CapturedActiveProcessesDto
                 {
-                    CapturedActiveProcesses = process.ProjectToSlimProcess(),
+                    CapturedActiveProcess = process.ProjectToSlimProcess(),
                     CreatedOn = TimeProvider.Current.Now,
                     SessionId = Identity.SessionId
                 };

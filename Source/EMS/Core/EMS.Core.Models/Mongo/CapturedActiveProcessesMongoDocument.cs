@@ -4,6 +4,6 @@ namespace EMS.Core.Models.Mongo
 {
     public class CapturedActiveProcessesMongoDocument : AuditableMongoDocument
     {
-        public SlimProcess ActiveProcesses { get; set; }
+        public SlimProcess ActiveProcess { get; set; }
     }
 }
