@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Easy.Common;
+using Easy.Common.Interfaces;
+using EMS.Desktop.Client.Models;
 using EMS.Infrastructure.Common.Configurations;
 using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
+using Newtonsoft.Json;
 using Polly;
 using Serilog;
-using Easy.Common.Interfaces;
-using System.Net.Http;
-using Easy.Common;
-using Newtonsoft.Json;
-using System.Text;
-using EMS.Core.Models.DTOs;
-using EMS.Desktop.Client.Models;
 
-namespace EMS.Desktop.Client
+namespace EMS.Desktop.Client.Listeners
 {
     public abstract class BaseListener<T> : IListener
         where T : class

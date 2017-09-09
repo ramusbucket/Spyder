@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using Easy.Common.Interfaces;
 using EMS.Core.Interfaces;
-using EMS.Core.Models;
+using EMS.Core.Models.DTOs;
+using EMS.Desktop.Client.Attributes;
+using EMS.Desktop.Client.Models;
 using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using Serilog;
-using System.Linq;
-using Easy.Common.Interfaces;
-using EMS.Core.Models.DTOs;
-using EMS.Desktop.Client.Models;
 
-namespace EMS.Desktop.Client
+namespace EMS.Desktop.Client.Listeners
 {
+    [DisabledListener]
     public class ActiveProcessesListener : BaseListener<CapturedActiveProcessesDto>
     {
         private IProcessApi processApi;
@@ -27,7 +28,7 @@ namespace EMS.Desktop.Client
             this.processApi = processApi;
         }
 
-        public async override Task Start()
+        public override async Task Start()
         {
             await base.Start();
 

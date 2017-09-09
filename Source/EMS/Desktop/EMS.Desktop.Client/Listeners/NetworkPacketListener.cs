@@ -1,15 +1,17 @@
-﻿using Easy.Common.Interfaces;
+﻿using System;
+using System.Threading.Tasks;
+using Easy.Common.Interfaces;
 using EMS.Core.Interfaces;
+using EMS.Core.Models.DTOs;
+using EMS.Desktop.Client.Attributes;
+using EMS.Desktop.Client.Models;
 using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using Serilog;
-using System;
-using System.Threading.Tasks;
-using EMS.Core.Models.DTOs;
-using EMS.Desktop.Client.Models;
 
-namespace EMS.Desktop.Client
+namespace EMS.Desktop.Client.Listeners
 {
+    [DisabledListener]
     public class NetworkPacketListener : BaseListener<CapturedNetworkPacketDetailsDto>
     {
         private INetworkApi networkApi;
@@ -25,7 +27,7 @@ namespace EMS.Desktop.Client
             this.networkApi = networkApi;
         }
 
-        public async override Task Start()
+        public override async Task Start()
         {
             await base.Start();
 

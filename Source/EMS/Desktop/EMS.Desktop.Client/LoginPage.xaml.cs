@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using EMS.Desktop.Client.Attributes;
 
 namespace EMS.Desktop.Client
 {
@@ -49,7 +50,8 @@ namespace EMS.Desktop.Client
                         !x.IsAbstract &&
                         !x.IsInterface &&
                         x.IsClass &&
-                        type.IsAssignableFrom(x));
+                        type.IsAssignableFrom(x) &&
+                        x.GetCustomAttribute(typeof(DisabledListenerAttribute)) == null);
 
             var listeners = listenerTypes.Select(x => injector.Resolve<IListener>(x.Name));
             this.listenerTasks = new List<Task>(listeners.Count());

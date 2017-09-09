@@ -4,6 +4,7 @@ using EMS.Core;
 using EMS.Core.Interfaces;
 using EMS.Core.Interfaces.Providers;
 using EMS.Core.Providers;
+using EMS.Desktop.Client.Listeners;
 using EMS.Desktop.Client.Models;
 using EMS.Infrastructure.Common.Configurations;
 using EMS.Infrastructure.Common.Configurations.ListenersConfigs;

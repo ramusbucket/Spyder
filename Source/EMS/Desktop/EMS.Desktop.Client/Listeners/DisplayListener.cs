@@ -1,14 +1,13 @@
 ﻿using System.Threading.Tasks;
+using Easy.Common.Interfaces;
 using EMS.Core.Interfaces;
-using EMS.Core.Models;
+using EMS.Core.Models.DTOs;
+using EMS.Desktop.Client.Models;
 using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
 using EMS.Infrastructure.Common.Providers;
 using Serilog;
-using Easy.Common.Interfaces;
-using EMS.Core.Models.DTOs;
-using EMS.Desktop.Client.Models;
 
-namespace EMS.Desktop.Client
+namespace EMS.Desktop.Client.Listeners
 {
     public class DisplayListener : BaseListener<CapturedDisplaySnapshotDto>
     {
@@ -24,7 +23,7 @@ namespace EMS.Desktop.Client
             this.displayApi = displayApi;
         }
 
-        public async override Task Start()
+        public override async Task Start()
         {
             await base.Start();
 

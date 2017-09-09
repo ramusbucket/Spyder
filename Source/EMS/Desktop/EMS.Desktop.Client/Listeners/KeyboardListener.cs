@@ -1,17 +1,15 @@
-﻿using EMS.Core.Models.DTOs;
+﻿using System.Threading.Tasks;
+using Easy.Common.Interfaces;
+using EMS.Core.Interfaces;
+using EMS.Core.Models.DTOs;
 using EMS.Desktop.Client.Models;
+using EMS.Infrastructure.Common.Configurations.ListenersConfigs;
+using EMS.Infrastructure.Common.Enums;
+using EMS.Infrastructure.Common.Providers;
+using Serilog;
 
-namespace EMS.Desktop.Client
+namespace EMS.Desktop.Client.Listeners
 {
-    using System.Threading.Tasks;
-    using Core.Interfaces;
-    using Core.Models;
-    using Infrastructure.Common.Configurations.ListenersConfigs;
-    using Infrastructure.Common.Enums;
-    using Infrastructure.Common.Providers;
-    using Serilog;
-    using Easy.Common.Interfaces;
-
     public class KeyboardListener : BaseListener<CapturedKeyDetailsDto>
     {
         private IKeyboardApi keyboardApi;
@@ -26,7 +24,7 @@ namespace EMS.Desktop.Client
             this.keyboardApi = keyboardApi;
         }
 
-        public async override Task Start()
+        public override async Task Start()
         {
             await base.Start();
 
