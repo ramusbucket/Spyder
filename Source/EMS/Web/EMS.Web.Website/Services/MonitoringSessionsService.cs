@@ -77,7 +77,7 @@ namespace EMS.Web.Website.Services
                     UserName = userName,
                     SessionId = sessionId,
                     KeyboardKeys = await GetKeyboardKeys(sessionId),
-                    NetworkPackets = await GetNetworkPackets(sessionId),
+                    ActiveProcesses = await GetActiveProcesses(sessionId),
                     CameraSnapshots = await GetCameraSnapshots(sessionId),
                     DisplaySnapshots = await GetDisplaySnapshots(sessionId),
                     ForegroundProcesses = await GetForegroundProcesses(sessionId)

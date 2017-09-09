@@ -13,7 +13,7 @@ namespace EMS.Web.Website.Models
 
         public IEnumerable<CapturedKeyboardKeyMongoDocument> KeyboardKeys { get; set; }
 
-        public IEnumerable<CapturedNetworkPacketMongoDocument> NetworkPackets { get; set; }
+        public IEnumerable<CapturedActiveProcessesMongoDocument> ActiveProcesses { get; set; }
 
         public IEnumerable<CapturedCameraSnapshotMongoDocument> CameraSnapshots { get; set; }
 

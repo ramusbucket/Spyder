@@ -57,14 +57,14 @@
                 </ul>
             </div>
 
-            <div class="row">
-                <h5>Network traffic</h5>
-                <ul class="list-inline" id="@($"network-{vm.SessionId}")">
-                    @foreach (var networkPacket in vm.NetworkPackets)
+            <div class="row ">
+                <h5>Foreground processes</h5>
+                <ul class="list-inline" id="@($"processes-{vm.SessionId}")">
+                    @foreach (var foregroundProcess in vm.ForegroundProcesses)
                     {
                         <li>
                             <span>
-                                @($"{networkPacket.HostAddress}{networkPacket.HostPort} -> {networkPacket.DestinationAddress}{networkPacket.DestinationPort} ({networkPacket.Protocol})")
+                                @foregroundProcess.ForegroundProcess.ProcessName
                             </span>
                         </li>
                     }
@@ -74,11 +74,11 @@
             <div class="row ">
                 <h5>Foreground processes</h5>
                 <ul class="list-inline" id="@($"processes-{vm.SessionId}")">
-                    @foreach (var foregroundProcess in vm.ForegroundProcesses)
+                    @foreach (var activeProcess in vm.ActiveProcesses.OrderByDescending(x => x.CreatedOn).SelectMany(x => x.ActiveProcesses).Take(3))
                     {
                         <li>
                             <span>
-                                @foregroundProcess.ForegroundProcess.ProcessName
+                                @activeProcess.ProcessName
                             </span>
                         </li>
                     }
@@ -120,7 +120,7 @@
             hub.client.pushDisplaySnapshot = function (displaySnapshot) {
                 console.log(displaySnapshot);
             };
-            
+
             // Start the connection.
             $.connection.hub.start().done(function () {
                 console.log("Connected!");

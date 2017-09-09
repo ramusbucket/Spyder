@@ -43,14 +43,17 @@ namespace EMS.Desktop.Client.Listeners
 
         private void OnActiveProcessesChangedHandler(object sender, Process[] e)
         {
-            var capturedItem = new CapturedActiveProcessesDto
+            foreach (var process in e)
             {
-                CapturedActiveProcesses = e.Select(x => x.ProjectToSlimProcess()),
-                CreatedOn = TimeProvider.Current.Now,
-                SessionId = Identity.SessionId
-            };
+                var capturedItem = new CapturedActiveProcessesDto
+                {
+                    CapturedActiveProcesses = process.ProjectToSlimProcess(),
+                    CreatedOn = TimeProvider.Current.Now,
+                    SessionId = Identity.SessionId
+                };
 
-            this.capturedItems.Enqueue(capturedItem);
+                this.capturedItems.Enqueue(capturedItem);
+            }
         }
     }
 }
