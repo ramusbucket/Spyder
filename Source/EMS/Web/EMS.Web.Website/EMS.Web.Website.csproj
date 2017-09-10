@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\librdkafka.redist.0.11.0\build\net\librdkafka.redist.props" Condition="Exists('..\..\packages\librdkafka.redist.0.11.0\build\net\librdkafka.redist.props')" />
   <Import Project="..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -101,6 +102,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
       <Private>True</Private>
@@ -225,6 +228,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\DependencyInjectionConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -260,6 +264,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\MonitoringSessionsController.cs" />
     <Compile Include="Controllers\PushNotificationsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -309,6 +314,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\EMS.Web.Website.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.1.1-vsdoc.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -347,6 +353,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -362,6 +369,14 @@
     <ProjectReference Include="..\..\Core\EMS.Core.Models\EMS.Core.Models.csproj">
       <Project>{7288268B-DE4A-4BB2-A7DB-0EFAB2834371}</Project>
       <Name>EMS.Core.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.DependencyInjection.Interfaces\EMS.Infrastructure.DependencyInjection.Interfaces.csproj">
+      <Project>{f17499b4-8079-414c-943d-62b08f2fcd01}</Project>
+      <Name>EMS.Infrastructure.DependencyInjection.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\EMS.Infrastructure.DependencyInjection\EMS.Infrastructure.DependencyInjection.csproj">
+      <Project>{E9C5306B-BDAB-4C01-99EB-80B74633143B}</Project>
+      <Name>EMS.Infrastructure.DependencyInjection</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -398,6 +413,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\..\packages\librdkafka.redist.0.11.0\build\net\librdkafka.redist.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\librdkafka.redist.0.11.0\build\net\librdkafka.redist.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

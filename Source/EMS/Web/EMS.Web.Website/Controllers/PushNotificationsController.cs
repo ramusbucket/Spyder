@@ -8,6 +8,7 @@ using System.Web.Http;
 using EMS.Core.Models.Mongo;
 using EMS.Web.Website.Hubs;
 using Microsoft.AspNet.SignalR;
+using Newtonsoft.Json;
 
 namespace EMS.Web.Website.Controllers
 {
@@ -27,20 +28,28 @@ namespace EMS.Web.Website.Controllers
             {
                 hub.Clients.All.pushForegroundProcess(item);
             }
+
             if ((item as CapturedCameraSnapshotMongoDocument) != null)
             {
                 hub.Clients.All.pushCameraSnapshot(item);
             }
+
             if ((item as CapturedDisplaySnapshotMongoDocument) != null)
             {
                 hub.Clients.All.pushDisplaySnapshot(item);
             }
+
             if ((item as CapturedKeyboardKeyMongoDocument) != null)
             {
                 hub.Clients.All.pushKeyboardKeys(item);
             }
 
-            hub.Clients.All.pushForegroundProcess(item);
+            if ((item as CapturedActiveProcessesMongoDocument) != null)
+            {
+                hub.Clients.All.pushActiveProcess(item);
+            }
+
+            hub.Clients.All.pushCameraSnapshot(item);
 
             return Ok();
         }

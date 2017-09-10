@@ -12,8 +12,10 @@ using System.Threading;
 using Easy.Common;
 using Easy.Common.Interfaces;
 using EMS.Core.Models.Mongo;
+using EMS.Infrastructure.Common.JsonConverters;
 using EMS.Infrastructure.Statistics;
 using EMS.Web.MongoSavers.Models.Savers;
+using Newtonsoft.Json;
 
 namespace EMS.Web.MongoSavers.App_Start
 {
@@ -39,7 +41,7 @@ namespace EMS.Web.MongoSavers.App_Start
 
         private void RegisterStatsCollector(IInjector injector)
         {
-            var serverName = "Home";
+            var serverName = "Localhost";
             var applicationName = "EMS.Web.MongoSavers";
             var producer = injector.Resolve<Producer<string, object>>();
 
@@ -99,9 +101,12 @@ namespace EMS.Web.MongoSavers.App_Start
 
         public static Producer<string, object> GetKafkaProducerInstance()
         {
+            var converters = new List<JsonConverter> { new ObjectIdConverter() };
+            var serializerSettings = new JsonSerializerSettings { Converters = converters, Formatting = Formatting.Indented };
+            var valueSerializer = new JsonSerializerObjectToBytes(serializerSettings);
+
             var producerConfig = GetKafkaProducerConfiguration();
             var keySerializer = new StringSerializer(Encoding.UTF8);
-            var valueSerializer = new JsonSerializerObjectToBytes();
 
             return new Producer<string, object>(
                 producerConfig,
@@ -114,7 +119,7 @@ namespace EMS.Web.MongoSavers.App_Start
             var consumerConfig = GetKafkaConsumerConfiguration();
             var keyDeserializer = new StringDeserializer(Encoding.UTF8);
             var valueDeserializer = new JsonDeserializerBytesToString();
-
+         
             return new Consumer<string, string>(
                 consumerConfig,
                 keyDeserializer,

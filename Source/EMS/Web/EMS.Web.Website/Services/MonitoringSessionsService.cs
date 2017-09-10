@@ -144,7 +144,7 @@ namespace EMS.Web.Website.Services
         public async Task<IEnumerable<CapturedKeyboardKeyMongoDocument>> GetKeyboardKeys(
             string sessionId,
             int page = 1,
-            int itemsPerPage = 12)
+            int itemsPerPage = 5)
         {
             return await GetPageFromCollection<CapturedKeyboardKeyMongoDocument>(
                 _keyboardKeysCollection,

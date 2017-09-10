@@ -40,7 +40,8 @@ namespace EMS.Web.MongoSavers.Models.Savers
                 HostPort = hostPort,
                 DestinationAddress = destinationAddress,
                 DestinationPort = destinationPort,
-                SessionId = message.SessionId
+                SessionId = message.SessionId,
+                UserName = message.UserName
             };
 
             return item;

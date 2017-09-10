@@ -26,7 +26,8 @@ namespace EMS.Web.MongoSavers.Models.Savers
                 DisplaySnapshot = message.DisplaySnapshot,
                 CreatedOn = message.CreatedOn,
                 UserId = message.UserId,
-                SessionId = message.SessionId
+                SessionId = message.SessionId,
+                UserName = message.UserName
             };
         }
     }

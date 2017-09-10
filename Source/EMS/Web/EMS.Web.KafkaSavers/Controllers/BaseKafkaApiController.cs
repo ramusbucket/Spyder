@@ -56,7 +56,8 @@ namespace EMS.Web.KafkaSavers.Controllers
                 new
                 {
                     Topic = topicName,
-                    ApplicationName = "KafkaSavers"
+                    ApplicationName = "EMS.Web.KafkaSavers",
+                    ServerName = "Localhost"
                 },
                 "metrics");
         }

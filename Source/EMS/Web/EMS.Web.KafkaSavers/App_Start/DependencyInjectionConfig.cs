@@ -3,10 +3,12 @@ using System.Reflection;
 using System.Text;
 using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
+using EMS.Infrastructure.Common.JsonConverters;
 using EMS.Infrastructure.DependencyInjection;
 using EMS.Infrastructure.DependencyInjection.Interfaces;
 using EMS.Infrastructure.Statistics;
 using EMS.Infrastructure.Stream;
+using Newtonsoft.Json;
 
 namespace EMS.Web.KafkaSavers
 {
@@ -42,7 +44,10 @@ namespace EMS.Web.KafkaSavers
             };
 
             var keySerializer = new StringSerializer(Encoding.UTF8);
-            var valueSerializer = new JsonSerializerObjectToBytes();
+
+            var converters = new List<JsonConverter> { new ObjectIdConverter() };
+            var serializerSettings = new JsonSerializerSettings { Converters = converters, Formatting = Formatting.Indented };
+            var valueSerializer = new JsonSerializerObjectToBytes(serializerSettings);
 
             var producer = new Producer<string, object>(
                 producerConfig,
@@ -70,7 +75,9 @@ namespace EMS.Web.KafkaSavers
             };
 
             var keyDeserializer = new StringDeserializer(Encoding.UTF8);
-            var valueDeserializer = new JsonDeserializerBytesToObject();
+            var converters = new List<JsonConverter> { new ObjectIdConverter() };
+            var serializerSettings = new JsonSerializerSettings { Converters = converters, Formatting = Formatting.Indented };
+            var valueDeserializer = new JsonDeserializerBytesToObject(serializerSettings);
 
             var consumer = new Consumer<string, object>(
                 consumerConfig,

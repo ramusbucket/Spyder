@@ -124,7 +124,10 @@ namespace EMS.Core
                             }
                         }
 
-                        this.OnActiveProcessesChanged?.Invoke(this, newlyStartedProcesses.ToArray());
+                        if (newlyStartedProcesses.Count > 0)
+                        {
+                            this.OnActiveProcessesChanged?.Invoke(this, newlyStartedProcesses.ToArray());
+                        }
                     }
                 },
                 state: null,

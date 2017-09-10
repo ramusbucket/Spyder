@@ -7,7 +7,7 @@
 
 <div class="help-block"></div>
 
-<div class="row">
+<div class="row" id="sessions-container">
 
     @if (this.Model.Message != null)
     {
@@ -59,7 +59,7 @@
 
             <div class="row ">
                 <h5>Foreground processes</h5>
-                <ul class="list-inline" id="@($"processes-{vm.SessionId}")">
+                <ul class="list-inline" id="@($"foreground-processes-{vm.SessionId}")">
                     @foreach (var foregroundProcess in vm.ForegroundProcesses)
                     {
                         <li>
@@ -72,8 +72,8 @@
             </div>
 
             <div class="row ">
-                <h5>Foreground processes</h5>
-                <ul class="list-inline" id="@($"processes-{vm.SessionId}")">
+                <h5>Activated processes</h5>
+                <ul class="list-inline" id="@($"active-processes-{vm.SessionId}")">
                     @foreach (var activeProcess in vm.ActiveProcesses)
                     {
                         <li>
@@ -101,28 +101,57 @@
         var activeSessions;
         var url = "/MonitoringSessions/GetActiveSessionsWithDetails?page=1&itemsPerPage=6";
 
-        $(function () {
+        $(function() {
             // Reference the auto-generated proxy for the hub.
             var hub = $.connection.pushNotificationsHub;
             // Create a function that the hub can call back to display messages.
-            hub.client.pushForegroundProcess = function (foregroundProcess) {
+            hub.client.pushForegroundProcess = function(foregroundProcess) {
                 console.log(foregroundProcess);
             };
 
-            hub.client.pushKeyboardKeys = function (keyboardKeys) {
+            hub.client.pushKeyboardKeys = function(keyboardKeys) {
                 console.log(keyboardKeys);
             };
 
-            hub.client.pushCameraSnapshot = function (cameraSnapshot) {
+            hub.client.pushCameraSnapshot = function(cameraSnapshot) {
+
+                if (!cameraSnapshot.CameraSnapshot) {
+                    console.log("Not a camera snapshot");
+                    return;
+                }
+
                 console.log(cameraSnapshot);
+                var sessionId = cameraSnapshot.SessionId;
+
+                var $sessionsContainer = $('#sessions-container');
+
+                var $sessionDiv = $(`#sessions-container [data-session-id=${sessionId}]`);
+                if (!$sessionDiv) {
+                    console.log("No session div");
+                }
+
+                var ulSelector = `#camera-${sessionId}`;
+
+                $(ulSelector + " li:last").remove();
+
+                var $ul = $(ulSelector);
+                var $li = $('<li/>').prependTo($ul);
+                var $img = $("<img/>")
+                    .addClass("snapshot-small")
+                    .attr("src", `/Images/GetCameraSnapshot?cameraSnapshotId=${cameraSnapshot.Id}`)
+                    .appendTo($li);
             };
 
-            hub.client.pushDisplaySnapshot = function (displaySnapshot) {
+            hub.client.pushDisplaySnapshot = function(displaySnapshot) {
                 console.log(displaySnapshot);
             };
 
+            hub.client.pushActiveProcess = function(activeProcess) {
+                console.log(activeProcess);
+            };
+
             // Start the connection.
-            $.connection.hub.start().done(function () {
+            $.connection.hub.start().done(function() {
                 console.log("Connected!");
             });
         });

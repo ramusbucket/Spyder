@@ -1,6 +1,6 @@
 ﻿{ //64435
   "UrisConfig": {
-    "RegisterUserUri": "http://localhost:7000/api/Account/Register",
+    "RegisterUserUri": "http://localhost:64435/api/Account/Register",
     "LoginUserUri": "http://localhost:64435/Token"
   },
   "ListenersConfig": {

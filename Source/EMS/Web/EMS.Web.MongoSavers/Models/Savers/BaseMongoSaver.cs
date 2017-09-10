@@ -118,7 +118,7 @@ namespace EMS.Web.MongoSavers.Models.Savers
             // keep in mind that during high loads, you might kill the users browsers and the website
             var request = new HttpRequestMessage(HttpMethod.Post,
                 new Uri("http://localhost:60101/api/PushNotifications/Update"));
-            request.Content = new JSONContent(JsonConvert.SerializeObject(mongoItem), Encoding.UTF8);
+            request.Content = new ObjectContent<TOut>(mongoItem, new JsonMediaTypeFormatter());
             var repsonse = _restClient.SendAsync(request).Result;
         }
 
