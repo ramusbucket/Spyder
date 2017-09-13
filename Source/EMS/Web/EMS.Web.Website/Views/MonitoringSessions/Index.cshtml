@@ -16,7 +16,7 @@
 
     @foreach (var vm in this.Model.Sessions)
     {
-        <div class="col-lg-4" data-session-id="@vm.SessionId" data-user-id="@vm.UserId">
+        <div class="col-lg-4" data-session-id="@vm.SessionId">
             <h1>
                 <a href="/MonitoringSessions/Details/@vm.SessionId">@vm.UserName</a>
             </h1>
@@ -98,8 +98,8 @@
     <!--SignalR script to update the chat page and send messages.-->
 
     <script>
-        var activeSessions;
         var url = "/MonitoringSessions/GetActiveSessionsWithDetails?page=1&itemsPerPage=6";
+        var $sessionsContainer = $('#sessions-container');
 
         $(function() {
             // Reference the auto-generated proxy for the hub.
@@ -114,25 +114,34 @@
             };
 
             hub.client.pushCameraSnapshot = function(cameraSnapshot) {
-
                 if (!cameraSnapshot.CameraSnapshot) {
                     console.log("Not a camera snapshot");
                     return;
                 }
 
-                console.log(cameraSnapshot);
                 var sessionId = cameraSnapshot.SessionId;
+                var userName = cameraSnapshot.UserName;
 
-                var $sessionsContainer = $('#sessions-container');
-
-                var $sessionDiv = $(`#sessions-container [data-session-id=${sessionId}]`);
-                if (!$sessionDiv) {
+                var $session = $(`#sessions-container [data-session-id=${sessionId}]`);
+                if (!$session) {
                     console.log("No session div");
+
+                    var $session = $(`<div class="col-lg-4" data-session-id="${sessionId}"></div>`)
+                        .prependTo($sessionsContainer);
+                    var $header = $(`<h1><a href="/MonitoringSessions/Details/${sessionId}">${userName}</a></h1>`)
+                        .appendTo($session);
+                    var $cameraSnapshotsContainer =
+                        $(`<div class="row"><h5>Camera</h5><ul class="list-inline" id="camera-${sessionId
+                                }"></ul></div>`)
+                            .appendTo($session);
                 }
 
+                // if li's are 3, remove last and prepend to ul
                 var ulSelector = `#camera-${sessionId}`;
 
-                $(ulSelector + " li:last").remove();
+                if ($(`${ulSelector} li`).length >= 3) {
+                    $(ulSelector + " li:last").remove();
+                }
 
                 var $ul = $(ulSelector);
                 var $li = $('<li/>').prependTo($ul);
