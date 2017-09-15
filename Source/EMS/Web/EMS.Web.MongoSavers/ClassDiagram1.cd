@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EMS.Web.MongoSavers.Models.Savers.ActiveProcessesSaver">
+    <Position X="5.25" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Savers\ActiveProcessesSaver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.MongoSavers.Models.Savers.BaseMongoSaver&lt;TOut, TIn&gt;">
+    <Position X="6.25" Y="0.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAQCAABgAEAAAACAgAAAAAAAAAAAAAABAAAoA=</HashCode>
+      <FileName>Models\Savers\BaseMongoSaver.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EMS.Web.MongoSavers.Models.Savers.CameraSnapshotsSaver">
+    <Position X="7.5" Y="5.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Savers\CameraSnapshotsSaver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.MongoSavers.Models.Savers.DisplaySnapshotsSaver">
+    <Position X="10" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Savers\DisplaySnapshotsSaver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.MongoSavers.Models.Savers.ForegroundProcessesSaver">
+    <Position X="12.25" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Savers\ForegroundProcessesSaver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.MongoSavers.Models.Savers.KeyboardKeysSaver">
+    <Position X="0.5" Y="5.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Savers\KeyboardKeysSaver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.MongoSavers.Models.Savers.NetworkPacketsSaver">
+    <Position X="3" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Savers\NetworkPacketsSaver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
