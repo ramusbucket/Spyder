@@ -5,3 +5,5 @@ Log errors to ElasticSearch/Kibana using Serilog sinks.
 Log statistics to Grafana.
 
 Connect database to both web applications.
+
+Secure web api's with JWT token and Firewall or proxy server in front
