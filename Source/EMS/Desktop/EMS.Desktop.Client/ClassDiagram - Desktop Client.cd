@@ -1,4 +1,61 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EMS.Desktop.Client.Listeners.ActiveProcessesListener">
+    <Position X="11" Y="1" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACEAAAAAAEAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Listeners\ActiveProcessesListener.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Desktop.Client.Listeners.BaseListener&lt;T&gt;">
+    <Position X="14.75" Y="2.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAgAACAAAAACBAAAAAAABGAAAAgAIQAAAAAAAAA=</HashCode>
+      <FileName>Listeners\BaseListener.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EMS.Desktop.Client.Listeners.CameraListener">
+    <Position X="17.5" Y="3.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAACAAAAAAgAAAAAAAAAAQAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Listeners\CameraListener.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Desktop.Client.Listeners.DisplayListener">
+    <Position X="12.75" Y="6.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAIQAAAEAAAAA=</HashCode>
+      <FileName>Listeners\DisplayListener.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Desktop.Client.Listeners.ForegroundProcessListener">
+    <Position X="16.25" Y="6.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAACAAAAAAAAAAAAAAAAAAAAAAIAAAAAAABAA=</HashCode>
+      <FileName>Listeners\ForegroundProcessListener.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Desktop.Client.Listeners.KeyboardListener">
+    <Position X="17.5" Y="0.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAACAAAAAAAAAAAAAAAAAAAIAAAAAABAAA=</HashCode>
+      <FileName>Listeners\KeyboardListener.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Desktop.Client.Listeners.NetworkPacketListener">
+    <Position X="11" Y="3.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAgAAQAAAQIAAAAAAAAAA=</HashCode>
+      <FileName>Listeners\NetworkPacketListener.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="EMS.Desktop.Client.IListener">
+    <Position X="15" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Listeners\IListener.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

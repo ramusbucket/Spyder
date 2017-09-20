@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EMS.Core.Models.DTOs.AuditableDto">
+    <Position X="31.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgIAAACAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>DTOs\AuditableDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.DTOs.CapturedActiveProcessesDto">
+    <Position X="34" Y="8.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTOs\CapturedActiveProcessesDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.DTOs.CapturedCameraSnapshotDto">
+    <Position X="30.5" Y="9.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTOs\CapturedCameraSnapshotDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.DTOs.CapturedDisplaySnapshotDto">
+    <Position X="34.25" Y="8.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTOs\CapturedDisplaySnapshotDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.DTOs.CapturedForegroundProcessDto">
+    <Position X="32.25" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTOs\CapturedForegroundProcessDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.DTOs.CapturedKeyDetailsDto">
+    <Position X="38.25" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTOs\CapturedKeyDetailsDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.DTOs.CapturedNetworkPacketDetailsDto">
+    <Position X="27.25" Y="9.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTOs\CapturedNetworkPacketDetailsDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.DTOs.ProcessExtensions" Collapsed="true">
+    <Position X="25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTOs\ProcessExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.DTOs.SlimProcess" Collapsed="true">
+    <Position X="26.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAwAAAAAAAAAAAAAIBAAEAAAQCAAAAAEAAA=</HashCode>
+      <FileName>DTOs\SlimProcess.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.DTOs.SlimProcessStartInfo" Collapsed="true">
+    <Position X="23.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAgAAAAAAAAAAAAAAAgAAAAAAIQAAAARAAAA=</HashCode>
+      <FileName>DTOs\SlimProcessStartInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.Mongo.AuditableMongoDocument">
+    <Position X="10.25" Y="5.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgIAAACAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Mongo\AuditableMongoDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.Mongo.BaseMongoDocument">
+    <Position X="10.25" Y="3.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mongo\BaseMongoDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.Mongo.CapturedActiveProcessesMongoDocument">
+    <Position X="5.75" Y="8.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mongo\CapturedActiveProcessesMongoDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.Mongo.CapturedCameraSnapshotMongoDocument">
+    <Position X="14.25" Y="6.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mongo\CapturedCameraSnapshotMongoDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.Mongo.CapturedDisplaySnapshotMongoDocument">
+    <Position X="14.25" Y="4.5" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mongo\CapturedDisplaySnapshotMongoDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.Mongo.CapturedForegroundProcessMongoDocument">
+    <Position X="5.75" Y="5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mongo\CapturedForegroundProcessMongoDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.Mongo.CapturedKeyboardKeyMongoDocument">
+    <Position X="5.75" Y="6.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mongo\CapturedKeyboardKeyMongoDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.Mongo.CapturedNetworkPacketMongoDocument">
+    <Position X="9.75" Y="8.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEABAAAAAAAAAAAAABAAACAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mongo\CapturedNetworkPacketMongoDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.Mongo.MongoCollections" Collapsed="true">
+    <Position X="23.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAABAgAgAAAAAAAAAIAAAAABAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mongo\MongoCollections.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.Mongo.MonitoringSessionMongoDocument">
+    <Position X="14.5" Y="8.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mongo\MonitoringSessionMongoDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.WebcamDetails" Collapsed="true">
+    <Position X="25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WebcamDetails.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
