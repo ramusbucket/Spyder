@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EMS.Web.KafkaSavers.Controllers.AccountController" Collapsed="true">
+    <Position X="14.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAFACAACAAgQAAEAARAgIAABABEBAAAAAAgAAAAQA=</HashCode>
+      <FileName>Controllers\AccountController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.KafkaSavers.Controllers.ActiveProcessesController">
+    <Position X="3.5" Y="6.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Controllers\ActiveProcessesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.KafkaSavers.Controllers.BaseKafkaApiController">
+    <Position X="5.5" Y="3.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Controllers\BaseKafkaApiController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.KafkaSavers.Controllers.CameraSnapshotsController">
+    <Position X="2.25" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Controllers\CameraSnapshotsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.KafkaSavers.Controllers.CapturedKeysController">
+    <Position X="7.5" Y="6.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Controllers\CapturedKeysController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.KafkaSavers.Controllers.DisplaySnapshotsController">
+    <Position X="9" Y="4.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\DisplaySnapshotsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.KafkaSavers.Controllers.ForegroundProcessController">
+    <Position X="2.25" Y="4.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Controllers\ForegroundProcessController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.KafkaSavers.Controllers.HomeController" Collapsed="true">
+    <Position X="16" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Web.KafkaSavers.Controllers.NetworkPacketsController">
+    <Position X="9" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\NetworkPacketsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
