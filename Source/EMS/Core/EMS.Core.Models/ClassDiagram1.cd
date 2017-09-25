@@ -147,5 +147,19 @@
       <FileName>WebcamDetails.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="EMS.Core.Models.ResultResponse&lt;T&gt;">
+    <Position X="19.75" Y="13.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ResponseResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Core.Models.EmptyResponse">
+    <Position X="17.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>ResponseResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

@@ -5,7 +5,7 @@
   },
   "ListenersConfig": {
     "KeyboardListenerConfig": {
-      "SendCapturedItemsThreshold": 20,
+      "SendCapturedItemsThreshold": 1,
       "SendCapturedItemsDestinationUri": "http://localhost:64435/api/CapturedKeys/PostCapturedKeys",
       "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
       "SendCapturedItemsTimerConfig": {
@@ -14,7 +14,7 @@
       }
     },
     "DisplayListenerConfig": {
-      "SendCapturedItemsThreshold": 3,
+      "SendCapturedItemsThreshold": 1,
       "SendCapturedItemsDestinationUri": "http://localhost:64435/api/DisplaySnapshots/PostCapturedDisplaySnapshots",
       "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
       "SendCapturedItemsTimerConfig": {
@@ -23,7 +23,7 @@
       }
     },
     "CameraListenerConfig": {
-      "SendCapturedItemsThreshold": 3,
+      "SendCapturedItemsThreshold": 1,
       "SendCapturedItemsDestinationUri": "http://localhost:64435/api/CameraSnapshots/PostCameraSnapshots",
       "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
       "SendCapturedItemsTimerConfig": {
@@ -41,7 +41,7 @@
       }
     },
     "ForegroundProcessListenerConfig": {
-      "SendCapturedItemsThreshold": 5,
+      "SendCapturedItemsThreshold": 1,
       "SendCapturedItemsDestinationUri": "http://localhost:64435/api/ForegroundProcess/PostForegroundProcess",
       "RetrySleepDurationsInMilliseconds": [ 1000, 2000, 3000 ],
       "SendCapturedItemsTimerConfig": {

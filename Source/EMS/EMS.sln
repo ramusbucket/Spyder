@@ -43,6 +43,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Infrastructure.Workers"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Infrastructure.Statistics", "Infrastructure\EMS.Infrastructure.Statistics\EMS.Infrastructure.Statistics.csproj", "{4B3B1AEC-25D4-4E76-8AEC-D7C146C22E09}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{166E5DE9-CCD6-490F-8099-050124483BA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Web.MongoSavers.IntegrationTests", "IntegrationTests\EMS.Web.MongoSavers.IntegrationTests\EMS.Web.MongoSavers.IntegrationTests.csproj", "{C24933EF-1B4D-4F79-934C-6694E8463E7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +113,10 @@ Global
 		{4B3B1AEC-25D4-4E76-8AEC-D7C146C22E09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B3B1AEC-25D4-4E76-8AEC-D7C146C22E09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B3B1AEC-25D4-4E76-8AEC-D7C146C22E09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C24933EF-1B4D-4F79-934C-6694E8463E7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C24933EF-1B4D-4F79-934C-6694E8463E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C24933EF-1B4D-4F79-934C-6694E8463E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C24933EF-1B4D-4F79-934C-6694E8463E7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,5 +136,6 @@ Global
 		{A99C8E88-C9B2-460A-8448-25A1B6D76BD3} = {DB1CF46D-2B67-4316-8F30-83D4E2A46323}
 		{334D48CE-A7CC-4B62-92D1-54FF286C5687} = {36B6E86C-DC31-4B8F-A6D5-DD208200F101}
 		{4B3B1AEC-25D4-4E76-8AEC-D7C146C22E09} = {36B6E86C-DC31-4B8F-A6D5-DD208200F101}
+		{C24933EF-1B4D-4F79-934C-6694E8463E7A} = {166E5DE9-CCD6-490F-8099-050124483BA3}
 	EndGlobalSection
 EndGlobal

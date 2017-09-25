@@ -50,6 +50,20 @@
       <FileName>Listeners\NetworkPacketListener.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="EMS.Desktop.Client.Models.Identity">
+    <Position X="21.75" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABQAAAAAAAACAAAAABIAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Identity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Desktop.Client.Models.OAuthTokenDetails">
+    <Position X="21.75" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAEAAAAQAAIQAAAAAAAgA=</HashCode>
+      <FileName>Models\OAuthTokenDetails.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="EMS.Desktop.Client.IListener">
     <Position X="15" Y="0.5" Width="1.5" />
     <TypeIdentifier>

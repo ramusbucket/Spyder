@@ -15,7 +15,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Web.KafkaSavers.Controllers.BaseKafkaApiController">
-    <Position X="5.5" Y="3.5" Width="2.5" />
+    <Position X="5.5" Y="0.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAABAAAAAAAA=</HashCode>
       <FileName>Controllers\BaseKafkaApiController.cs</FileName>

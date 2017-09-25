@@ -17,7 +17,7 @@ textarea {
 }
 
 .snapshot-small {
-    width: 7vw;
+    width: 6vw;
 }
 
 .padding-none {
@@ -31,4 +31,8 @@ textarea {
 li.margins-none {
     margin: 0; 
     padding: 0;
+}
+
+.snapshot-full-size {
+    width: 90vw;
 }

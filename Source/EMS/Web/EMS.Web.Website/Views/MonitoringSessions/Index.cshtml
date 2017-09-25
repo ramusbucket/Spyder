@@ -4,6 +4,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link href="//cdn.rawgit.com/noelboss/featherlight/1.7.9/release/featherlight.min.css" type="text/css" rel="stylesheet" />
 
 <div class="help-block"></div>
 
@@ -27,7 +28,9 @@
                     @foreach (var cameraSnapshot in vm.CameraSnapshots)
                     {
                         <li class="margins-none">
-                            <img src="@Html.Image(cameraSnapshot.CameraSnapshot)" class="snapshot-small" />
+                            <a href="#" data-featherlight="<img src='/Images/GetCameraSnapshot?cameraSnapshotId=@cameraSnapshot.Id'/>">
+                                <img src="@Html.Image(cameraSnapshot.CameraSnapshot)" class="snapshot-small"  alt="camera snapshot"/>
+                            </a>
                         </li>
                     }
                 </ul>
@@ -39,7 +42,9 @@
                     @foreach (var displaySnapshot in vm.DisplaySnapshots)
                     {
                         <li class="margins-none">
-                            <img src="@Html.Image(displaySnapshot.DisplaySnapshot)" class="snapshot-small" />
+                            <a href="#" data-featherlight="<img class='snapshot-full-size' src='/Images/GetDisplaySnapshot?displaySnapshotId=@displaySnapshot.Id'/>">
+                                <img src="@Html.Image(displaySnapshot.DisplaySnapshot)" class="snapshot-small" />
+                            </a>
                         </li>
                     }
                 </ul>
@@ -89,6 +94,13 @@
 </div>
 
 @section scripts {
+    <script type="text/javascript">
+        function openImage(imageUrl) { 
+            window.open(imageUrl);
+        } 
+    </script>
+    <script src="//cdn.rawgit.com/noelboss/featherlight/1.7.9/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
     <!--Script references. -->
     <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
     <!--Reference the SignalR library. -->
@@ -113,50 +125,105 @@
                 console.log(keyboardKeys);
             };
 
-            hub.client.pushCameraSnapshot = function(cameraSnapshot) {
-                if (!cameraSnapshot.CameraSnapshot) {
-                    console.log("Not a camera snapshot");
-                    return;
-                }
-
+            hub.client.pushCameraSnapshot = function (cameraSnapshot) {
                 var sessionId = cameraSnapshot.SessionId;
                 var userName = cameraSnapshot.UserName;
 
                 var $session = $(`#sessions-container [data-session-id=${sessionId}]`);
                 if (!$session) {
-                    console.log("No session div");
+                    alert("No session div");
 
-                    var $session = $(`<div class="col-lg-4" data-session-id="${sessionId}"></div>`)
-                        .prependTo($sessionsContainer);
-                    var $header = $(`<h1><a href="/MonitoringSessions/Details/${sessionId}">${userName}</a></h1>`)
-                        .appendTo($session);
-                    var $cameraSnapshotsContainer =
-                        $(`<div class="row"><h5>Camera</h5><ul class="list-inline" id="camera-${sessionId
-                                }"></ul></div>`)
-                            .appendTo($session);
+                    location.reload();
+
+                    //var $session = $(`<div class="col-lg-4" data-session-id="${sessionId}"></div>`)
+                    //    .prependTo($sessionsContainer);
+                    //var $header = $(`<h1><a href="/MonitoringSessions/Details/${sessionId}">${userName}</a></h1>`)
+                    //    .appendTo($session);
+                    //var $cameraSnapshotsContainer =
+                    //    $(`<div class="row"><h5>Camera</h5><ul class="list-inline" id="camera-${sessionId
+                    //            }"></ul></div>`)
+                    //        .appendTo($session);
                 }
 
-                // if li's are 3, remove last and prepend to ul
-                var ulSelector = `#camera-${sessionId}`;
+                if (cameraSnapshot.CameraSnapshot) {
+                    // if li's are 3, remove last and prepend to ul
+                    var ulSelector = `#camera-${sessionId}`;
 
-                if ($(`${ulSelector} li`).length >= 3) {
-                    $(ulSelector + " li:last").remove();
+                    if ($(`${ulSelector} li`).length >= 3) {
+                        $(ulSelector + " li:last").remove();
+                    }
+
+                    var $ul = $(ulSelector);
+                    var $li = $('<li/>').prependTo($ul);
+                    var $img = $("<img/>")
+                        .addClass("snapshot-small")
+                        .attr("src", `/Images/GetCameraSnapshot?cameraSnapshotId=${cameraSnapshot.Id}`)
+                        .appendTo($li);
                 }
+                else if (cameraSnapshot.ForegroundProcess) {
+                    console.log("ForegroundProcess");
 
-                var $ul = $(ulSelector);
-                var $li = $('<li/>').prependTo($ul);
-                var $img = $("<img/>")
-                    .addClass("snapshot-small")
-                    .attr("src", `/Images/GetCameraSnapshot?cameraSnapshotId=${cameraSnapshot.Id}`)
-                    .appendTo($li);
-            };
+                    var ulSelector = `#foreground-processes-${sessionId}`;
+                    if ($(`${ulSelector} li`).length >= 3) {
+                        $(ulSelector + " li:last").remove();
+                    }
 
-            hub.client.pushDisplaySnapshot = function(displaySnapshot) {
-                console.log(displaySnapshot);
-            };
+                    var $ul = $(ulSelector);
+                    var $li = $('<li/>').prependTo($ul);
+                    var $span = $("<span>")
+                        .text(cameraSnapshot.ForegroundProcess.ProcessName)
+                        .appendTo($li);
+                }
+                else if (cameraSnapshot.DisplaySnapshot) {
+                    console.log("DisplaySnapshot");
 
-            hub.client.pushActiveProcess = function(activeProcess) {
-                console.log(activeProcess);
+                    // if li's are 3, remove last and prepend to ul
+                    var ulSelector = `#display-${sessionId}`;
+
+                    if ($(`${ulSelector} li`).length >= 3) {
+                        $(ulSelector + " li:last").remove();
+                    }
+                    
+                    var $ul = $(ulSelector);
+                    var $li = $('<li/>').prependTo($ul);
+                    var $img = $("<img/>")
+                        .addClass("snapshot-small")
+                        .attr("src", `/Images/GetDisplaySnapshot?displaySnapshotId=${cameraSnapshot.Id}`)
+                        .appendTo($li);
+                }
+                else if (cameraSnapshot.KeyboardKey) {
+                    console.log("KeyboardKey");
+
+                    // if li's are 3, remove last and prepend to ul
+                    var ulSelector = `#keyboard-${sessionId}`;
+
+                    if ($(`${ulSelector} li`).length >= 5) {
+                        $(ulSelector + " li:first").remove();
+                    }
+
+                    var $ul = $(ulSelector);
+                    var $li = $('<li/>').appendTo($ul);
+                    var $span = $("<span>")
+                        .text(cameraSnapshot.KeyboardKeyName)
+                        .appendTo($li);
+                }
+                else if (cameraSnapshot.ActiveProcess) {
+                    console.log("ActiveProcess");
+
+                    // if li's are 3, remove last and prepend to ul
+                    var ulSelector = `#active-processes-${sessionId}`;
+
+                    if ($(`${ulSelector} li`).length >= 3) {
+                        $(ulSelector + " li:last").remove();
+                    }
+
+                    var $ul = $(ulSelector);
+                    var $li = $('<li/>').prependTo($ul);
+                    var $span = $("<span>")
+                        .text(cameraSnapshot.ActiveProcess.ProcessName)
+                        .appendTo($li);
+                }
+               
             };
 
             // Start the connection.

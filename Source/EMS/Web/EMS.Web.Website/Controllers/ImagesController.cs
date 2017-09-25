@@ -11,10 +11,16 @@ namespace EMS.Web.Website.Controllers
     {
         private readonly IMongoCollection<CapturedCameraSnapshotMongoDocument> _cameraSnapshots;
 
+        private readonly IMongoCollection<CapturedDisplaySnapshotMongoDocument> _displaySnapshots;
+
+
         public ImagesController()
         {
             _cameraSnapshots = UnityInjector.Instance
                 .Resolve<IMongoCollection<CapturedCameraSnapshotMongoDocument>>();
+
+            _displaySnapshots = UnityInjector.Instance
+                .Resolve<IMongoCollection<CapturedDisplaySnapshotMongoDocument>>();
         }
 
         public async Task<ActionResult> GetCameraSnapshot(string cameraSnapshotId)
@@ -25,7 +31,18 @@ namespace EMS.Web.Website.Controllers
                 .Project(x => x.CameraSnapshot)
                 .FirstOrDefaultAsync();
 
-            return File(imageData, $"{cameraSnapshotId}/png"); 
+            return File(imageData, $"CameraSnapshot{cameraSnapshotId}/png"); 
+        }
+
+        public async Task<ActionResult> GetDisplaySnapshot(string displaySnapshotId)
+        {
+            var id = new ObjectId(displaySnapshotId);
+            var imageData = await _displaySnapshots
+                .Find(x => x.Id == id)
+                .Project(x => x.DisplaySnapshot)
+                .FirstOrDefaultAsync();
+
+            return File(imageData, $"DisplaySnapshot{displaySnapshotId}/png");
         }
     }
 }
