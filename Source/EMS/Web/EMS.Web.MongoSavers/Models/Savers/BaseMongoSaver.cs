@@ -101,6 +101,7 @@ namespace EMS.Web.MongoSavers.Models.Savers
                         .Set(x => x.UserId, session.UserId)
                         .Set(x => x.SessionId, session.SessionId)
                         .Set(x => x.CreatedOn, session.CreatedOn)
+                        .Set(x => x.UserName, session.UserName)
                         .Set(x => x.IsActive, true),
                     new FindOneAndUpdateOptions<MonitoringSessionMongoDocument, MonitoringSessionMongoDocument>()
                     {

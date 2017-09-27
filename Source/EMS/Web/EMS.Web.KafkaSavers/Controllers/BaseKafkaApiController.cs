@@ -50,6 +50,15 @@ namespace EMS.Web.KafkaSavers.Controllers
                         },
                         "logs");
                 }
+
+                await _statsCollector.SendWithAck(
+                    new
+                    {
+                        KafkaResponse = kafkaProducerResponse,
+                        UserId = userId,
+                        Item = item
+                    },
+                    "logs");
             }
 
             _statsCollector.Send(

@@ -11,7 +11,7 @@ using Serilog;
 
 namespace EMS.Desktop.Client.Listeners
 {
-    [DisabledListener]
+    //[DisabledListener]
     public class NetworkPacketListener : BaseListener<CapturedNetworkPacketDetailsDto>
     {
         private INetworkApi networkApi;

@@ -36,24 +36,5 @@ namespace EMS.Web.Website.Controllers
 
             return View(model);
         }
-
-        //[HttpGet]
-        //public async Task<JsonResult> GetActiveSessionsWithDetails(int page = 1, int itemsPerPage = 12)
-        //{
-        //    try
-        //    {
-        //        var activeSessionsDetails = await _monitoringSessionsService.GetActiveSessionsDetails(page, itemsPerPage);
-
-        //        return Json(
-        //            new ResultResponse<IEnumerable<SessionViewModel>>(activeSessionsDetails),
-        //            JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception exc)
-        //    {
-        //        return Json(
-        //            new EmptyResponse(exc.Message, false),
-        //            JsonRequestBehavior.AllowGet);
-        //    }
-        //}
     }
 }

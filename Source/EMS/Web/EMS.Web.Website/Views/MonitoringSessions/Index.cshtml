@@ -95,9 +95,9 @@
 
 @section scripts {
     <script type="text/javascript">
-        function openImage(imageUrl) { 
+        function openImage(imageUrl) {
             window.open(imageUrl);
-        } 
+        }
     </script>
     <script src="//cdn.rawgit.com/noelboss/featherlight/1.7.9/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
 
@@ -125,24 +125,15 @@
                 console.log(keyboardKeys);
             };
 
-            hub.client.pushCameraSnapshot = function (cameraSnapshot) {
+            hub.client.pushCameraSnapshot = function(cameraSnapshot) {
                 var sessionId = cameraSnapshot.SessionId;
                 var userName = cameraSnapshot.UserName;
 
-                var $session = $(`#sessions-container [data-session-id=${sessionId}]`);
+                var $session = $(`[data-session-id=${sessionId}]`);
                 if (!$session) {
                     alert("No session div");
 
-                    location.reload();
-
-                    //var $session = $(`<div class="col-lg-4" data-session-id="${sessionId}"></div>`)
-                    //    .prependTo($sessionsContainer);
-                    //var $header = $(`<h1><a href="/MonitoringSessions/Details/${sessionId}">${userName}</a></h1>`)
-                    //    .appendTo($session);
-                    //var $cameraSnapshotsContainer =
-                    //    $(`<div class="row"><h5>Camera</h5><ul class="list-inline" id="camera-${sessionId
-                    //            }"></ul></div>`)
-                    //        .appendTo($session);
+                    window.location.reload();
                 }
 
                 if (cameraSnapshot.CameraSnapshot) {
@@ -154,13 +145,13 @@
                     }
 
                     var $ul = $(ulSelector);
-                    var $li = $('<li/>').prependTo($ul);
+                    var $li = $('<li>').prependTo($ul);
+                    var $a = $(`<a href="#" data-featherlight="<img src='/Images/GetCameraSnapshot?cameraSnapshotId=${cameraSnapshot.Id}'/>">`).appendTo($li);
                     var $img = $("<img/>")
                         .addClass("snapshot-small")
                         .attr("src", `/Images/GetCameraSnapshot?cameraSnapshotId=${cameraSnapshot.Id}`)
-                        .appendTo($li);
-                }
-                else if (cameraSnapshot.ForegroundProcess) {
+                        .appendTo($a);
+                } else if (cameraSnapshot.ForegroundProcess) {
                     console.log("ForegroundProcess");
 
                     var ulSelector = `#foreground-processes-${sessionId}`;
@@ -173,8 +164,7 @@
                     var $span = $("<span>")
                         .text(cameraSnapshot.ForegroundProcess.ProcessName)
                         .appendTo($li);
-                }
-                else if (cameraSnapshot.DisplaySnapshot) {
+                } else if (cameraSnapshot.DisplaySnapshot) {
                     console.log("DisplaySnapshot");
 
                     // if li's are 3, remove last and prepend to ul
@@ -183,15 +173,15 @@
                     if ($(`${ulSelector} li`).length >= 3) {
                         $(ulSelector + " li:last").remove();
                     }
-                    
+
                     var $ul = $(ulSelector);
                     var $li = $('<li/>').prependTo($ul);
+                    var $a = $(`<a href="#" data-featherlight="<img class='snapshot-full-size' src='/Images/GetDisplaySnapshot?displaySnapshotId=${cameraSnapshot.Id}'/>">`).appendTo($li);
                     var $img = $("<img/>")
                         .addClass("snapshot-small")
                         .attr("src", `/Images/GetDisplaySnapshot?displaySnapshotId=${cameraSnapshot.Id}`)
-                        .appendTo($li);
-                }
-                else if (cameraSnapshot.KeyboardKey) {
+                        .appendTo($a);
+                } else if (cameraSnapshot.KeyboardKey) {
                     console.log("KeyboardKey");
 
                     // if li's are 3, remove last and prepend to ul
@@ -206,8 +196,7 @@
                     var $span = $("<span>")
                         .text(cameraSnapshot.KeyboardKeyName)
                         .appendTo($li);
-                }
-                else if (cameraSnapshot.ActiveProcess) {
+                } else if (cameraSnapshot.ActiveProcess) {
                     console.log("ActiveProcess");
 
                     // if li's are 3, remove last and prepend to ul
@@ -223,7 +212,7 @@
                         .text(cameraSnapshot.ActiveProcess.ProcessName)
                         .appendTo($li);
                 }
-               
+
             };
 
             // Start the connection.
